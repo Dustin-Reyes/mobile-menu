@@ -100,7 +100,7 @@ describe('isSetupComplete', () => {
   it('returns true when .template-state.json exists with setupComplete: true', () => {
     fs.writeFileSync(
       path.join(tmpDir, '.template-state.json'),
-      JSON.stringify({ setupComplete: true })
+      JSON.stringify({ setupComplete: true }),
     );
     expect(helpers.isSetupComplete(tmpDir)).toBe(true);
   });
@@ -113,7 +113,9 @@ describe('getFilesToRemove', () => {
     expect(files).toContain(path.join(tmpDir, 'src/dev/demo'));
     expect(files).toContain(path.join(tmpDir, 'src/pages/Demo.jsx'));
     expect(files).toContain(path.join(tmpDir, 'src/components/DemoWidget.jsx'));
-    expect(files).toContain(path.join(tmpDir, 'src/components/ErrorTrigger.jsx'));
+    expect(files).toContain(
+      path.join(tmpDir, 'src/components/ErrorTrigger.jsx'),
+    );
     expect(files).toContain(path.join(tmpDir, 'src/components/CodeBlock.jsx'));
     expect(files).toContain(path.join(tmpDir, 'scripts'));
     expect(files).toContain(path.join(tmpDir, '.template-state.json'));
@@ -155,15 +157,22 @@ describe('patchAppJsx', () => {
 describe('patchPackageJsonCleanup', () => {
   it('removes setup and cleanup scripts from package.json', () => {
     const pkgPath = path.join(tmpDir, 'package.json');
-    fs.writeFileSync(pkgPath, JSON.stringify({
-      name: 'my-app',
-      scripts: {
-        dev: 'vite',
-        build: 'vite build',
-        setup: 'node scripts/setup.mjs',
-        cleanup: 'node scripts/cleanup.mjs',
-      },
-    }, null, 2));
+    fs.writeFileSync(
+      pkgPath,
+      JSON.stringify(
+        {
+          name: 'my-app',
+          scripts: {
+            dev: 'vite',
+            build: 'vite build',
+            setup: 'node scripts/setup.mjs',
+            cleanup: 'node scripts/cleanup.mjs',
+          },
+        },
+        null,
+        2,
+      ),
+    );
 
     helpers.patchPackageJsonCleanup(tmpDir);
 

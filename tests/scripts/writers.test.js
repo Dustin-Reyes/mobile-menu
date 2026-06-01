@@ -14,7 +14,11 @@ const TEST_VALUES = {
   email: 'info@myapp.com',
   phone: '+15550001234',
   address: '123 Main St, Portland, OR 97201',
-  businessHours: { days: ['mon', 'tue', 'wed', 'thu', 'fri'], open: '9:00 AM', close: '5:00 PM' },
+  businessHours: {
+    days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+    open: '9:00 AM',
+    close: '5:00 PM',
+  },
   twitter: 'https://twitter.com/myapp',
   github: 'https://github.com/myorg',
   linkedin: '',
@@ -48,7 +52,10 @@ afterEach(() => {
 describe('writeProjectConfig', () => {
   it('writes src/config/project.js with provided values', () => {
     writers.writeProjectConfig(tmpDir, TEST_VALUES);
-    const content = fs.readFileSync(path.join(tmpDir, 'src/config/project.js'), 'utf8');
+    const content = fs.readFileSync(
+      path.join(tmpDir, 'src/config/project.js'),
+      'utf8',
+    );
     expect(content).toContain("name: 'my-app'");
     expect(content).toContain("'https://myapp.com'");
     expect(content).toContain('My Company');
@@ -58,9 +65,19 @@ describe('writeProjectConfig', () => {
   });
 
   it('handles empty optional fields gracefully', () => {
-    const minimal = { ...TEST_VALUES, phone: '', address: '', stagingUrl: '', twitter: '', github: '' };
+    const minimal = {
+      ...TEST_VALUES,
+      phone: '',
+      address: '',
+      stagingUrl: '',
+      twitter: '',
+      github: '',
+    };
     writers.writeProjectConfig(tmpDir, minimal);
-    const content = fs.readFileSync(path.join(tmpDir, 'src/config/project.js'), 'utf8');
+    const content = fs.readFileSync(
+      path.join(tmpDir, 'src/config/project.js'),
+      'utf8',
+    );
     expect(content).toContain("name: 'my-app'");
   });
 });
@@ -68,13 +85,20 @@ describe('writeProjectConfig', () => {
 describe('writePackageJson', () => {
   it('updates name, description, version, and repository in package.json', () => {
     const pkgPath = path.join(tmpDir, 'package.json');
-    fs.writeFileSync(pkgPath, JSON.stringify({
-      name: 'transpiled-web-template',
-      version: '0.0.1',
-      description: '',
-      repository: '',
-      scripts: { dev: 'vite' },
-    }, null, 2));
+    fs.writeFileSync(
+      pkgPath,
+      JSON.stringify(
+        {
+          name: 'transpiled-web-template',
+          version: '0.0.1',
+          description: '',
+          repository: '',
+          scripts: { dev: 'vite' },
+        },
+        null,
+        2,
+      ),
+    );
 
     writers.writePackageJson(tmpDir, TEST_VALUES);
 
@@ -110,7 +134,9 @@ describe('writeEnvExample', () => {
 describe('writeManifest', () => {
   it('writes public/manifest.json with project name', () => {
     writers.writeManifest(tmpDir, TEST_VALUES);
-    const manifest = JSON.parse(fs.readFileSync(path.join(tmpDir, 'public/manifest.json'), 'utf8'));
+    const manifest = JSON.parse(
+      fs.readFileSync(path.join(tmpDir, 'public/manifest.json'), 'utf8'),
+    );
     expect(manifest.name).toBe('My Company');
     expect(manifest.short_name).toBe('my-app');
     expect(manifest.start_url).toBe('/');
@@ -120,7 +146,10 @@ describe('writeManifest', () => {
 describe('writeRobotsTxt', () => {
   it('writes public/robots.txt with production sitemap URL', () => {
     writers.writeRobotsTxt(tmpDir, TEST_VALUES);
-    const content = fs.readFileSync(path.join(tmpDir, 'public/robots.txt'), 'utf8');
+    const content = fs.readFileSync(
+      path.join(tmpDir, 'public/robots.txt'),
+      'utf8',
+    );
     expect(content).toContain('User-agent: *');
     expect(content).toContain('Allow: /');
     expect(content).toContain('https://myapp.com/sitemap.xml');
@@ -130,7 +159,10 @@ describe('writeRobotsTxt', () => {
 describe('writeContentSettings', () => {
   it('writes src/content/settings.js with project values', () => {
     writers.writeContentSettings(tmpDir, TEST_VALUES);
-    const content = fs.readFileSync(path.join(tmpDir, 'src/content/settings.js'), 'utf8');
+    const content = fs.readFileSync(
+      path.join(tmpDir, 'src/content/settings.js'),
+      'utf8',
+    );
     expect(content).toContain('my-app');
     expect(content).toContain('https://myapp.com');
     expect(content).toContain('My Company');
@@ -140,7 +172,9 @@ describe('writeContentSettings', () => {
 describe('writeTemplateState', () => {
   it('writes .template-state.json with setupComplete: true', () => {
     writers.writeTemplateState(tmpDir);
-    const state = JSON.parse(fs.readFileSync(path.join(tmpDir, '.template-state.json'), 'utf8'));
+    const state = JSON.parse(
+      fs.readFileSync(path.join(tmpDir, '.template-state.json'), 'utf8'),
+    );
     expect(state.setupComplete).toBe(true);
     expect(typeof state.setupAt).toBe('string');
     expect(state.templateVersion).toBe('transpiled-web-template');
