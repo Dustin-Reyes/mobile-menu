@@ -20,7 +20,10 @@ describe('App', () => {
     // Wait for content to load
     await waitFor(() => {
       expect(
-        screen.getByRole('heading', { name: /transpiled-web-template/i, level: 1 }),
+        screen.getByRole('heading', {
+          name: /transpiled-web-template/i,
+          level: 1,
+        }),
       ).toBeInTheDocument();
     });
   });
