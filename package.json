@@ -1,10 +1,10 @@
 {
-  "name": "titan-demo",
+  "name": "transpiled-web-template",
   "version": "0.2.3",
   "private": true,
-  "description": "Titan Demo - Vite + React starter with full toolchain",
+  "description": "Transpiled web template — Vite + React starter with full toolchain",
   "license": "MIT",
-  "repository": "https://github.com/TranspiledCode/titan-demo",
+  "repository": "",
   "packageManager": "yarn@4.8.1",
   "engines": {
     "node": ">=23.10.0"
@@ -25,7 +25,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
-    "sentry:sourcemaps": "(sentry-cli sourcemaps inject --org transpiled --project titan-demo ./dist && sentry-cli sourcemaps upload --org transpiled --project titan-demo ./dist) || echo 'Warning: Sentry sourcemap upload failed, continuing build...'",
+    "sentry:sourcemaps": "(sentry-cli sourcemaps inject --org transpiled --project transpiled-web-template ./dist && sentry-cli sourcemaps upload --org transpiled --project transpiled-web-template ./dist) || echo 'Warning: Sentry sourcemap upload failed, continuing build...'",
     "setup": "yarn install && chmod +x dev.sh",
     "translate": "node scripts/translate-content.mjs",
     "setup-prereqs": "./scripts/check-prerequisites.sh",
