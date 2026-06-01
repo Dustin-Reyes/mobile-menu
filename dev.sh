@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ============================================================
-# Titan Demo - Vite Development Server
+# Transpiled Web Template - Vite Development Server
 # ============================================================
 
 export NODE_ENV=development
@@ -32,7 +32,7 @@ export DEV_PORT="$PORT"
 export DEV_SERVER_HOST
 
 echo ""
-echo "🚀 TITAN DEMO - VITE DEV SERVER"
+echo "🚀 TRANSPILED WEB TEMPLATE - VITE DEV SERVER"
 echo "══════════════════════════════════════════════════════"
 echo ""
 
