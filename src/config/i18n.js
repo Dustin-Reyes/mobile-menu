@@ -44,9 +44,8 @@ export const i18nConfig = {
     generateHrefLang: true,
 
     // Default SEO meta tags
-    defaultTitle: 'Titan Demo - Residential & Commercial Demolition',
-    defaultDescription:
-      'Licensed, insured, and built for the job before the job. Titan Demo handles residential and commercial demolition.',
+    defaultTitle: 'your-project-name',
+    defaultDescription: 'Your project description.',
   },
 
   // Namespace configuration (for organizing translations)

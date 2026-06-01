@@ -1,4 +1,10 @@
 {
+  "language": {
+    "switch": "Switch language",
+    "current": "Current",
+    "en": "English",
+    "es": "Spanish"
+  },
   "nav": {
     "getAQuote": "Get a Quote"
   },

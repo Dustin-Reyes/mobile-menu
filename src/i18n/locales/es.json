@@ -1,4 +1,10 @@
 {
+  "language": {
+    "switch": "Cambiar idioma",
+    "current": "Actual",
+    "en": "Inglés",
+    "es": "Español"
+  },
   "nav": {
     "getAQuote": "Obtener Cotización"
   },
