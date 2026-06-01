@@ -1,1 +1,35 @@
-{}
+{
+  "nav": {
+    "getAQuote": "Obtener Cotización"
+  },
+  "footer": {
+    "tagline": "Tu eslogan aquí.",
+    "quickLinks": "Enlaces Rápidos",
+    "contactUs": "Contáctenos",
+    "copyright": "© 2026 Your Company. Todos los derechos reservados.",
+    "links": {
+      "home": "Inicio",
+      "aboutUs": "Nosotros",
+      "services": "Servicios",
+      "why": "Por Qué Nosotros",
+      "faq": "Preguntas",
+      "contact": "Contacto"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "google": "Google"
+    }
+  },
+  "common": {
+    "days": {
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mié",
+      "thu": "Jue",
+      "fri": "Vie",
+      "sat": "Sáb",
+      "sun": "Dom"
+    }
+  }
+}

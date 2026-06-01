@@ -1,1 +1,35 @@
-{}
+{
+  "nav": {
+    "getAQuote": "Get a Quote"
+  },
+  "footer": {
+    "tagline": "Your tagline here.",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "copyright": "© 2026 Your Company. All rights reserved.",
+    "links": {
+      "home": "Home",
+      "aboutUs": "About Us",
+      "services": "Services",
+      "why": "Why Us",
+      "faq": "FAQ",
+      "contact": "Contact"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "google": "Google"
+    }
+  },
+  "common": {
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
+  }
+}

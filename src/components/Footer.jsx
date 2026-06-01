@@ -251,7 +251,9 @@ function Footer() {
 
   // Build hours string from config with language-aware day names
   const formatHours = () => {
-    const dayNames = contact.hours.days.map((day) => t(`common.days.${day}`));
+    const days = contact.hours?.days || [];
+    if (!days.length || !contact.hours?.open) return null;
+    const dayNames = days.map((day) => t(`common.days.${day}`));
     const daysRange = `${dayNames[0]}-${dayNames[dayNames.length - 1]}`;
     return `${daysRange}: ${contact.hours.open} - ${contact.hours.close}`;
   };
@@ -260,10 +262,7 @@ function Footer() {
     <FooterContainer>
       <FooterContent>
         <FooterColumn>
-          <LogoImage
-            src="/titan-logo-clean-wordmark-white-transparent.png"
-            alt="Titan Demo"
-          />
+          <LogoImage src="/logo.png" alt={PROJECT_CONFIG.organization.name} />
           <Tagline>{t('footer.tagline')}</Tagline>
         </FooterColumn>
 
@@ -321,12 +320,14 @@ function Footer() {
               </IconBadge>
               <div>{contact.address}</div>
             </ContactItem>
-            <ContactItem as="div">
-              <IconBadge>
-                <Clock size={16} />
-              </IconBadge>
-              <div>{formatHours()}</div>
-            </ContactItem>
+            {formatHours() && (
+              <ContactItem as="div">
+                <IconBadge>
+                  <Clock size={16} />
+                </IconBadge>
+                <div>{formatHours()}</div>
+              </ContactItem>
+            )}
           </ContactInfo>
         </ColumnWithDivider>
       </FooterContent>

@@ -421,6 +421,21 @@ async function main() {
     process.exit(1);
   }
 
+  // Update git remote if a repo URL was provided
+  if (values.repoUrl) {
+    try {
+      execSync(`git remote set-url origin "${values.repoUrl}"`, {
+        cwd: PROJECT_DIR,
+        stdio: 'pipe',
+      });
+      p.log.success(`Git remote 'origin' updated to ${values.repoUrl}`);
+    } catch {
+      p.log.warn(
+        `Could not update git remote — run manually: git remote set-url origin ${values.repoUrl}`,
+      );
+    }
+  }
+
   const doCommit = checkCancel(
     await p.confirm({
       message: 'Create initial git commit?',
