@@ -113,6 +113,8 @@ function getEnvOverrides() {
         features: {
           analytics: true,
           demoMode: false,
+          pwa: true,
+          darkMode: true,
           errorReporting: true,
           performanceMonitoring: true,
         },
@@ -127,6 +129,8 @@ function getEnvOverrides() {
         features: {
           analytics: false,
           demoMode: true,
+          pwa: true,
+          darkMode: true,
           errorReporting: false,
           performanceMonitoring: false,
         },
@@ -141,6 +145,8 @@ function getEnvOverrides() {
         features: {
           analytics: false,
           demoMode: false,
+          pwa: true,
+          darkMode: true,
           errorReporting: false,
           performanceMonitoring: false,
         },

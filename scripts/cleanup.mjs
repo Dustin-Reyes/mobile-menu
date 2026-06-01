@@ -1,6 +1,7 @@
 import * as p from '@clack/prompts';
 import { execSync } from 'child_process';
 import { createRequire } from 'module';
+import { pathToFileURL } from 'url';
 
 const require = createRequire(import.meta.url);
 const helpers = require('./lib/cleanup-helpers.js');
@@ -24,10 +25,13 @@ export default async function runCleanup({ skipIntro = false } = {}) {
 
   // Guard: warn if setup was never run
   if (!helpers.isSetupComplete(PROJECT_DIR)) {
-    const proceed = checkCancel(await p.confirm({
-      message: 'Setup has not been run yet. Remove template scaffolding anyway?',
-      initialValue: false,
-    }));
+    const proceed = checkCancel(
+      await p.confirm({
+        message:
+          'Setup has not been run yet. Remove template scaffolding anyway?',
+        initialValue: false,
+      }),
+    );
     if (!proceed) cancel();
   }
 
@@ -48,13 +52,15 @@ export default async function runCleanup({ skipIntro = false } = {}) {
       'App.jsx will be patched to remove the /demo route.',
       'package.json will be patched to remove setup/cleanup scripts.',
     ].join('\n'),
-    'What will be removed'
+    'What will be removed',
   );
 
-  const confirmed = checkCancel(await p.confirm({
-    message: 'This is irreversible. Proceed?',
-    initialValue: false,
-  }));
+  const confirmed = checkCancel(
+    await p.confirm({
+      message: 'This is irreversible. Proceed?',
+      initialValue: false,
+    }),
+  );
   if (!confirmed) cancel();
 
   const s = p.spinner();
@@ -90,16 +96,21 @@ export default async function runCleanup({ skipIntro = false } = {}) {
 
   s.start('Running yarn format && yarn lint --fix...');
   try {
-    execSync('yarn format && yarn lint --fix', { cwd: PROJECT_DIR, stdio: 'pipe' });
+    execSync('yarn format && yarn lint --fix', {
+      cwd: PROJECT_DIR,
+      stdio: 'pipe',
+    });
     s.stop('Code formatted and linted.');
   } catch {
     s.stop('Format/lint completed with warnings — review manually if needed.');
   }
 
-  const doCommit = checkCancel(await p.confirm({
-    message: 'Commit cleanup?',
-    initialValue: true,
-  }));
+  const doCommit = checkCancel(
+    await p.confirm({
+      message: 'Commit cleanup?',
+      initialValue: true,
+    }),
+  );
 
   if (doCommit) {
     try {
@@ -117,8 +128,10 @@ export default async function runCleanup({ skipIntro = false } = {}) {
   p.outro('Template scaffolding removed. Your project is ready.');
 }
 
-// Run directly when invoked via yarn cleanup
-runCleanup().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Run directly when invoked via yarn cleanup (not when imported by setup.mjs)
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  runCleanup().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 function esc(str) {
-  return (str || '').replace(/'/g, "\\'");
+  return (str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
 function writeProjectConfig(dir, values) {
@@ -123,17 +123,17 @@ function getEnvOverrides() {
   switch (env) {
     case 'production':
       return {
-        features: { analytics: true, demoMode: false, errorReporting: true, performanceMonitoring: true },
+        features: { analytics: true, demoMode: false, pwa: true, darkMode: true, errorReporting: true, performanceMonitoring: true },
         security: { contentSecurityPolicy: true, httpsOnly: true, trustExternalScripts: false },
       };
     case 'development':
       return {
-        features: { analytics: false, demoMode: true, errorReporting: false, performanceMonitoring: false },
+        features: { analytics: false, demoMode: true, pwa: true, darkMode: true, errorReporting: false, performanceMonitoring: false },
         security: { contentSecurityPolicy: false, httpsOnly: false, trustExternalScripts: true },
       };
     case 'test':
       return {
-        features: { analytics: false, demoMode: false, errorReporting: false, performanceMonitoring: false },
+        features: { analytics: false, demoMode: false, pwa: true, darkMode: true, errorReporting: false, performanceMonitoring: false },
         security: { contentSecurityPolicy: false, httpsOnly: false, trustExternalScripts: false },
       };
     default:
@@ -161,11 +161,21 @@ function writePackageJson(dir, values) {
 
 function writeEnvExample(dir, values) {
   const sentryHint = values.sentryDsn ? `\n# ${values.sentryDsn}` : '';
-  const apiKeyHint = values.firebaseApiKey ? `\n# ${values.firebaseApiKey}` : '';
-  const authDomainHint = values.firebaseAuthDomain ? `\n# ${values.firebaseAuthDomain}` : '';
-  const projectIdHint = values.firebaseProjectId ? `\n# ${values.firebaseProjectId}` : '';
-  const storageBucketHint = values.firebaseStorageBucket ? `\n# ${values.firebaseStorageBucket}` : '';
-  const senderIdHint = values.firebaseMessagingSenderId ? `\n# ${values.firebaseMessagingSenderId}` : '';
+  const apiKeyHint = values.firebaseApiKey
+    ? `\n# ${values.firebaseApiKey}`
+    : '';
+  const authDomainHint = values.firebaseAuthDomain
+    ? `\n# ${values.firebaseAuthDomain}`
+    : '';
+  const projectIdHint = values.firebaseProjectId
+    ? `\n# ${values.firebaseProjectId}`
+    : '';
+  const storageBucketHint = values.firebaseStorageBucket
+    ? `\n# ${values.firebaseStorageBucket}`
+    : '';
+  const senderIdHint = values.firebaseMessagingSenderId
+    ? `\n# ${values.firebaseMessagingSenderId}`
+    : '';
   const appIdHint = values.firebaseAppId ? `\n# ${values.firebaseAppId}` : '';
   const gaHint = values.gaId ? `\n# ${values.gaId}` : '';
 
@@ -267,7 +277,10 @@ function writeTemplateState(dir) {
     setupAt: new Date().toISOString(),
     templateVersion: 'transpiled-web-template',
   };
-  fs.writeFileSync(path.join(dir, '.template-state.json'), JSON.stringify(state, null, 2) + '\n');
+  fs.writeFileSync(
+    path.join(dir, '.template-state.json'),
+    JSON.stringify(state, null, 2) + '\n',
+  );
 }
 
 module.exports = {

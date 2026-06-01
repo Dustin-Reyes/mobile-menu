@@ -4,7 +4,7 @@ const path = require('path');
 function isSetupComplete(dir) {
   try {
     const state = JSON.parse(
-      fs.readFileSync(path.join(dir, '.template-state.json'), 'utf8')
+      fs.readFileSync(path.join(dir, '.template-state.json'), 'utf8'),
     );
     return state.setupComplete === true;
   } catch {
@@ -31,19 +31,19 @@ function patchAppJsx(dir) {
   // Remove the Demo lazy import block (4 lines)
   content = content.replace(
     /\nconst Demo =\n  process\.env\.NODE_ENV !== 'production'\n    \? lazy\(\(\) => import\('pages\/Demo'\)\)\n    : null;\n/,
-    '\n'
+    '\n',
   );
 
   // Remove the isProduction const
   content = content.replace(
     /\n  const isProduction = process\.env\.NODE_ENV === 'production';\n/,
-    '\n'
+    '\n',
   );
 
   // Remove the Demo Route JSX block
   content = content.replace(
     /\n          \{!isProduction && Demo && \(\n            <Route\n              path="\/demo"\n              element=\{\n                <Suspense fallback=\{null\}>\n                  <PageTransition>\n                    <Demo \/>\n                  <\/PageTransition>\n                <\/Suspense>\n              \}\n            \/>\n          \)\}/,
-    ''
+    '',
   );
 
   fs.writeFileSync(appPath, content);
@@ -52,8 +52,10 @@ function patchAppJsx(dir) {
 function patchPackageJsonCleanup(dir) {
   const pkgPath = path.join(dir, 'package.json');
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-  delete pkg.scripts.setup;
-  delete pkg.scripts.cleanup;
+  if (pkg.scripts) {
+    delete pkg.scripts.setup;
+    delete pkg.scripts.cleanup;
+  }
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
 }
 
