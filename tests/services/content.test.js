@@ -76,7 +76,7 @@ describe('ContentService', () => {
       const result = await contentService.getSettings('site');
 
       expect(result).toBeDefined();
-      expect(result.title).toBe('Titan Demo');
+      expect(result.title).toBe('Your App');
     });
 
     it('should return all settings when no category specified', async () => {
@@ -94,10 +94,7 @@ describe('ContentService', () => {
 
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
-      expect(result.length).toBeGreaterThan(0);
-      expect(result[0]).toHaveProperty('id');
-      expect(result[0]).toHaveProperty('label');
-      expect(result[0]).toHaveProperty('sectionId');
+      // Template ships with empty navigation; items are added via yarn setup
     });
 
     it('should return empty array for non-existent menu', async () => {
