@@ -1,15 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { navigation } from '../content/navigation';
-import useActiveSection from 'hooks/useActiveSection';
-import useBodyScrollLock from 'hooks/useBodyScrollLock';
-import useScrollToSection from 'hooks/useScrollToSection';
-import HeaderLogo from './HeaderLogo';
-import HeaderDesktopNav from './HeaderDesktopNav';
-import HeaderControls from './HeaderControls';
-import HeaderMobileMenu from './HeaderMobileMenu';
+import { Sun, Moon } from 'lucide-react';
+import { useTheme } from './ThemeProvider';
+import LanguageSwitcher from './LanguageSwitcher';
+import PROJECT_CONFIG from 'config/project';
 
 const Wrapper = styled.header`
   position: sticky;
@@ -26,89 +20,84 @@ const Inner = styled.div`
   max-width: 2000px;
   margin: 0 auto;
   padding: 0 ${({ theme }) => theme.spacing.s4};
-  height: 72px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing.s2};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 0 ${({ theme }) => theme.spacing.s6};
   }
+`;
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+const LogoLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: ${({ theme }) => theme.colors.text};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSizes.s2};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  letter-spacing: 0.04em;
+  transition: color ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: ${({ theme }) => theme.fontSizes.s3};
   }
 `;
 
-const navItems = navigation.main;
-const sectionIds = navItems.map((item) => item.sectionId).filter(Boolean);
+const Controls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.s2};
+`;
+
+const ThemeBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: ${({ theme }) => theme.spacing.s0};
+  border-radius: ${({ theme }) => theme.borderRadius.s1};
+  color: ${({ theme }) => theme.colors.text};
+  transition:
+    color ${({ theme }) => theme.transitions.fast},
+    background ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+  }
+`;
 
 function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useActiveSection(sectionIds);
-  const { i18n } = useTranslation();
-  const lang = (i18n.language || 'en').split('-')[0];
-  const location = useLocation();
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
-
-  // Close mobile menu on Escape key
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') setMenuOpen(false);
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, []);
-
-  useBodyScrollLock(menuOpen);
-
-  // Handle scroll before navigation
-  const handleBeforeScroll = useCallback(
-    (sectionId) => {
-      setMenuOpen(false);
-      if (!sectionId) setActiveSection('home');
-    },
-    [setActiveSection],
-  );
-
-  const scrollToSection = useScrollToSection({
-    onBeforeScroll: handleBeforeScroll,
-  });
+  const { isDark, toggleMode } = useTheme();
 
   return (
-    <>
-      <Wrapper>
-        <Inner>
-          <HeaderLogo />
-          <HeaderDesktopNav
-            navItems={navItems}
-            activeId={activeSection}
-            lang={lang}
-            onNavigate={scrollToSection}
-          />
-          <HeaderControls
-            menuOpen={menuOpen}
-            onMenuToggle={() => setMenuOpen((prev) => !prev)}
-            onNavigate={scrollToSection}
-          />
-        </Inner>
-      </Wrapper>
-
-      <HeaderMobileMenu
-        open={menuOpen}
-        navItems={navItems}
-        activeId={activeSection}
-        lang={lang}
-        onNavigate={scrollToSection}
-        onClose={() => setMenuOpen(false)}
-      />
-    </>
+    <Wrapper>
+      <Inner>
+        <LogoLink to="/" aria-label={`${PROJECT_CONFIG.name} – Home`}>
+          {PROJECT_CONFIG.name}
+        </LogoLink>
+        <Controls>
+          <LanguageSwitcher compact />
+          <ThemeBtn
+            onClick={toggleMode}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDark ? 'Light mode' : 'Dark mode'}
+          >
+            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+          </ThemeBtn>
+        </Controls>
+      </Inner>
+    </Wrapper>
   );
 }
 
