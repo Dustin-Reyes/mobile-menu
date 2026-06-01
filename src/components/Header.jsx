@@ -1,9 +1,8 @@
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import LanguageSwitcher from './LanguageSwitcher';
-import PROJECT_CONFIG from 'config/project';
+import HeaderLogo from './HeaderLogo';
 
 const Wrapper = styled.header`
   position: sticky;
@@ -27,26 +26,6 @@ const Inner = styled.div`
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 0 ${({ theme }) => theme.spacing.s6};
-  }
-`;
-
-const LogoLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: ${({ theme }) => theme.colors.text};
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSizes.s2};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  letter-spacing: 0.04em;
-  transition: color ${({ theme }) => theme.transitions.fast};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    font-size: ${({ theme }) => theme.fontSizes.s3};
   }
 `;
 
@@ -83,9 +62,7 @@ function Header() {
   return (
     <Wrapper>
       <Inner>
-        <LogoLink to="/" aria-label={`${PROJECT_CONFIG.name} – Home`}>
-          {PROJECT_CONFIG.name}
-        </LogoLink>
+        <HeaderLogo />
         <Controls>
           <LanguageSwitcher compact />
           <ThemeBtn

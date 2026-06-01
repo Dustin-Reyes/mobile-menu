@@ -1,28 +1,34 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { useTheme } from './ThemeProvider';
 import PROJECT_CONFIG from 'config/project';
 
 const LogoLink = styled(Link)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: ${({ theme }) => theme.colors.text};
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSizes.s3};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  letter-spacing: 0.04em;
-  transition: color ${({ theme }) => theme.transitions.fast};
+  transition: opacity ${({ theme }) => theme.transitions.fast};
   flex-shrink: 0;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    opacity: 0.8;
   }
 `;
 
+const LogoImage = styled.img`
+  height: 32px;
+  width: auto;
+`;
+
 function HeaderLogo() {
+  const { isDark } = useTheme();
+
   return (
     <LogoLink to="/" aria-label={`${PROJECT_CONFIG.name} – Home`}>
-      {PROJECT_CONFIG.name}
+      <LogoImage
+        src={isDark ? '/Transpiled-W.webp' : '/Transpiled-B.webp'}
+        alt={PROJECT_CONFIG.name}
+      />
     </LogoLink>
   );
 }

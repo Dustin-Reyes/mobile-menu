@@ -15,8 +15,8 @@ const Wrapper = styled.div`
 `;
 
 const Badge = styled.div`
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.primary};
@@ -27,8 +27,8 @@ const Badge = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: clamp(1.75rem, 5vw, 3.5rem);
-  font-weight: 800;
+  font-size: ${({ theme }) => theme.typography.fontSizes.s8};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.extrabold};
   text-align: center;
   letter-spacing: -0.02em;
   margin-bottom: 0.75rem;
@@ -36,34 +36,11 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.p`
-  font-size: 1.125rem;
+  font-size: ${({ theme }) => theme.typography.fontSizes.s5};
   color: ${({ theme }) => theme.colors.textSecondary};
   text-align: center;
   margin-bottom: 2.5rem;
   max-width: 480px;
-`;
-
-const CommandBox = styled.div`
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 8px;
-  padding: 0.875rem 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  font-size: 1rem;
-  margin-bottom: 3rem;
-  min-width: 260px;
-`;
-
-const Prompt = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-  user-select: none;
-`;
-
-const Command = styled.span`
-  color: ${({ theme }) => theme.colors.text};
 `;
 
 const StackGrid = styled.div`
@@ -76,19 +53,12 @@ const StackGrid = styled.div`
 `;
 
 const StackPill = styled.span`
-  font-size: 0.72rem;
+  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
   color: ${({ theme }) => theme.colors.textSecondary};
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   letter-spacing: 0.02em;
-`;
-
-const Hint = styled.p`
-  font-size: 0.8rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  opacity: 0.5;
-  text-align: center;
 `;
 
 const STACK = [
@@ -113,16 +83,11 @@ function Home() {
       <Badge>{t('home.badge')}</Badge>
       <Title>transpiled-web-template</Title>
       <Subtitle>{t('home.subtitle')}</Subtitle>
-      <CommandBox>
-        <Prompt>$</Prompt>
-        <Command>yarn setup</Command>
-      </CommandBox>
       <StackGrid>
         {STACK.map((tech) => (
           <StackPill key={tech}>{tech}</StackPill>
         ))}
       </StackGrid>
-      <Hint>{t('home.hint')}</Hint>
     </Wrapper>
   );
 }
