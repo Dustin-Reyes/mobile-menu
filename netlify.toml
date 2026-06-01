@@ -1,0 +1,60 @@
+# netlify.toml
+
+[build]
+  functions = "netlify/functions"
+  publish = "dist"
+  command = "yarn build"
+
+[build.environment]
+  NODE_ENV = "production"
+
+[context.dev.environment]
+  VITE_ENV = "dev"
+
+[context.production.environment]
+  VITE_ENV = "prod"
+
+[dev]
+  port = 8888
+  targetPort = 5173
+  framework = "#custom"
+  command = "npx serve dist"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Production CSP Headers
+[context.production.headers]
+  for = "/*"
+  [context.production.headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io;"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+
+# Deploy Previews - allow unsafe-eval for debugging
+[context.deploy-preview.headers]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io;"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Branch deploys
+[context.branch-deploy.headers]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io;"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Static file headers
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain"
+    Cache-Control = "public, max-age=3600"
+
+# Fallback - must be last
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,197 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "retry": "Intentar de nuevo",
+    "reload": "Recargar página",
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "reset": "Restablecer",
+    "clear": "Limpiar",
+    "select": "Seleccionar",
+    "none": "Ninguno",
+    "all": "Todos",
+    "yes": "Sí",
+    "no": "No",
+    "days": {
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mié",
+      "thu": "Jue",
+      "fri": "Vie",
+      "sat": "Sáb",
+      "sun": "Dom"
+    }
+  },
+  "nav": {
+    "getAQuote": "Obtener Cotización"
+  },
+  "theme": {
+    "toggle": "Cambiar a modo {{mode}}",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema",
+    "lightMode": "Modo Claro",
+    "darkMode": "Modo Oscuro"
+  },
+  "language": {
+    "label": "Idioma",
+    "switch": "Cambiar Idioma",
+    "current": "Idioma Actual",
+    "select": "Seleccionar Idioma",
+    "en": "Inglés",
+    "es": "Español"
+  },
+  "hero": {
+    "eyebrow": "El #1 de Oregón",
+    "headlineLine1": "Demolición",
+    "headlineLine2": "Profesional",
+    "body": "Licenciados, asegurados y listos para el trabajo antes del trabajo. Demo Titan se encarga de la demolición residencial y comercial para que tu remodelación comience desde cero.",
+    "ctaQuote": "Obtener Cotización",
+    "ctaPhone": "(541) 329-7504"
+  },
+  "trustedBanner": {
+    "heading": "De Confianza en Todo Oregón",
+    "body": "Sirviendo con orgullo a propietarios, contratistas y empresas en todo el estado.",
+    "stats": {
+      "yearsExperience": "Años de Experiencia",
+      "projectsCompleted": "Proyectos Completados",
+      "safetyFocused": "Enfocados en Seguridad"
+    },
+    "cta": {
+      "heading": "¿Listo para Empezar?",
+      "body": "Solicita una cotización gratuita hoy y pongamos tu proyecto en marcha.",
+      "button": "Obtener Cotización →"
+    },
+    "mapAlt": "Mapa de Oregón"
+  },
+  "services": {
+    "eyebrow": "Nuestros Servicios",
+    "title": "Servicios de Demolición Construidos para Tu Proyecto",
+    "subtitle": "Desde demoliciones interiores hasta remociones estructurales completas, Titan Demo maneja el trabajo difícil para que tu remodelación, reconstrucción o preparación del sitio pueda avanzar.",
+    "interiorDemolition": {
+      "title": "Demolición Interior",
+      "description": "Cocina, baño, pisos, paredes, techos y más.",
+      "details": "Servicios de demolición interior para cocinas, baños, pisos, paredes y techos. Desde gabinetes y encimeras hasta azulejos, drywall y remoción de subpiso, nuestro equipo ofrece trabajo de demo seguro, eficiente y profesional para cualquier proyecto de renovación."
+    },
+    "structuralDemolition": {
+      "title": "Demolición Estructural",
+      "description": "Adiciones, garajes, cobertizos, terrazas, porches, estructuras completas y remoción de cimientos.",
+      "details": "Desde remociones de estructuras pequeñas hasta demoliciones residenciales completas, manejamos proyectos de demolición de cualquier tamaño con precisión y cuidado. Ya sea un garaje, cobertizo, cimiento, terraza o demolición completa de casa, hacemos el proceso limpio, controlado y sin complicaciones de principio a fin."
+    },
+    "sitePrep": {
+      "title": "Preparación del Sitio",
+      "description": "Rotura de concreto, remoción de cercas, demolición de paisajismo, remoción de piscinas y más.",
+      "details": "Preparando propiedades para la siguiente fase de construcción con servicios confiables de preparación del sitio y limpieza. Desde remoción de concreto y desmantelamiento de cercas hasta paisajismo y demolición de piscinas, limpiamos el camino para un sitio listo para construir."
+    },
+    "specialtyDemo": {
+      "title": "Demolición Especial / Selectiva",
+      "description": "Demo suave, salvamento, remoción sin contenedor, disponibilidad el mismo día y transporte de escombros.",
+      "details": "Demolición selectiva cuidadosa para eliminar solo lo necesario mientras protege la estructura circundante. Desde demo suave y remoción completa de escombros hasta programación el mismo día o al día siguiente y salvamento de materiales, mantenemos tu proyecto limpio, eficiente y listo para lo siguiente."
+    },
+    "asbestosLead": {
+      "title": "Remediación de Asbesto y Pintura con Plomo",
+      "description": "Pruebas y coordinación de mitigación gestionadas de principio a fin a través de especialistas certificados.",
+      "details": "Remediación completamente gestionada de asbesto y pintura con plomo con especialistas certificados manejando cada paso. Desde pruebas iniciales y coordinación de mitigación hasta supervisión completa del proyecto, hacemos el proceso simple con una llamada de principio a fin."
+    },
+    "cta": {
+      "headlineWhite": "UNA LLAMADA.",
+      "headlineGold": "NOSOTROS NOS ENCARGAMOS DEL RESTO.",
+      "body": "Desde la demolición hasta el transporte de escombros, Titan mantiene el proceso simple de principio a fin.",
+      "button": "OBTENER COTIZACIÓN"
+    },
+    "trustBadges": {
+      "licensedInsured": "Licenciado y Asegurado",
+      "safetyFocused": "Enfocado en Seguridad",
+      "onTime": "A Tiempo Siempre",
+      "locallyOwned": "Propiedad Local",
+      "oregonProud": "Orgullo de Oregón"
+    }
+  },
+  "error": {
+    "notFound": {
+      "title": "Página No Encontrada",
+      "message": "La página que buscas no existe.",
+      "goHome": "Ir al Inicio"
+    },
+    "boundary": {
+      "title": "Algo salió mal",
+      "message": "Lo sentimos, pero algo inesperado sucedió. Nuestro equipo ha sido notificado y está trabajando para solucionar este problema.",
+      "footer": "Si este problema persiste, contacte al soporte técnico o inténtelo más tarde.",
+      "reportIssue": "Reportar Problema",
+      "goHome": "Ir al Inicio"
+    }
+  },
+  "why": {
+    "eyebrow": "Por Qué Elegir Titan Demo",
+    "headline": "Servicios de Demolición,",
+    "headlineLine2": "Bien",
+    "headlineAccent": "Hechos.",
+    "body": "Tu proyecto no puede comenzar hasta que la demolición esté completa. Nos movemos rápido, trabajamos limpio y nos quitamos del camino para que tu contratista pueda empezar a trabajar.",
+    "ctaLine": "Llama hoy para una cotización gratuita —",
+    "ctaAccent": "la mayoría de los trabajos se programan dentro de la semana.",
+    "benefits": {
+      "licensed": {
+        "title": "Licenciado y Asegurado",
+        "description": "Profesionales completamente licenciados y asegurados que garantizan la protección de tu proyecto."
+      },
+      "turnaround": {
+        "title": "Respuesta Rápida",
+        "description": "La mayoría de los trabajos se programan dentro de la semana. Trabajamos eficientemente para mantener tu proyecto en marcha."
+      },
+      "satisfaction": {
+        "title": "100% Satisfacción",
+        "description": "Garantizamos trabajo de calidad y completa satisfacción del cliente en cada proyecto."
+      },
+      "team": {
+        "title": "Equipo Experimentado",
+        "description": "Años de experiencia en demolición residencial, comercial e industrial."
+      },
+      "pricing": {
+        "title": "Precios Competitivos",
+        "description": "Precios justos y transparentes con cotizaciones gratuitas. Sin tarifas ocultas ni sorpresas."
+      }
+    }
+  },
+  "footer": {
+    "tagline": "Servicios de demolición bien hechos. Nos movemos rápido, trabajamos limpio y nos quitamos del camino para que tu proyecto pueda avanzar.",
+    "quickLinks": "Enlaces Rápidos",
+    "contactUs": "Contáctanos",
+    "links": {
+      "home": "Inicio",
+      "aboutUs": "Sobre Nosotros",
+      "services": "Servicios",
+      "why": "Por Qué",
+      "faq": "Preguntas Frecuentes",
+      "contact": "Contacto"
+    },
+    "contact": {
+      "phone": "Teléfono",
+      "email": "Correo",
+      "address": "Dirección",
+      "hours": "Horario"
+    },
+    "contactDetails": {
+      "phone": "(541) 329-7504",
+      "email": "info@demotitan.com",
+      "address": "123 Demo Lane, Eugene, OR 97401",
+      "hours": "Lun-Vie: 7:00 AM - 6:00 PM"
+    },
+    "copyright": "© 2025 Titan Demo. Todos los derechos reservados.",
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "google": "Google"
+    }
+  }
+}

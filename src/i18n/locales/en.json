@@ -1,0 +1,197 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Try Again",
+    "reload": "Reload Page",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "reset": "Reset",
+    "clear": "Clear",
+    "select": "Select",
+    "none": "None",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
+  },
+  "nav": {
+    "getAQuote": "Get a Quote"
+  },
+  "theme": {
+    "toggle": "Switch to {{mode}} mode",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode"
+  },
+  "language": {
+    "label": "Language",
+    "switch": "Switch Language",
+    "current": "Current Language",
+    "select": "Select Language",
+    "en": "English",
+    "es": "Spanish"
+  },
+  "hero": {
+    "eyebrow": "Oregon's #1",
+    "headlineLine1": "Demolition",
+    "headlineLine2": "Company",
+    "body": "Licensed, insured, and built for the job before the job. Demo Titan handles residential and commercial demolition so your remodel can start on a clean slate.",
+    "ctaQuote": "Get a Quote",
+    "ctaPhone": "(541) 329-7504"
+  },
+  "trustedBanner": {
+    "heading": "Trusted Across Oregon",
+    "body": "Proudly serving homeowners, contractors, and businesses statewide.",
+    "stats": {
+      "yearsExperience": "Years Experience",
+      "projectsCompleted": "Projects Completed",
+      "safetyFocused": "Safety Focused"
+    },
+    "cta": {
+      "heading": "Ready to Get Started?",
+      "body": "Request a free quote today and let's get your project moving.",
+      "button": "Get a Quote →"
+    },
+    "mapAlt": "Oregon map"
+  },
+  "services": {
+    "eyebrow": "Our Services",
+    "title": "Demolition Services Built Around Your Project",
+    "subtitle": "From interior tear outs to full structural removals, Titan Demo handles the messy work so your remodel, rebuild, or site prep can move forward.",
+    "interiorDemolition": {
+      "title": "Interior Demolition",
+      "description": "Kitchen, bathroom, flooring, walls, ceilings, and more.",
+      "details": "Interior demolition services for kitchens, bathrooms, flooring, walls, and ceilings. From cabinets and countertops to tile, drywall, and subfloor removal, our team delivers safe, efficient, and professional demo work for any renovation project."
+    },
+    "structuralDemolition": {
+      "title": "Structural Demolition",
+      "description": "Additions, garages, sheds, decks, porches, full structures, and foundation removal.",
+      "details": "From small structure removals to complete residential teardowns, we handle demolition projects of every size with precision and care. Whether it's a garage, shed, foundation, deck, or full home demolition, we make the process clean, controlled, and hassle-free from start to finish."
+    },
+    "sitePrep": {
+      "title": "Site Prep",
+      "description": "Concrete breaking, fence removal, landscaping demo, pool removal, and more.",
+      "details": "Preparing properties for the next phase of construction with reliable site prep and cleanup services. From concrete removal and fence tear-outs to landscaping and pool demolition, we clear the way for a smooth, ready-to-build site."
+    },
+    "specialtyDemo": {
+      "title": "Specialty / Selective Demo",
+      "description": "Soft demo, salvage, dumpster-free removal, same-day availability, and debris hauling.",
+      "details": "Careful selective demolition to remove only what's needed while protecting the surrounding structure. From soft demo and full debris removal to same-day or next-day scheduling and material salvage, we keep your project clean, efficient, and ready for what's next."
+    },
+    "asbestosLead": {
+      "title": "Asbestos & Lead Paint Remediation",
+      "description": "Testing & abatement coordination managed start to finish through certified specialists.",
+      "details": "Fully managed asbestos and lead paint remediation with certified specialists handling every step. From initial testing and abatement coordination to complete project oversight, we make the process simple with one call from start to finish."
+    },
+    "cta": {
+      "headlineWhite": "ONE CALL.",
+      "headlineGold": "WE HANDLE THE REST.",
+      "body": "From demo to debris hauling, Titan keeps the process simple from start to finish.",
+      "button": "GET A QUOTE"
+    },
+    "trustBadges": {
+      "licensedInsured": "Licensed & Insured",
+      "safetyFocused": "Safety Focused",
+      "onTime": "On Time Every Time",
+      "locallyOwned": "Locally Owned",
+      "oregonProud": "Oregon Proud"
+    }
+  },
+  "error": {
+    "notFound": {
+      "title": "Page Not Found",
+      "message": "The page you're looking for doesn't exist.",
+      "goHome": "Go Home"
+    },
+    "boundary": {
+      "title": "Something went wrong",
+      "message": "We're sorry, but something unexpected happened. Our team has been notified and is working to fix this issue.",
+      "footer": "If this problem persists, please contact support or try again later.",
+      "reportIssue": "Report Issue",
+      "goHome": "Go Home"
+    }
+  },
+  "why": {
+    "eyebrow": "Why Choose Titan Demo",
+    "headline": "Demolition Services,",
+    "headlineLine2": "Done",
+    "headlineAccent": "Right.",
+    "body": "Your project can't start until the demo is done. We move fast, work clean, and get out of the way so your contractor can get to work.",
+    "ctaLine": "Call today for a free quote —",
+    "ctaAccent": "most jobs scheduled within the week.",
+    "benefits": {
+      "licensed": {
+        "title": "Licensed & Insured",
+        "description": "Fully licensed and insured professionals ensuring your project is protected."
+      },
+      "turnaround": {
+        "title": "Fast Turnaround",
+        "description": "Most jobs scheduled within the week. We work efficiently to keep your project on track."
+      },
+      "satisfaction": {
+        "title": "100% Satisfaction",
+        "description": "We guarantee quality work and complete customer satisfaction on every project."
+      },
+      "team": {
+        "title": "Experienced Team",
+        "description": "Years of experience in residential, commercial, and industrial demolition."
+      },
+      "pricing": {
+        "title": "Competitive Pricing",
+        "description": "Fair, transparent pricing with free quotes. No hidden fees or surprises."
+      }
+    }
+  },
+  "footer": {
+    "tagline": "Demolition services done right. We move fast, work clean, and get out of the way so your project can move forward.",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "links": {
+      "home": "Home",
+      "aboutUs": "About Us",
+      "services": "Services",
+      "why": "Why",
+      "faq": "FAQ",
+      "contact": "Contact"
+    },
+    "contact": {
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "hours": "Hours"
+    },
+    "contactDetails": {
+      "phone": "(541) 329-7504",
+      "email": "info@demotitan.com",
+      "address": "123 Demo Lane, Eugene, OR 97401",
+      "hours": "Mon-Fri: 7:00 AM - 6:00 PM"
+    },
+    "copyright": "© 2025 Titan Demo. All rights reserved.",
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "google": "Google"
+    }
+  }
+}

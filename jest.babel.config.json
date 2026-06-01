@@ -1,0 +1,51 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    ["@babel/preset-react", { "runtime": "automatic" }]
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "components": "./src/components",
+          "context": "./src/context",
+          "config": "./src/config",
+          "hooks": "./src/hooks",
+          "pages": "./src/pages",
+          "services": "./src/services",
+          "styles": "./src/styles",
+          "utils": "./src/utils"
+        }
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["@babel/preset-env", { "targets": { "node": "current" } }],
+        ["@babel/preset-react", { "runtime": "automatic" }]
+      ],
+      "plugins": [
+        "./jest.babel.import-meta.js",
+        [
+          "module-resolver",
+          {
+            "root": ["./src"],
+            "alias": {
+              "components": "./src/components",
+              "context": "./src/context",
+              "config": "./src/config",
+              "hooks": "./src/hooks",
+              "pages": "./src/pages",
+              "services": "./src/services",
+              "styles": "./src/styles",
+              "utils": "./src/utils"
+            }
+          }
+        ]
+      ]
+    }
+  }
+}

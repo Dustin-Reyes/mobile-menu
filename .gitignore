@@ -1,0 +1,64 @@
+# Node dependencies
+node_modules/
+.yarn/*
+!.yarn/patches/
+!.yarn/plugins/
+!.yarn/releases/
+!.yarn/sdks/
+!.yarn/versions/
+
+# Yarn cache
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
+.pnp.*
+
+# Editor and OS-specific files
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+build/
+.cache/
+.vite/
+
+# Testing
+coverage/
+*.lcov
+playwright-report/
+test-results/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Sentry
+.sentryclirc
+
+# Netlify
+.netlify
+src/.netlify
+
+# SSL certificates
+certs/
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
+
+# Misc
+*.bak
+*.swp
+*.tmp
+
+# Superpowers brainstorming sessions
+.superpowers/
