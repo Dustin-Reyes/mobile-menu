@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div`
@@ -105,13 +106,13 @@ const STACK = [
 ];
 
 function Home() {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
-      <Badge>TranspiledCode Template</Badge>
+      <Badge>{t('home.badge')}</Badge>
       <Title>transpiled-web-template</Title>
-      <Subtitle>
-        Vite + React starter with the full TranspiledCode toolchain.
-      </Subtitle>
+      <Subtitle>{t('home.subtitle')}</Subtitle>
       <CommandBox>
         <Prompt>$</Prompt>
         <Command>yarn setup</Command>
@@ -121,7 +122,7 @@ function Home() {
           <StackPill key={tech}>{tech}</StackPill>
         ))}
       </StackGrid>
-      <Hint>Run yarn cleanup when ready to remove template scaffolding.</Hint>
+      <Hint>{t('home.hint')}</Hint>
     </Wrapper>
   );
 }

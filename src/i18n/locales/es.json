@@ -5,6 +5,11 @@
     "en": "Inglés",
     "es": "Español"
   },
+  "home": {
+    "badge": "Plantilla TranspiledCode",
+    "subtitle": "Starter Vite + React con el conjunto completo de herramientas de TranspiledCode.",
+    "hint": "Ejecuta yarn cleanup cuando estés listo para eliminar el andamiaje de la plantilla."
+  },
   "nav": {
     "getAQuote": "Obtener Cotización"
   },

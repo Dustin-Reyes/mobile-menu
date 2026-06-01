@@ -5,6 +5,11 @@
     "en": "English",
     "es": "Spanish"
   },
+  "home": {
+    "badge": "TranspiledCode Template",
+    "subtitle": "Vite + React starter with the full TranspiledCode toolchain.",
+    "hint": "Run yarn cleanup when ready to remove template scaffolding."
+  },
   "nav": {
     "getAQuote": "Get a Quote"
   },
