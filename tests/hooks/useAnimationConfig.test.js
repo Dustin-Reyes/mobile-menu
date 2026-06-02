@@ -27,7 +27,9 @@ describe('useAnimationConfig', () => {
 
   it('fadeIn.visible transition duration > 0 when not reduced', () => {
     const { result } = renderHook(() => useAnimationConfig());
-    expect(result.current.fadeIn.visible.transition.duration).toBeGreaterThan(0);
+    expect(result.current.fadeIn.visible.transition.duration).toBeGreaterThan(
+      0,
+    );
   });
 
   it('slideUp hidden state has positive y offset', () => {

@@ -27,13 +27,19 @@ describe('useMediaQuery', () => {
 
   it('registers a change event listener', () => {
     renderHook(() => useMediaQuery('(max-width: 480px)'));
-    expect(mockMql.addEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+    expect(mockMql.addEventListener).toHaveBeenCalledWith(
+      'change',
+      expect.any(Function),
+    );
   });
 
   it('removes change listener on unmount', () => {
     const { unmount } = renderHook(() => useMediaQuery('(max-width: 480px)'));
     unmount();
-    expect(mockMql.removeEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+    expect(mockMql.removeEventListener).toHaveBeenCalledWith(
+      'change',
+      expect.any(Function),
+    );
   });
 
   it('updates matches value when media query fires change event', () => {

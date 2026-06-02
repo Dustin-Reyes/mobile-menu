@@ -14,7 +14,7 @@ const Demo =
     ? lazy(() => import('pages/Demo'))
     : null;
 
-const AdminDashboard = lazy(() => import('components/AdminDashboard'));
+const AdminDashboard = lazy(() => import('components/admin/AdminDashboard'));
 
 function App() {
   const location = useLocation();

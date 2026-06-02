@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '../utils/test-utils';
-import Input from 'components/Input';
+import Input from 'components/ui/Input';
 
 describe('Input', () => {
   it('renders an input element', () => {
@@ -11,7 +11,9 @@ describe('Input', () => {
   it('calls onChange when the user types', () => {
     const onChange = jest.fn();
     render(<Input onChange={onChange} defaultValue="" />);
-    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'hello' } });
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'hello' },
+    });
     expect(onChange).toHaveBeenCalled();
   });
 
@@ -27,6 +29,9 @@ describe('Input', () => {
 
   it('accepts type prop', () => {
     render(<Input type="email" placeholder="email" />);
-    expect(screen.getByPlaceholderText('email')).toHaveAttribute('type', 'email');
+    expect(screen.getByPlaceholderText('email')).toHaveAttribute(
+      'type',
+      'email',
+    );
   });
 });

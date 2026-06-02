@@ -41,15 +41,23 @@ describe('toast utility', () => {
 
   it('toast.warning calls hotToast (base fn) with an icon', () => {
     toast.warning('Watch out!');
-    expect(hotToast).toHaveBeenCalledWith('Watch out!', expect.objectContaining({ icon: expect.anything() }));
+    expect(hotToast).toHaveBeenCalledWith(
+      'Watch out!',
+      expect.objectContaining({ icon: expect.anything() }),
+    );
   });
 
   it('toast.info calls hotToast (base fn) with an icon', () => {
     toast.info('FYI');
-    expect(hotToast).toHaveBeenCalledWith('FYI', expect.objectContaining({ icon: expect.anything() }));
+    expect(hotToast).toHaveBeenCalledWith(
+      'FYI',
+      expect.objectContaining({ icon: expect.anything() }),
+    );
   });
 
   it('_setThemeColors does not throw', () => {
-    expect(() => _setThemeColors({ warning: '#f00', info: '#00f' })).not.toThrow();
+    expect(() =>
+      _setThemeColors({ warning: '#f00', info: '#00f' }),
+    ).not.toThrow();
   });
 });

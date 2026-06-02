@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Pill from 'components/Pill';
+import Pill from 'components/ui/Pill';
 import CodeBlock from 'components/CodeBlock';
 import ElementBuilder from 'components/ElementBuilder';
 import ComponentSection from '../ComponentSection';
@@ -204,7 +204,7 @@ function PillSection() {
 
       <SubLabel>Import</SubLabel>
       <CodeBlock language="jsx" description="Import">
-        {`import Pill from 'components/Pill';`}
+        {`import Pill from 'components/ui/Pill';`}
       </CodeBlock>
     </ComponentSection>
   );

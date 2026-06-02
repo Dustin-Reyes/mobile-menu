@@ -1,11 +1,13 @@
 import React from 'react';
 import { render, screen, fireEvent } from '../utils/test-utils';
-import Button from 'components/Button';
+import Button from 'components/ui/Button';
 
 describe('Button', () => {
   it('renders children text', () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Click me' }),
+    ).toBeInTheDocument();
   });
 
   it('calls onClick handler when clicked', () => {
@@ -25,7 +27,7 @@ describe('Button', () => {
     render(
       <Button disabled onClick={onClick}>
         Nope
-      </Button>
+      </Button>,
     );
     fireEvent.click(screen.getByRole('button'));
     expect(onClick).not.toHaveBeenCalled();
@@ -39,7 +41,9 @@ describe('Button', () => {
 
   it('renders as motion component when motion=true', () => {
     render(<Button motion={true}>Animated</Button>);
-    expect(screen.getByRole('button', { name: 'Animated' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Animated' }),
+    ).toBeInTheDocument();
   });
 
   it('forwards ref to the underlying button element', () => {
@@ -52,7 +56,7 @@ describe('Button', () => {
     render(
       <Button aria-label="custom label" type="submit">
         S
-      </Button>
+      </Button>,
     );
     const btn = screen.getByRole('button', { name: 'custom label' });
     expect(btn).toHaveAttribute('type', 'submit');

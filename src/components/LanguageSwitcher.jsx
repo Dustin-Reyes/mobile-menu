@@ -8,7 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from './DropdownMenu';
+} from 'components/ui/DropdownMenu';
 
 const LanguageButton = styled.button`
   display: flex;

@@ -21,7 +21,7 @@ function renderWithProvider() {
       <ThemeProvider>
         <ThemeConsumer />
       </ThemeProvider>
-    </HelmetProvider>
+    </HelmetProvider>,
   );
 }
 

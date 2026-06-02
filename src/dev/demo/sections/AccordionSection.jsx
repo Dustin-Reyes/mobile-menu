@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
   AccordionContent,
   AccordionChevron,
-} from 'components/Accordion';
+} from 'components/ui/Accordion';
 import CodeBlock from 'components/CodeBlock';
 import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';
@@ -145,7 +145,7 @@ function AccordionSection() {
 
       <SubLabel>Import</SubLabel>
       <CodeBlock language="jsx" description="Import">
-        {`import { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent } from 'components/Accordion';`}
+        {`import { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent } from 'components/ui/Accordion';`}
       </CodeBlock>
     </ComponentSection>
   );

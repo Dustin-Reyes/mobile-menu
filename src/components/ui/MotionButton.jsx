@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import Button from 'components/Button';
+import Button from 'components/ui/Button';
 import useAnimationConfig from 'hooks/useAnimationConfig';
 
 const MotionButtonBase = motion(Button);

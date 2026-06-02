@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '../utils/test-utils';
-import { SwitchRoot } from 'components/Switch';
+import { SwitchRoot } from 'components/ui/Switch';
 
 describe('Switch', () => {
   it('renders a switch element', () => {
@@ -24,7 +24,9 @@ describe('Switch', () => {
   it('calls onCheckedChange when toggled', async () => {
     const user = userEvent.setup();
     const onCheckedChange = jest.fn();
-    render(<SwitchRoot aria-label="toggle" onCheckedChange={onCheckedChange} />);
+    render(
+      <SwitchRoot aria-label="toggle" onCheckedChange={onCheckedChange} />,
+    );
     await user.click(screen.getByRole('switch'));
     expect(onCheckedChange).toHaveBeenCalledWith(true);
   });

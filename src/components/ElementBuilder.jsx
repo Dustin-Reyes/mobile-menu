@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import Pill from 'components/Pill';
+import Pill from 'components/ui/Pill';
 import CodeBlock from 'components/CodeBlock';
 
 // ─── Styled layout ─────────────────────────────────────────────────────────────

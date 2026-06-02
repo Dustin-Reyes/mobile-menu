@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from 'components/Accordion';
+} from 'components/ui/Accordion';
 
 function AccordionFixture() {
   return (

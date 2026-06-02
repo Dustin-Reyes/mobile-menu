@@ -1,7 +1,12 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '../utils/test-utils';
-import { TabsRoot, TabsList, TabsTrigger, TabsContent } from 'components/Tabs';
+import {
+  TabsRoot,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from 'components/ui/Tabs';
 
 // Use forceMount so all panel content is always in the DOM (Radix v2 lazy-mounts by default)
 function TabsFixture() {
@@ -32,7 +37,7 @@ describe('Tabs', () => {
     render(<TabsFixture />);
     expect(screen.getByRole('tab', { name: 'Tab One' })).toHaveAttribute(
       'aria-selected',
-      'true'
+      'true',
     );
   });
 
@@ -50,7 +55,7 @@ describe('Tabs', () => {
     expect(tabTwo).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('tab', { name: 'Tab One' })).toHaveAttribute(
       'aria-selected',
-      'false'
+      'false',
     );
   });
 

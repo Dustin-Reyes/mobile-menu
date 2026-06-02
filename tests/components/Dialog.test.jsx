@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogClose,
-} from 'components/Dialog';
+} from 'components/ui/Dialog';
 
 function DialogFixture() {
   return (

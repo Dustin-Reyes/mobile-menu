@@ -3,7 +3,7 @@ import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';
 import ElementBuilder from 'components/ElementBuilder';
 import CodeBlock from 'components/CodeBlock';
-import Separator from 'components/Separator';
+import Separator from 'components/ui/Separator';
 
 // ─── Styled components ─────────────────────────────────────────────────────────
 
@@ -114,7 +114,7 @@ const PROPS_ROWS = [
   },
 ];
 
-const IMPORT_SNIPPET = `import Separator from 'components/Separator';`;
+const IMPORT_SNIPPET = `import Separator from 'components/ui/Separator';`;
 
 // ─── SeparatorSection ──────────────────────────────────────────────────────────
 

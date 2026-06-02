@@ -7,7 +7,7 @@ describe('PageTransition', () => {
     render(
       <PageTransition>
         <p>Page Content</p>
-      </PageTransition>
+      </PageTransition>,
     );
     expect(screen.getByText('Page Content')).toBeInTheDocument();
   });
@@ -17,7 +17,7 @@ describe('PageTransition', () => {
       <PageTransition>
         <h1>Title</h1>
         <p>Body</p>
-      </PageTransition>
+      </PageTransition>,
     );
     expect(screen.getByText('Title')).toBeInTheDocument();
     expect(screen.getByText('Body')).toBeInTheDocument();

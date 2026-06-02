@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';
-import Button from 'components/Button';
+import Button from 'components/ui/Button';
 import CodeBlock from 'components/CodeBlock';
 import {
   DropdownMenuRoot,
@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from 'components/DropdownMenu';
+} from 'components/ui/DropdownMenu';
 
 // ─── Styled components ─────────────────────────────────────────────────────────
 
@@ -80,7 +80,7 @@ const CODE_EXAMPLE = `<DropdownMenuRoot>
   </DropdownMenuPortal>
 </DropdownMenuRoot>`;
 
-const IMPORT_SNIPPET = `import { DropdownMenuRoot, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from 'components/DropdownMenu';`;
+const IMPORT_SNIPPET = `import { DropdownMenuRoot, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from 'components/ui/DropdownMenu';`;
 
 // ─── DropdownMenuSection ───────────────────────────────────────────────────────
 

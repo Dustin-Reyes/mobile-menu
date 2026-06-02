@@ -102,14 +102,16 @@ jest.mock('react-hot-toast', () => {
 });
 
 // Mock all lucide-react icons with null-returning components
-jest.mock('lucide-react', () =>
-  new Proxy(
-    {},
-    {
-      get: (_, name) => {
-        if (name === '__esModule') return true;
-        return () => null;
+jest.mock(
+  'lucide-react',
+  () =>
+    new Proxy(
+      {},
+      {
+        get: (_, name) => {
+          if (name === '__esModule') return true;
+          return () => null;
+        },
       },
-    }
-  )
+    ),
 );

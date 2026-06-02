@@ -11,8 +11,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCMS, useSettings, useNavigation, usePosts } from 'hooks/useContent';
 import { ContentEditor } from './AdminContentEditor';
 import { toast } from '@/utils/toast';
-import Button from 'components/Button';
-import Input from 'components/Input';
+import Button from 'components/ui/Button';
+import Input from 'components/ui/Input';
 import * as Separator from '@radix-ui/react-separator';
 import {
   Settings,

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { Phone, Sun, Moon, ArrowRight } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-import { SwitchRoot, SwitchThumb } from './Switch';
+import { SwitchRoot, SwitchThumb } from 'components/ui/Switch';
 import { AVAILABLE_LANGUAGES } from '../i18n';
 
 const MobileMenuOverlay = styled.div`

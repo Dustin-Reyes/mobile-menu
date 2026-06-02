@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '../utils/test-utils';
-import { CardRoot, CardHeader, CardBody, CardFooter } from 'components/Card';
+import { CardRoot, CardHeader, CardBody, CardFooter } from 'components/ui/Card';
 
 describe('Card', () => {
   it('CardRoot renders children', () => {
@@ -29,7 +29,7 @@ describe('Card', () => {
         <CardHeader>H</CardHeader>
         <CardBody>B</CardBody>
         <CardFooter>F</CardFooter>
-      </CardRoot>
+      </CardRoot>,
     );
     expect(screen.getByText('H')).toBeInTheDocument();
     expect(screen.getByText('B')).toBeInTheDocument();

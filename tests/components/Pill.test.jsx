@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '../utils/test-utils';
-import Pill from 'components/Pill';
+import Pill from 'components/ui/Pill';
 
 describe('Pill', () => {
   it('renders children text', () => {
@@ -13,7 +13,7 @@ describe('Pill', () => {
       <>
         <Pill>Alpha</Pill>
         <Pill>Beta</Pill>
-      </>
+      </>,
     );
     expect(screen.getByText('Alpha')).toBeInTheDocument();
     expect(screen.getByText('Beta')).toBeInTheDocument();

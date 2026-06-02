@@ -1,10 +1,23 @@
 const React = require('react');
 
 const ANIM_PROPS = new Set([
-  'variants', 'initial', 'animate', 'exit',
-  'whileHover', 'whileTap', 'whileInView', 'whileFocus', 'whileDrag',
-  'transition', 'drag', 'dragConstraints', 'dragElastic',
-  'layout', 'layoutId', 'onAnimationComplete', 'onLayoutAnimationComplete',
+  'variants',
+  'initial',
+  'animate',
+  'exit',
+  'whileHover',
+  'whileTap',
+  'whileInView',
+  'whileFocus',
+  'whileDrag',
+  'transition',
+  'drag',
+  'dragConstraints',
+  'dragElastic',
+  'layout',
+  'layoutId',
+  'onAnimationComplete',
+  'onLayoutAnimationComplete',
   'viewport',
 ]);
 
@@ -19,7 +32,8 @@ function createPassthrough(Tag) {
     }
     return React.createElement(Tag, { ...rest, ref });
   });
-  const name = typeof Tag === 'string' ? Tag : Tag.displayName || Tag.name || 'Component';
+  const name =
+    typeof Tag === 'string' ? Tag : Tag.displayName || Tag.name || 'Component';
   Component.displayName = `Motion(${name})`;
   return Component;
 }
@@ -33,7 +47,7 @@ const motion = new Proxy(
       if (tag === 'then') return undefined;
       return createPassthrough(tag);
     },
-  }
+  },
 );
 
 function AnimatePresence({ children }) {

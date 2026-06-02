@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Input from 'components/Input';
+import Input from 'components/ui/Input';
 import CodeBlock from 'components/CodeBlock';
 import ElementBuilder from 'components/ElementBuilder';
 import ComponentSection from '../ComponentSection';
@@ -141,7 +141,7 @@ function InputSection() {
 
       <SubLabel>Import</SubLabel>
       <CodeBlock language="jsx" description="Import">
-        {`import Input from 'components/Input';`}
+        {`import Input from 'components/ui/Input';`}
       </CodeBlock>
     </ComponentSection>
   );

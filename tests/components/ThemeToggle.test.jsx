@@ -35,7 +35,7 @@ describe('ThemeToggle', () => {
       <Wrapper>
         <ThemeToggle />
         <ModeDisplay />
-      </Wrapper>
+      </Wrapper>,
     );
 
     expect(screen.getByTestId('mode').textContent).toBe('light');
