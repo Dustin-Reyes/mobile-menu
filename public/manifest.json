@@ -1,6 +1,6 @@
 {
-  "name": "Titan Demo",
-  "short_name": "Titan Demo",
+  "name": "Transpiled Web Template",
+  "short_name": "Transpiled",
   "description": "Production-ready SPA starter — Vite + React with full TranspiledCode toolchain",
   "start_url": "/",
   "display": "standalone",

@@ -1,17 +1,10 @@
-// Jest mock setup for Vite modules and browser-specific features
+// Pre-framework environment setup.
+// jest.mock() is NOT available here — global mocks belong in jest.setup.js.
 
-global.import = {
-  meta: {
-    glob: () => ({}),
-    env: {
-      VITE_SENTRY_DSN: '',
-      VITE_APP_ENV: 'test',
-      DEV: true,
-    },
-  },
-};
-
-process.env = {
-  ...process.env,
-  NODE_ENV: 'test',
+// Suppress noisy "Each child in a list should have a unique key" warnings
+// that fire from Radix UI internals during render.
+const _originalWarn = console.warn;
+global.console.warn = (...args) => {
+  if (typeof args[0] === 'string' && args[0].includes('unique key')) return;
+  _originalWarn(...args);
 };

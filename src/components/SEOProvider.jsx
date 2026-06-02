@@ -93,8 +93,8 @@ export function SEOProvider({
       {/* Additional meta tags */}
       <meta name="theme-color" content="#ffffff" />
       <meta name="msapplication-TileColor" content="#ffffff" />
-      <meta name="application-name" content="Titan Demo" />
-      <meta name="apple-mobile-web-app-title" content="Titan Demo" />
+      <meta name="application-name" content="Transpiled Web Template" />
+      <meta name="apple-mobile-web-app-title" content="Transpiled Web Template" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="mobile-web-app-capable" content="yes" />

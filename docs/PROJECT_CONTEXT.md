@@ -1,4 +1,4 @@
-# Project Context — titan-demo
+# Project Context — transpiled-web-template
 
 > **Purpose:** Project-specific technical reference for all AI assistants, tools, and developers.
 > This is the single source of truth for what this project is, how it's structured, and how it works.
@@ -10,7 +10,7 @@
 
 ## Project Overview
 
-**titan-demo** is a production-ready SPA starter template built on Vite + React. It includes the full TranspiledCode toolchain: ESLint 9 flat config, Prettier, Jest (unit), Playwright (E2E), Sentry, Emotion, and Netlify deployment.
+**transpiled-web-template** is a production-ready SPA starter template built on Vite + React. It includes the full TranspiledCode toolchain: ESLint 9 flat config, Prettier, Jest (unit), Playwright (E2E), Sentry, Emotion, and Netlify deployment.
 
 - **Tech**: Vite 6, React 18, `@emotion/styled`, `@sentry/react`
 - **Tests**: Jest (unit/integration) + Playwright (E2E)

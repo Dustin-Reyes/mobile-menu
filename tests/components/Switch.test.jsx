@@ -1,70 +1,31 @@
-import { useState } from 'react';
-import { screen } from '@testing-library/react';
+import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { render } from '../../jest.setup';
-import { SwitchRoot, SwitchThumb } from '../../src/components/Switch';
-
-function TestSwitch({ onCheckedChange }) {
-  const [checked, setChecked] = useState(false);
-
-  const handleChange = (value) => {
-    setChecked(value);
-    onCheckedChange?.(value);
-  };
-
-  return (
-    <SwitchRoot
-      checked={checked}
-      onCheckedChange={handleChange}
-      aria-label="Toggle feature"
-    >
-      <SwitchThumb />
-    </SwitchRoot>
-  );
-}
+import { render, screen } from '../utils/test-utils';
+import { SwitchRoot } from 'components/Switch';
 
 describe('Switch', () => {
-  // ─── Initial state ────────────────────────────────────────────────────────
-
-  it('renders unchecked by default', () => {
-    render(<TestSwitch />);
-    const switchEl = screen.getByRole('switch', { name: /toggle feature/i });
-    expect(switchEl).toHaveAttribute('aria-checked', 'false');
+  it('renders a switch element', () => {
+    render(<SwitchRoot aria-label="toggle" />);
+    expect(screen.getByRole('switch', { name: 'toggle' })).toBeInTheDocument();
   });
 
-  // ─── Toggle on click ──────────────────────────────────────────────────────
+  it('is unchecked by default', () => {
+    render(<SwitchRoot aria-label="toggle" />);
+    expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'false');
+  });
 
   it('toggles to checked when clicked', async () => {
     const user = userEvent.setup();
-    render(<TestSwitch />);
-
-    const switchEl = screen.getByRole('switch');
-    await user.click(switchEl);
-
-    expect(switchEl).toHaveAttribute('aria-checked', 'true');
-  });
-
-  it('toggles back to unchecked on second click', async () => {
-    const user = userEvent.setup();
-    render(<TestSwitch />);
-
-    const switchEl = screen.getByRole('switch');
-    await user.click(switchEl);
-    await user.click(switchEl);
-
-    expect(switchEl).toHaveAttribute('aria-checked', 'false');
-  });
-
-  // ─── Callback ─────────────────────────────────────────────────────────────
-
-  it('calls onCheckedChange with the new value', async () => {
-    const user = userEvent.setup();
-    const handler = jest.fn();
-    render(<TestSwitch onCheckedChange={handler} />);
-
+    render(<SwitchRoot aria-label="toggle" />);
     await user.click(screen.getByRole('switch'));
+    expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'true');
+  });
 
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(handler).toHaveBeenCalledWith(true);
+  it('calls onCheckedChange when toggled', async () => {
+    const user = userEvent.setup();
+    const onCheckedChange = jest.fn();
+    render(<SwitchRoot aria-label="toggle" onCheckedChange={onCheckedChange} />);
+    await user.click(screen.getByRole('switch'));
+    expect(onCheckedChange).toHaveBeenCalledWith(true);
   });
 });

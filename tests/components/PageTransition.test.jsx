@@ -1,25 +1,25 @@
-import { screen } from '@testing-library/react';
-import { render } from '../../jest.setup';
-import PageTransition from '../../src/components/PageTransition';
+import React from 'react';
+import { render, screen } from '../utils/test-utils';
+import PageTransition from 'components/PageTransition';
 
 describe('PageTransition', () => {
   it('renders its children', () => {
     render(
       <PageTransition>
-        <div>Page content</div>
-      </PageTransition>,
+        <p>Page Content</p>
+      </PageTransition>
     );
-    expect(screen.getByText('Page content')).toBeInTheDocument();
+    expect(screen.getByText('Page Content')).toBeInTheDocument();
   });
 
-  it('renders multiple children without throwing', () => {
+  it('renders multiple children', () => {
     render(
       <PageTransition>
         <h1>Title</h1>
-        <p>Body text</p>
-      </PageTransition>,
+        <p>Body</p>
+      </PageTransition>
     );
     expect(screen.getByText('Title')).toBeInTheDocument();
-    expect(screen.getByText('Body text')).toBeInTheDocument();
+    expect(screen.getByText('Body')).toBeInTheDocument();
   });
 });

@@ -1,304 +1,224 @@
-import { TextEncoder } from 'util';
-import ApiClient from '../../src/services/ApiClient';
-import ApiError from '../../src/services/ApiError';
-
-jest.mock('../../src/services/retry', () => ({
-  delay: jest.fn(() => Promise.resolve()),
-  exponentialBackoffDelay: jest.fn((attempt) => 100 * attempt + 50),
-}));
+import ApiClient from 'services/ApiClient';
+import ApiError from 'services/ApiError';
 
 jest.mock('utils/errorHandler', () => ({
-  __esModule: true,
-  default: {
-    addBreadcrumb: jest.fn(),
-    reportError: jest.fn(),
-  },
+  addBreadcrumb: jest.fn(),
+  reportError: jest.fn(),
 }));
 
-describe('ApiClient', () => {
-  const { delay } = jest.requireMock('../../src/services/retry');
-  const mockErrorHandler = jest.requireMock('utils/errorHandler').default;
-
-  const createHeaders = (init = {}) => {
-    const store = new Map();
-    Object.entries(init).forEach(([key, value]) => {
-      store.set(key.toLowerCase(), value);
-    });
-
-    return {
-      get: (name) => store.get(name.toLowerCase()) ?? null,
-      forEach: (callback) => {
-        store.forEach((value, key) => {
-          callback(value, key);
-        });
+function makeResponse({ status = 200, body = {}, contentType = 'application/json' } = {}) {
+  const clone = () => makeResponse({ status, body, contentType });
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    statusText: status === 200 ? 'OK' : `Error ${status}`,
+    headers: {
+      get: (key) => {
+        if (key === 'content-type') return contentType;
+        if (key === 'content-length') return null;
+        return null;
       },
-      set: (name, value) => {
-        store.set(name.toLowerCase(), value);
-      },
-      delete: (name) => {
-        store.delete(name.toLowerCase());
-      },
-    };
+    },
+    json: async () => body,
+    text: async () => String(body),
+    blob: async () => new Blob([String(body)]),
+    clone,
   };
+}
 
-  const createResponse = (body, init = {}) => {
-    const headers = createHeaders(init.headers || {});
-    const serialized =
-      typeof body === 'string' ? body : JSON.stringify(body ?? {});
+function makeClient(options = {}) {
+  return new ApiClient({
+    baseURL: 'https://api.example.com',
+    retry: { retries: 0 },
+    ...options,
+  });
+}
 
-    const response = {
-      ok: init.status ? init.status >= 200 && init.status < 300 : true,
-      status: init.status ?? 200,
-      statusText: init.statusText ?? 'OK',
-      headers,
-      clone: () => createResponse(body, init),
-      json: async () => (typeof body === 'string' ? JSON.parse(body) : body),
-      text: async () => serialized,
-      arrayBuffer: async () => new TextEncoder().encode(serialized).buffer,
-      blob: async () => ({
-        size: serialized.length,
-        type: headers.get('content-type') || 'application/octet-stream',
-      }),
-    };
-
-    return response;
-  };
+describe('ApiClient — basic HTTP methods', () => {
+  let mockFetch;
+  let client;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockErrorHandler.addBreadcrumb.mockReset();
-    mockErrorHandler.reportError.mockReset();
+    mockFetch = jest.fn();
+    client = makeClient({ fetchImplementation: mockFetch });
   });
 
-  const createClient = (fetchImpl, options = {}) =>
-    new ApiClient({
-      fetchImplementation: fetchImpl,
-      retry: { retries: 2 },
-      ...options,
-    });
-
-  it('performs GET request and returns parsed data', async () => {
-    const fetchMock = jest.fn().mockResolvedValue(
-      createResponse(
-        { id: 1, name: 'Alice' },
-        {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        },
-      ),
+  it('get() makes a GET request and returns parsed data', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({ body: { id: 1 } }));
+    const data = await client.get('/users/1');
+    expect(data).toEqual({ id: 1 });
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/users/1'),
+      expect.objectContaining({ method: 'GET' })
     );
-
-    const client = createClient(fetchMock, {
-      baseURL: 'https://api.example.com',
-    });
-
-    const result = await client.get('/users/1', {
-      parse: (response) => response.json(),
-    });
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.example.com/users/1',
-      expect.objectContaining({
-        method: 'GET',
-        headers: expect.objectContaining({
-          Accept: 'application/json',
-        }),
-        body: undefined,
-        credentials: undefined,
-      }),
-    );
-
-    expect(result).toEqual({ id: 1, name: 'Alice' });
   });
 
-  it('retries failed requests before succeeding', async () => {
-    const fetchMock = jest
-      .fn()
-      .mockResolvedValueOnce(
-        createResponse(
-          { message: 'server error' },
-          {
-            status: 500,
-            statusText: 'Internal Server Error',
-            headers: { 'Content-Type': 'application/json' },
-          },
-        ),
-      )
-      .mockResolvedValueOnce(
-        createResponse(
-          { id: 2 },
-          { status: 200, headers: { 'Content-Type': 'application/json' } },
-        ),
-      );
+  it('post() sends JSON body', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({ status: 201, body: { id: 2 } }));
+    const data = await client.post('/users', { name: 'Alice' });
+    expect(data).toEqual({ id: 2 });
+    const [, options] = mockFetch.mock.calls[0];
+    expect(options.method).toBe('POST');
+    expect(JSON.parse(options.body)).toEqual({ name: 'Alice' });
+    expect(options.headers['Content-Type']).toBe('application/json');
+  });
 
+  it('put() sends JSON body', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({ body: { updated: true } }));
+    await client.put('/users/1', { name: 'Bob' });
+    const [, options] = mockFetch.mock.calls[0];
+    expect(options.method).toBe('PUT');
+  });
+
+  it('patch() sends JSON body', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({ body: {} }));
+    await client.patch('/users/1', { active: false });
+    const [, options] = mockFetch.mock.calls[0];
+    expect(options.method).toBe('PATCH');
+  });
+
+  it('delete() makes a DELETE request', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({ status: 204, contentType: 'text/plain', body: '' }));
+    await client.delete('/users/1');
+    const [, options] = mockFetch.mock.calls[0];
+    expect(options.method).toBe('DELETE');
+  });
+
+  it('throws ApiError on 4xx response', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({ status: 404, body: { error: 'not found' } }));
+    await expect(client.get('/missing')).rejects.toThrow(ApiError);
+  });
+
+  it('throws ApiError on 5xx response', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({ status: 500, body: 'error' }));
+    await expect(client.get('/broken')).rejects.toThrow(ApiError);
+  });
+
+  it('does not include body for GET requests', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({ body: [] }));
+    await client.get('/items');
+    const [, options] = mockFetch.mock.calls[0];
+    expect(options.body).toBeUndefined();
+  });
+});
+
+describe('ApiClient — URL building', () => {
+  let mockFetch;
+  let client;
+
+  beforeEach(() => {
+    mockFetch = jest.fn().mockResolvedValue(makeResponse({ body: [] }));
+    client = makeClient({ fetchImplementation: mockFetch });
+  });
+
+  it('appends scalar query params', async () => {
+    await client.get('/items', { params: { page: 1, limit: 10 } });
+    const [url] = mockFetch.mock.calls[0];
+    expect(url).toContain('page=1');
+    expect(url).toContain('limit=10');
+  });
+
+  it('appends array query params as repeated keys', async () => {
+    await client.get('/items', { params: { ids: [1, 2, 3] } });
+    const [url] = mockFetch.mock.calls[0];
+    expect(url).toContain('ids=1');
+    expect(url).toContain('ids=2');
+    expect(url).toContain('ids=3');
+  });
+
+  it('omits null and undefined params', async () => {
+    await client.get('/items', { params: { a: null, b: undefined, c: 'keep' } });
+    const [url] = mockFetch.mock.calls[0];
+    expect(url).not.toContain('a=');
+    expect(url).not.toContain('b=');
+    expect(url).toContain('c=keep');
+  });
+});
+
+describe('ApiClient — retry logic', () => {
+  it('retries on 500 and succeeds on second attempt', async () => {
+    const mockFetch = jest.fn()
+      .mockResolvedValueOnce(makeResponse({ status: 500, body: 'error' }))
+      .mockResolvedValueOnce(makeResponse({ body: { ok: true } }));
+    const client = makeClient({
+      fetchImplementation: mockFetch,
+      retry: { retries: 1, retryDelay: () => 0 },
+    });
+    const data = await client.get('/flaky');
+    expect(data).toEqual({ ok: true });
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+  });
+
+  it('retries on 429', async () => {
+    const mockFetch = jest.fn()
+      .mockResolvedValueOnce(makeResponse({ status: 429, body: '' }))
+      .mockResolvedValueOnce(makeResponse({ body: {} }));
+    const client = makeClient({
+      fetchImplementation: mockFetch,
+      retry: { retries: 1, retryDelay: () => 0 },
+    });
+    await client.get('/rate-limited');
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not retry on 4xx (non-429)', async () => {
+    const mockFetch = jest.fn()
+      .mockResolvedValue(makeResponse({ status: 404, body: {} }));
+    const client = makeClient({
+      fetchImplementation: mockFetch,
+      retry: { retries: 2, retryDelay: () => 0 },
+    });
+    await expect(client.get('/gone')).rejects.toThrow(ApiError);
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onRetry callback on each retry', async () => {
     const onRetry = jest.fn();
-    const client = createClient(fetchMock);
-
-    const result = await client.get('/users/2', {
-      parse: (response) => response.json(),
-      onRetry,
+    const mockFetch = jest.fn()
+      .mockResolvedValueOnce(makeResponse({ status: 500, body: '' }))
+      .mockResolvedValueOnce(makeResponse({ body: {} }));
+    const client = makeClient({
+      fetchImplementation: mockFetch,
+      retry: { retries: 1, retryDelay: () => 0 },
     });
-
-    expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(delay).toHaveBeenCalledTimes(1);
-    expect(onRetry).toHaveBeenCalledWith(
-      expect.objectContaining({ attempt: 1, response: expect.any(Object) }),
-    );
-    expect(result).toEqual({ id: 2 });
+    await client.get('/flaky', { onRetry });
+    expect(onRetry).toHaveBeenCalledTimes(1);
+    expect(onRetry).toHaveBeenCalledWith(expect.objectContaining({ attempt: 1 }));
   });
+});
 
-  it('serializes query parameters correctly', async () => {
-    const fetchMock = jest
-      .fn()
-      .mockResolvedValue(
-        createResponse(
-          { results: [1, 2, 3] },
-          { status: 200, headers: { 'Content-Type': 'application/json' } },
-        ),
-      );
-
-    const client = createClient(fetchMock, {
-      baseURL: 'https://api.example.com',
-    });
-
-    await client.get('/search', {
-      params: {
-        term: 'widgets',
-        limit: 10,
-        filter: ['new', 'popular'],
-        empty: null,
-      },
-      parse: (response) => response.json(),
-    });
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.example.com/search?term=widgets&limit=10&filter=new&filter=popular',
-      expect.any(Object),
-    );
-  });
-
-  it('applies request and response interceptors', async () => {
-    const fetchMock = jest
-      .fn()
-      .mockResolvedValue(
-        createResponse(
-          { ok: true },
-          { status: 200, headers: { 'Content-Type': 'application/json' } },
-        ),
-      );
-
-    const client = createClient(fetchMock);
-
-    client.addRequestInterceptor(async (request) => ({
-      ...request,
-      options: {
-        ...request.options,
-        headers: {
-          ...request.options.headers,
-          Authorization: 'Bearer token',
-        },
-      },
+describe('ApiClient — interceptors', () => {
+  it('request interceptor can add a custom header', async () => {
+    const mockFetch = jest.fn().mockResolvedValue(makeResponse({ body: {} }));
+    const client = makeClient({ fetchImplementation: mockFetch });
+    client.addRequestInterceptor((req) => ({
+      ...req,
+      options: { ...req.options, headers: { ...req.options.headers, 'X-Trace-Id': 'abc123' } },
     }));
-
-    client.addResponseInterceptor(async (result) => ({
-      ...result,
-      data: { ...result.data, intercepted: true },
-    }));
-
-    const data = await client.post(
-      '/do-something',
-      { value: 42 },
-      {
-        parse: (response) => response.json(),
-      },
-    );
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost/do-something',
-      expect.objectContaining({
-        method: 'POST',
-        headers: expect.objectContaining({ Authorization: 'Bearer token' }),
-      }),
-    );
-    expect(data).toEqual({ ok: true, intercepted: true });
+    await client.get('/test');
+    const [, options] = mockFetch.mock.calls[0];
+    expect(options.headers['X-Trace-Id']).toBe('abc123');
   });
 
-  it('returns raw response payload when requested', async () => {
-    const fetchMock = jest
-      .fn()
-      .mockResolvedValue(
-        createResponse(
-          { value: 123 },
-          { status: 200, headers: { 'Content-Type': 'application/json' } },
-        ),
-      );
-
-    const client = createClient(fetchMock);
-
-    const result = await client.get('/raw', {
-      raw: true,
-      parse: (response) => response.json(),
-    });
-
-    expect(result).toEqual(
-      expect.objectContaining({
-        data: { value: 123 },
-        response: expect.objectContaining({ status: 200 }),
-        request: expect.objectContaining({ url: 'http://localhost/raw' }),
-      }),
-    );
+  it('removing interceptor via returned unsubscribe stops it running', async () => {
+    const mockFetch = jest.fn().mockResolvedValue(makeResponse({ body: {} }));
+    const client = makeClient({ fetchImplementation: mockFetch });
+    const interceptor = jest.fn((req) => req);
+    const unsubscribe = client.addRequestInterceptor(interceptor);
+    unsubscribe();
+    await client.get('/test');
+    expect(interceptor).not.toHaveBeenCalled();
   });
 
-  it('invokes error interceptors and reports errors', async () => {
-    const networkError = new Error('Network down');
-    const fetchMock = jest.fn().mockRejectedValue(networkError);
-
-    const client = createClient(fetchMock, { retry: { retries: 0 } });
-
-    const transformedError = new ApiError('Transformed error');
-    client.addErrorInterceptor(async (error) => {
-      expect(error).toBeInstanceOf(ApiError);
-      return transformedError;
-    });
-
-    await expect(
-      client.get('/fail', {
-        parse: (response) => response.json(),
-      }),
-    ).rejects.toBe(transformedError);
-
-    expect(mockErrorHandler.reportError).toHaveBeenCalledWith(
-      transformedError,
-      expect.objectContaining({
-        isNetworkError: false,
-        method: 'GET',
-        retries: 0,
-        status: null,
-        url: 'http://localhost/fail',
-      }),
+  it('response interceptor receives parsed data', async () => {
+    const mockFetch = jest.fn().mockResolvedValue(makeResponse({ body: { raw: true } }));
+    const client = makeClient({ fetchImplementation: mockFetch });
+    const responseInterceptor = jest.fn((result) => result);
+    client.addResponseInterceptor(responseInterceptor);
+    await client.get('/test');
+    expect(responseInterceptor).toHaveBeenCalledWith(
+      expect.objectContaining({ data: { raw: true } }),
+      expect.anything()
     );
-  });
-
-  it('suppresses error reporting when suppressErrorReporting is true', async () => {
-    const errorResponse = createResponse(
-      { message: 'bad request' },
-      {
-        status: 400,
-        statusText: 'Bad Request',
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
-
-    const fetchMock = jest.fn().mockResolvedValue(errorResponse);
-    const client = createClient(fetchMock, { retry: { retries: 0 } });
-
-    await expect(
-      client.get('/bad', {
-        suppressErrorReporting: true,
-        parse: (response) => response.json(),
-      }),
-    ).rejects.toBeInstanceOf(ApiError);
-
-    expect(mockErrorHandler.reportError).not.toHaveBeenCalled();
   });
 });

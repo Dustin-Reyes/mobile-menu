@@ -1,11 +1,9 @@
-import { renderHook } from '../../jest.setup';
-import useAnimationConfig from '../../src/hooks/useAnimationConfig';
+import { renderHook } from '@testing-library/react';
+import useAnimationConfig from 'hooks/useAnimationConfig';
 
-// The framer-motion mock returns useReducedMotion = () => false by default
 describe('useAnimationConfig', () => {
-  it('returns an object with all expected animation configs', () => {
+  it('returns all expected keys', () => {
     const { result } = renderHook(() => useAnimationConfig());
-
     expect(result.current).toHaveProperty('fadeIn');
     expect(result.current).toHaveProperty('slideUp');
     expect(result.current).toHaveProperty('slideDown');
@@ -15,17 +13,29 @@ describe('useAnimationConfig', () => {
     expect(result.current).toHaveProperty('prefersReduced');
   });
 
-  it('returns prefersReduced=false when reduced motion is not preferred', () => {
+  it('prefersReduced is false (mock returns false)', () => {
     const { result } = renderHook(() => useAnimationConfig());
     expect(result.current.prefersReduced).toBe(false);
   });
 
-  it('slideUp hidden variant has non-zero y when not reduced', () => {
+  it('fadeIn has hidden, visible, and exit variants', () => {
     const { result } = renderHook(() => useAnimationConfig());
-    expect(result.current.slideUp.hidden.y).not.toBe(0);
+    expect(result.current.fadeIn.hidden).toBeDefined();
+    expect(result.current.fadeIn.visible).toBeDefined();
+    expect(result.current.fadeIn.exit).toBeDefined();
   });
 
-  it('slideUp visible variant resolves to y=0', () => {
+  it('fadeIn.visible transition duration > 0 when not reduced', () => {
+    const { result } = renderHook(() => useAnimationConfig());
+    expect(result.current.fadeIn.visible.transition.duration).toBeGreaterThan(0);
+  });
+
+  it('slideUp hidden state has positive y offset', () => {
+    const { result } = renderHook(() => useAnimationConfig());
+    expect(result.current.slideUp.hidden.y).toBeGreaterThan(0);
+  });
+
+  it('slideUp visible state has y=0', () => {
     const { result } = renderHook(() => useAnimationConfig());
     expect(result.current.slideUp.visible.y).toBe(0);
   });
@@ -34,25 +44,5 @@ describe('useAnimationConfig', () => {
     const { result } = renderHook(() => useAnimationConfig());
     expect(result.current.buttonPress).toHaveProperty('whileTap');
     expect(result.current.buttonPress).toHaveProperty('whileHover');
-  });
-});
-
-describe('useAnimationConfig with reduced motion', () => {
-  beforeEach(() => {
-    // Override the framer-motion mock to return true for reduced motion
-    jest.resetModules();
-    jest.mock('framer-motion', () => ({
-      ...jest.requireActual('../../tests/__mocks__/framer-motion'),
-      useReducedMotion: () => true,
-    }));
-  });
-
-  afterEach(() => {
-    jest.resetModules();
-  });
-
-  it('slideUp hidden variant has y=0 when reduced', async () => {
-    const { useReducedMotion } = require('framer-motion');
-    expect(useReducedMotion()).toBe(true);
   });
 });

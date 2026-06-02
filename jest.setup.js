@@ -1,28 +1,6 @@
 // jest.setup.js
 require('@testing-library/jest-dom');
 
-import React from 'react';
-import { render } from '@testing-library/react';
-import { ThemeProvider } from './src/components/ThemeProvider';
-import { HelmetProvider } from 'react-helmet-async';
-
-// Theme provider wrapper for tests
-const AllTheProviders = ({ children }) => {
-  return (
-    <HelmetProvider>
-      <ThemeProvider>{children}</ThemeProvider>
-    </HelmetProvider>
-  );
-};
-
-// Override render method to include providers
-const customRender = (ui, options) =>
-  render(ui, { wrapper: AllTheProviders, ...options });
-
-// Re-export everything from testing-library
-export * from '@testing-library/react';
-export { customRender as render };
-
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
   observe() {}
@@ -94,3 +72,44 @@ beforeAll(() => {
 afterAll(() => {
   console.error = originalError;
 });
+
+// Mock react-i18next — t() returns the key so tests can assert on keys
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => key,
+    i18n: {
+      changeLanguage: jest.fn(),
+      language: 'en',
+    },
+  }),
+  Trans: ({ children }) => children,
+  initReactI18next: { type: '3rdParty', init: jest.fn() },
+}));
+
+// Mock react-hot-toast
+jest.mock('react-hot-toast', () => {
+  const fn = jest.fn();
+  fn.success = jest.fn();
+  fn.error = jest.fn();
+  fn.loading = jest.fn();
+  fn.dismiss = jest.fn();
+  return {
+    __esModule: true,
+    default: fn,
+    toast: fn,
+    Toaster: () => null,
+  };
+});
+
+// Mock all lucide-react icons with null-returning components
+jest.mock('lucide-react', () =>
+  new Proxy(
+    {},
+    {
+      get: (_, name) => {
+        if (name === '__esModule') return true;
+        return () => null;
+      },
+    }
+  )
+);

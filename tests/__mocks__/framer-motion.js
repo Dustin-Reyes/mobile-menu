@@ -1,83 +1,51 @@
 const React = require('react');
 
-function makeMotionComponent(tag, displayName) {
-  const Component = React.forwardRef(({ children, ...props }, ref) => {
-    const {
-      initial,
-      animate,
-      exit,
-      variants,
-      transition,
-      whileHover,
-      whileTap,
-      whileFocus,
-      whileInView,
-      viewport,
-      layout,
-      layoutId,
-      onAnimationStart,
-      onAnimationComplete,
-      ...domProps
-    } = props;
-    return React.createElement(tag, { ...domProps, ref }, children);
+const ANIM_PROPS = new Set([
+  'variants', 'initial', 'animate', 'exit',
+  'whileHover', 'whileTap', 'whileInView', 'whileFocus', 'whileDrag',
+  'transition', 'drag', 'dragConstraints', 'dragElastic',
+  'layout', 'layoutId', 'onAnimationComplete', 'onLayoutAnimationComplete',
+  'viewport',
+]);
+
+function createPassthrough(Tag) {
+  const Component = React.forwardRef((props, ref) => {
+    const rest = {};
+    for (const key of Object.keys(props)) {
+      if (!ANIM_PROPS.has(key)) rest[key] = props[key];
+    }
+    if (typeof Tag === 'string') {
+      return React.createElement(Tag, { ...rest, ref });
+    }
+    return React.createElement(Tag, { ...rest, ref });
   });
-  Component.displayName = displayName;
+  const name = typeof Tag === 'string' ? Tag : Tag.displayName || Tag.name || 'Component';
+  Component.displayName = `Motion(${name})`;
   return Component;
 }
 
-// motion.div / motion.header etc. (element access)
-// motion(Component) factory call
 const motion = new Proxy(
-  function motionFactory(Component) {
-    const name = `motion(${Component.displayName || Component.name || 'Component'})`;
-    const Wrapped = React.forwardRef(({ children, ...props }, ref) => {
-      const {
-        initial,
-        animate,
-        exit,
-        variants,
-        transition,
-        whileHover,
-        whileTap,
-        whileFocus,
-        whileInView,
-        viewport,
-        layout,
-        layoutId,
-        onAnimationStart,
-        onAnimationComplete,
-        ...rest
-      } = props;
-      return React.createElement(Component, { ...rest, ref }, children);
-    });
-    Wrapped.displayName = name;
-    return Wrapped;
+  function (Component) {
+    return createPassthrough(Component);
   },
   {
-    get: (_, tag) => makeMotionComponent(tag, `motion.${tag}`),
-  },
+    get(fn, tag) {
+      if (tag === 'then') return undefined;
+      return createPassthrough(tag);
+    },
+  }
 );
 
-const AnimatePresence = ({ children }) =>
-  React.createElement(React.Fragment, null, children);
-AnimatePresence.displayName = 'AnimatePresence';
+function AnimatePresence({ children }) {
+  return React.createElement(React.Fragment, null, children);
+}
 
-const useReducedMotion = () => false;
-const useAnimation = () => ({
-  start: jest.fn(),
-  stop: jest.fn(),
-  set: jest.fn(),
-});
-const useMotionValue = (initial) => ({ get: () => initial, set: jest.fn() });
-const useTransform = () => ({ get: () => 0 });
-const useSpring = (val) => val;
+function useReducedMotion() {
+  return false;
+}
 
-module.exports = {
-  motion,
-  AnimatePresence,
-  useReducedMotion,
-  useAnimation,
-  useMotionValue,
-  useTransform,
-  useSpring,
-};
+function useAnimation() {
+  return { start: jest.fn(), stop: jest.fn() };
+}
+
+module.exports = { motion, AnimatePresence, useReducedMotion, useAnimation };
