@@ -2,6 +2,11 @@ import React from 'react';
 import { render, screen } from '../utils/test-utils';
 import Home from 'pages/Home';
 
+// usePage starts loading:true in tests; mock it settled so Hero renders content
+jest.mock('hooks/useContent', () => ({
+  usePage: jest.fn(() => ({ content: null, loading: false, error: null })),
+}));
+
 const STACK = [
   'Vite 6',
   'React 18',

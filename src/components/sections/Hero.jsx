@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { usePage } from 'hooks/useContent';
 import Button from 'components/ui/Button';
 
@@ -16,6 +17,26 @@ const STACK = [
   'Playwright',
   'Netlify',
 ];
+
+// ─── Skeleton animation ───────────────────────────────────────────────────────
+
+const pulse = keyframes`
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+`;
+
+const Skeleton = styled.div`
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'};
+  border-radius: ${({ radius = '4px' }) => radius};
+  width: ${({ width = '100%' }) => width};
+  height: ${({ height = '1em' }) => height};
+  margin-bottom: ${({ mb = '0' }) => mb};
+  animation: ${pulse} 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+`;
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
 
 const Wrapper = styled.section`
   min-height: 100vh;
@@ -101,27 +122,51 @@ const StackPill = styled.span`
   letter-spacing: 0.02em;
 `;
 
+// ─── Component ────────────────────────────────────────────────────────────────
+
 export default function Hero() {
   const { t } = useTranslation();
-  const { content } = usePage('home');
+  const { content, loading } = usePage('home');
 
-  // CMS content takes priority; i18n keys are the static fallback
-  const badge = content?.badge ?? t('home.badge');
-  const title = content?.title ?? t('home.title');
-  const subtitle = content?.subtitle ?? t('home.subtitle');
-  const ctaText = content?.ctaText ?? t('home.ctaText');
+  // CMS content takes priority; i18n keys are the static fallback.
+  // Don't resolve fallbacks until loading is settled — avoids a flash of
+  // i18n text before Firestore responds.
+  const badge = content?.badge ?? (loading ? null : t('home.badge'));
+  const title = content?.title ?? (loading ? null : t('home.title'));
+  const subtitle = content?.subtitle ?? (loading ? null : t('home.subtitle'));
+  const ctaText = content?.ctaText ?? (loading ? null : t('home.ctaText'));
   const ctaHref = content?.ctaHref ?? '/';
 
   return (
     <Wrapper>
-      <Badge>{badge}</Badge>
-      <Title>{title}</Title>
-      <Subtitle>{subtitle}</Subtitle>
+      {loading ? (
+        <Skeleton width="140px" height="26px" radius="999px" mb="2rem" />
+      ) : (
+        <Badge>{badge}</Badge>
+      )}
+
+      {loading ? (
+        <Skeleton width="360px" height="52px" radius="6px" mb="0.75rem" />
+      ) : (
+        <Title>{title}</Title>
+      )}
+
+      {loading ? (
+        <Skeleton width="400px" height="22px" radius="4px" mb="2.5rem" />
+      ) : (
+        <Subtitle>{subtitle}</Subtitle>
+      )}
+
       <CtaRow>
-        <Button as="a" href={ctaHref}>
-          {ctaText}
-        </Button>
+        {loading ? (
+          <Skeleton width="130px" height="46px" radius="0" mb="0" />
+        ) : (
+          <Button as="a" href={ctaHref}>
+            {ctaText}
+          </Button>
+        )}
       </CtaRow>
+
       <StackGrid>
         {STACK.map((tech) => (
           <StackPill key={tech}>{tech}</StackPill>
