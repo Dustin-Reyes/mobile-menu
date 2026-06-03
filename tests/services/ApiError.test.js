@@ -23,8 +23,12 @@ describe('ApiError constructor', () => {
   it('stores provided options', () => {
     const request = { url: '/test' };
     const err = new ApiError('not found', {
-      status: 404, statusText: 'Not Found', data: { error: 'missing' },
-      request, isNetworkError: false, retries: 2,
+      status: 404,
+      statusText: 'Not Found',
+      data: { error: 'missing' },
+      request,
+      isNetworkError: false,
+      retries: 2,
     });
     expect(err.status).toBe(404);
     expect(err.statusText).toBe('Not Found');
@@ -37,7 +41,8 @@ describe('ApiError constructor', () => {
 describe('ApiError.fromResponse', () => {
   function makeResponse({ status, contentType, body }) {
     return {
-      status, statusText: status === 200 ? 'OK' : 'Error',
+      status,
+      statusText: status === 200 ? 'OK' : 'Error',
       headers: { get: (key) => (key === 'content-type' ? contentType : null) },
       clone: () => ({
         json: async () => (typeof body === 'object' ? body : JSON.parse(body)),
@@ -47,7 +52,11 @@ describe('ApiError.fromResponse', () => {
   }
 
   it('creates ApiError with status and JSON data', async () => {
-    const response = makeResponse({ status: 422, contentType: 'application/json', body: { error: 'invalid input' } });
+    const response = makeResponse({
+      status: 422,
+      contentType: 'application/json',
+      body: { error: 'invalid input' },
+    });
     const err = await ApiError.fromResponse(response, {}, 0);
     expect(err).toBeInstanceOf(ApiError);
     expect(err.status).toBe(422);
@@ -57,13 +66,21 @@ describe('ApiError.fromResponse', () => {
   });
 
   it('creates ApiError with text data for non-JSON response', async () => {
-    const response = makeResponse({ status: 500, contentType: 'text/plain', body: 'Internal Server Error' });
+    const response = makeResponse({
+      status: 500,
+      contentType: 'text/plain',
+      body: 'Internal Server Error',
+    });
     const err = await ApiError.fromResponse(response, {}, 0);
     expect(err.data).toBe('Internal Server Error');
   });
 
   it('stores retries count', async () => {
-    const response = makeResponse({ status: 503, contentType: 'text/plain', body: '' });
+    const response = makeResponse({
+      status: 503,
+      contentType: 'text/plain',
+      body: '',
+    });
     const err = await ApiError.fromResponse(response, {}, 3);
     expect(err.retries).toBe(3);
   });

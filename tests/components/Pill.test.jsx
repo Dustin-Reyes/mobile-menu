@@ -13,7 +13,7 @@ describe('Pill', () => {
       <>
         <Pill>Alpha</Pill>
         <Pill>Beta</Pill>
-      </>
+      </>,
     );
     expect(screen.getByText('Alpha')).toBeInTheDocument();
     expect(screen.getByText('Beta')).toBeInTheDocument();

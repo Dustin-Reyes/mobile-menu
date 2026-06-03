@@ -5,7 +5,9 @@ test.describe('Language', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await expect(page.getByText('transpiled-web-template')).toBeVisible();
-    await expect(page.locator('body')).not.toContainText('Something went wrong');
+    await expect(page.locator('body')).not.toContainText(
+      'Something went wrong',
+    );
   });
 
   test('header is present with language controls', async ({ page }) => {

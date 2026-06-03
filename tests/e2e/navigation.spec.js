@@ -51,7 +51,9 @@ test.describe('Navigation', () => {
   test('admin page loads without crashing', async ({ page }) => {
     await page.goto('/admin');
     await page.waitForLoadState('networkidle');
-    await expect(page.locator('body')).not.toContainText('Something went wrong');
+    await expect(page.locator('body')).not.toContainText(
+      'Something went wrong',
+    );
     // At minimum one interactive element should be rendered
     const hasInteractive = await page.locator('button').count();
     expect(hasInteractive).toBeGreaterThan(0);

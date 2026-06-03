@@ -11,15 +11,17 @@ describe('globalErrorHandler', () => {
     globalErrorHandler.reportError(err, { url: '/test' });
     expect(Sentry.captureException).toHaveBeenCalledWith(
       err,
-      expect.objectContaining({ extra: { url: '/test' } })
+      expect.objectContaining({ extra: { url: '/test' } }),
     );
   });
 
   it('reportMessage calls Sentry.captureMessage with message and level', () => {
-    globalErrorHandler.reportMessage('something happened', 'warning', { page: 'home' });
+    globalErrorHandler.reportMessage('something happened', 'warning', {
+      page: 'home',
+    });
     expect(Sentry.captureMessage).toHaveBeenCalledWith(
       'something happened',
-      expect.objectContaining({ level: 'warning', extra: { page: 'home' } })
+      expect.objectContaining({ level: 'warning', extra: { page: 'home' } }),
     );
   });
 
@@ -27,7 +29,7 @@ describe('globalErrorHandler', () => {
     globalErrorHandler.reportMessage('info message');
     expect(Sentry.captureMessage).toHaveBeenCalledWith(
       'info message',
-      expect.objectContaining({ level: 'info' })
+      expect.objectContaining({ level: 'info' }),
     );
   });
 

@@ -1,6 +1,15 @@
 import {
-  fadeIn, fadeInUp, fadeInDown, fadeInLeft, fadeInRight,
-  scaleIn, staggerContainer, staggerItem, hoverScale, hoverLift, pageTransition,
+  fadeIn,
+  fadeInUp,
+  fadeInDown,
+  fadeInLeft,
+  fadeInRight,
+  scaleIn,
+  staggerContainer,
+  staggerItem,
+  hoverScale,
+  hoverLift,
+  pageTransition,
 } from 'utils/animations';
 
 describe('entrance variants', () => {
@@ -39,7 +48,9 @@ describe('entrance variants', () => {
 
 describe('container and item variants', () => {
   it('staggerContainer visible.transition has staggerChildren > 0', () => {
-    expect(staggerContainer.visible.transition.staggerChildren).toBeGreaterThan(0);
+    expect(staggerContainer.visible.transition.staggerChildren).toBeGreaterThan(
+      0,
+    );
   });
 
   it('staggerItem has hidden and visible with y movement', () => {

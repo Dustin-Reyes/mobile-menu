@@ -24,7 +24,9 @@ describe('Switch', () => {
   it('calls onCheckedChange when toggled', async () => {
     const user = userEvent.setup();
     const onCheckedChange = jest.fn();
-    render(<SwitchRoot aria-label="toggle" onCheckedChange={onCheckedChange} />);
+    render(
+      <SwitchRoot aria-label="toggle" onCheckedChange={onCheckedChange} />,
+    );
     await user.click(screen.getByRole('switch'));
     expect(onCheckedChange).toHaveBeenCalledWith(true);
   });

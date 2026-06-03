@@ -29,7 +29,7 @@ describe('Card', () => {
         <CardHeader>H</CardHeader>
         <CardBody>B</CardBody>
         <CardFooter>F</CardFooter>
-      </CardRoot>
+      </CardRoot>,
     );
     expect(screen.getByText('H')).toBeInTheDocument();
     expect(screen.getByText('B')).toBeInTheDocument();

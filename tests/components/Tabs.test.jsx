@@ -32,7 +32,7 @@ describe('Tabs', () => {
     render(<TabsFixture />);
     expect(screen.getByRole('tab', { name: 'Tab One' })).toHaveAttribute(
       'aria-selected',
-      'true'
+      'true',
     );
   });
 
@@ -50,7 +50,7 @@ describe('Tabs', () => {
     expect(tabTwo).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('tab', { name: 'Tab One' })).toHaveAttribute(
       'aria-selected',
-      'false'
+      'false',
     );
   });
 

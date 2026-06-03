@@ -25,7 +25,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowingComponent shouldThrow={false} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText('All good')).toBeInTheDocument();
   });
@@ -34,7 +34,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowingComponent shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.queryByText('All good')).not.toBeInTheDocument();
     // ErrorBoundary fallback should have at least one button (retry/reload)
@@ -45,7 +45,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowingComponent shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(Sentry.captureException).toHaveBeenCalled();
   });
@@ -54,7 +54,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowingComponent shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     // The fallback renders something — at minimum a container is present
     const buttons = screen.getAllByRole('button');

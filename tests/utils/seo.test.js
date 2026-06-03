@@ -29,7 +29,9 @@ describe('generateMetaTags', () => {
   });
 
   it('applies description override', () => {
-    const tags = generateMetaTags('home', { description: 'Custom description here.' });
+    const tags = generateMetaTags('home', {
+      description: 'Custom description here.',
+    });
     expect(tags.description).toBe('Custom description here.');
   });
 
@@ -100,7 +102,9 @@ describe('generateStructuredData', () => {
 
   it('merges customStructuredData array', () => {
     const custom = [{ '@type': 'Product', name: 'Test' }];
-    const data = generateStructuredData('home', { customStructuredData: custom });
+    const data = generateStructuredData('home', {
+      customStructuredData: custom,
+    });
     const types = data.map((d) => d['@type']);
     expect(types).toContain('Product');
   });
@@ -150,7 +154,8 @@ describe('generateRobotsMeta', () => {
 describe('validateSEO', () => {
   const validConfig = {
     title: 'My Great Website Title Here',
-    description: 'This is a sufficiently long description that meets the fifty character minimum requirement.',
+    description:
+      'This is a sufficiently long description that meets the fifty character minimum requirement.',
     image: 'https://example.com/og.png',
     url: 'https://example.com',
   };
@@ -179,8 +184,13 @@ describe('validateSEO', () => {
   });
 
   it('warns when description exceeds 160 characters', () => {
-    const result = validateSEO({ ...validConfig, description: 'x'.repeat(161) });
-    expect(result.warnings.some((w) => w.includes('160 characters'))).toBe(true);
+    const result = validateSEO({
+      ...validConfig,
+      description: 'x'.repeat(161),
+    });
+    expect(result.warnings.some((w) => w.includes('160 characters'))).toBe(
+      true,
+    );
   });
 
   it('errors when image is missing', () => {
@@ -196,8 +206,13 @@ describe('validateSEO', () => {
   });
 
   it('warns on non-standard image extension', () => {
-    const result = validateSEO({ ...validConfig, image: 'https://example.com/image.gif' });
-    expect(result.warnings.some((w) => w.includes('PNG, JPG, or WebP'))).toBe(true);
+    const result = validateSEO({
+      ...validConfig,
+      image: 'https://example.com/image.gif',
+    });
+    expect(result.warnings.some((w) => w.includes('PNG, JPG, or WebP'))).toBe(
+      true,
+    );
   });
 });
 
