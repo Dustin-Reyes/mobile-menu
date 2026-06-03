@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from '@emotion/styled';
-import { pageSchema } from '../content/schema';
+import { pageSchema } from '../../content/schema';
 import { ContentPageList } from './AdminContentPageList';
 import { ContentFieldEditor } from './AdminContentFieldEditor';
 import { useMediaQuery } from 'hooks/useMediaQuery';
