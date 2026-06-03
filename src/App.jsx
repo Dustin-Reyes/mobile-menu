@@ -6,6 +6,8 @@ import Header from 'components/Header';
 import PageTransition from 'components/PageTransition';
 import { ToastProvider } from 'components/ToastProvider';
 import PageSEO from 'components/PageSEO';
+import { AuthProvider } from 'context/AuthContext';
+import RequireAuth from 'components/admin/RequireAuth';
 import Home from 'pages/Home';
 import NotFound from 'pages/NotFound';
 
@@ -50,9 +52,13 @@ function App() {
           <Route
             path="/admin"
             element={
-              <Suspense fallback={<div>Loading admin...</div>}>
-                <AdminDashboard />
-              </Suspense>
+              <AuthProvider>
+                <RequireAuth>
+                  <Suspense fallback={<div>Loading admin...</div>}>
+                    <AdminDashboard />
+                  </Suspense>
+                </RequireAuth>
+              </AuthProvider>
             }
           />
           <Route
@@ -65,7 +71,7 @@ function App() {
           />
         </Routes>
       </AnimatePresence>
-      <ToastProvider />
+      <ToastProvider position="bottom-right" />
     </ErrorBoundary>
   );
 }

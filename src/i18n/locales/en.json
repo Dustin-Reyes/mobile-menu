@@ -32,6 +32,18 @@
       "google": "Google"
     }
   },
+  "admin": {
+    "login": {
+      "title": "Admin Sign In",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "error": "Invalid email or password.",
+      "signingIn": "Signing in...",
+      "signIn": "Sign In"
+    }
+  },
   "common": {
     "days": {
       "mon": "Mon",

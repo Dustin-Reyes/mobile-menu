@@ -32,6 +32,18 @@
       "google": "Google"
     }
   },
+  "admin": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "password": "Contraseña",
+      "passwordPlaceholder": "••••••••",
+      "error": "Correo electrónico o contraseña incorrectos.",
+      "signingIn": "Iniciando sesión...",
+      "signIn": "Iniciar Sesión"
+    }
+  },
   "common": {
     "days": {
       "mon": "Lun",

@@ -7,7 +7,7 @@
  */
 
 import CMS_CONFIG from '../config/firebase';
-import { pages, settings, navigation } from '../content';
+import { pages, settings, navigation, pageSchema } from '../content';
 
 // Simple in-memory cache for content
 const contentCache = new Map();
@@ -366,6 +366,23 @@ class ContentService {
   }
 
   /**
+   * Get dashboard stats derived from real content sources.
+   */
+  async getStats(locale = 'en') {
+    const [navItems, posts] = await Promise.all([
+      this.getNavigation('main', locale),
+      this.getPosts(),
+    ]);
+
+    return {
+      pages: Object.keys(pageSchema).length,
+      posts: posts.length,
+      navItems: navItems.length,
+      cacheSize: this.getCacheSize(),
+    };
+  }
+
+  /**
    * Check if CMS is enabled
    */
   isCMSEnabled() {
@@ -467,3 +484,4 @@ export const translateContent = (...args) =>
   contentService.translateContent(...args);
 export const getSettings = (...args) => contentService.getSettings(...args);
 export const getNavigation = (...args) => contentService.getNavigation(...args);
+export const getStats = (...args) => contentService.getStats(...args);
