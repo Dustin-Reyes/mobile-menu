@@ -33,14 +33,4 @@ export const pages = {
       ctaHref: '/',
     },
   },
-  about: {
-    en: {
-      title: 'About',
-      content: 'About page content goes here.',
-    },
-    es: {
-      title: 'Acerca de',
-      content: 'El contenido de la página de información va aquí.',
-    },
-  },
 };

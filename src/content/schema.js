@@ -24,12 +24,4 @@ export const pageSchema = {
       { key: 'ctaHref', label: 'CTA Button URL', type: 'text' },
     ],
   },
-  about: {
-    label: 'About',
-    emoji: '📄',
-    fields: [
-      { key: 'title', label: 'Title', type: 'text' },
-      { key: 'content', label: 'Content', type: 'textarea' },
-    ],
-  },
 };
