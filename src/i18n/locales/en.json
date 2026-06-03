@@ -7,7 +7,9 @@
   },
   "home": {
     "badge": "TranspiledCode Template",
+    "title": "Your Headline Here",
     "subtitle": "Vite + React starter with the full TranspiledCode toolchain.",
+    "ctaText": "Get Started",
     "hint": "Run yarn cleanup when ready to remove template scaffolding."
   },
   "nav": {

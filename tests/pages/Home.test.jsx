@@ -19,8 +19,8 @@ const STACK = [
 describe('Home page', () => {
   beforeEach(() => render(<Home />));
 
-  it('renders the site title', () => {
-    expect(screen.getByText('transpiled-web-template')).toBeInTheDocument();
+  it('renders the headline using the translation key', () => {
+    expect(screen.getByText('home.title')).toBeInTheDocument();
   });
 
   it('renders the badge using the translation key', () => {

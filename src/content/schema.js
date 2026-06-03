@@ -5,13 +5,11 @@
  * and display metadata. Each page object defines the editable fields that appear
  * in the admin dashboard content editor.
  *
- * To add a new field to a page:
- *   1. Add the field definition here (key, label, type)
- *   2. Add the corresponding field to the page object in `src/content/pages.js`
- *   3. Update any components that render that field
- *
- * When Firebase CMS is enabled, the admin dashboard uses this schema to
- * generate the form for editing each page's content.
+ * To add a new section to a page:
+ *   1. Add the field definitions here (key, label, type)
+ *   2. Add the corresponding field values in `src/content/pages.js`
+ *   3. Run `yarn seed` to push the new content to Firestore
+ *   4. Update the component that renders the field
  */
 
 export const pageSchema = {
@@ -19,11 +17,11 @@ export const pageSchema = {
     label: 'Home',
     emoji: '🏠',
     fields: [
-      { key: 'title', label: 'Title', type: 'text' },
+      { key: 'badge', label: 'Badge / Eyebrow', type: 'text' },
+      { key: 'title', label: 'Headline', type: 'text' },
       { key: 'subtitle', label: 'Subtitle', type: 'textarea' },
-      { key: 'viewDemo', label: 'View Demo Label', type: 'text' },
-      { key: 'viewGitHub', label: 'GitHub Label', type: 'text' },
-      { key: 'copyright', label: 'Copyright', type: 'text' },
+      { key: 'ctaText', label: 'CTA Button Label', type: 'text' },
+      { key: 'ctaHref', label: 'CTA Button URL', type: 'text' },
     ],
   },
   about: {

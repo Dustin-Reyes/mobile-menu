@@ -7,7 +7,9 @@
   },
   "home": {
     "badge": "Plantilla TranspiledCode",
+    "title": "Tu Título Aquí",
     "subtitle": "Starter Vite + React con el conjunto completo de herramientas de TranspiledCode.",
+    "ctaText": "Comenzar",
     "hint": "Ejecuta yarn cleanup cuando estés listo para eliminar el andamiaje de la plantilla."
   },
   "nav": {
