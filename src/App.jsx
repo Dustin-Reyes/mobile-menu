@@ -9,6 +9,7 @@ import PageSEO from 'components/PageSEO';
 import { AuthProvider } from 'context/AuthContext';
 import RequireAuth from 'components/admin/RequireAuth';
 import Home from 'pages/Home';
+import About from 'pages/About';
 import NotFound from 'pages/NotFound';
 
 const Demo =
@@ -26,51 +27,59 @@ function App() {
   return (
     <ErrorBoundary>
       <PageSEO />
-      <Header />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <PageTransition>
-                <Home />
-              </PageTransition>
-            }
-          />
-          {!isProduction && Demo && (
+      <AuthProvider>
+        <Header />
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
             <Route
-              path="/demo"
+              path="/"
               element={
-                <Suspense fallback={null}>
-                  <PageTransition>
-                    <Demo />
-                  </PageTransition>
-                </Suspense>
+                <PageTransition>
+                  <Home />
+                </PageTransition>
               }
             />
-          )}
-          <Route
-            path="/admin"
-            element={
-              <AuthProvider>
+            <Route
+              path="/about"
+              element={
+                <PageTransition>
+                  <About />
+                </PageTransition>
+              }
+            />
+            {!isProduction && Demo && (
+              <Route
+                path="/demo"
+                element={
+                  <Suspense fallback={null}>
+                    <PageTransition>
+                      <Demo />
+                    </PageTransition>
+                  </Suspense>
+                }
+              />
+            )}
+            <Route
+              path="/admin"
+              element={
                 <RequireAuth>
                   <Suspense fallback={<div>Loading admin...</div>}>
                     <AdminDashboard />
                   </Suspense>
                 </RequireAuth>
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="*"
-            element={
-              <PageTransition>
-                <NotFound />
-              </PageTransition>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <PageTransition>
+                  <NotFound />
+                </PageTransition>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
+      </AuthProvider>
       <ToastProvider position="bottom-right" />
     </ErrorBoundary>
   );
