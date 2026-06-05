@@ -5,8 +5,8 @@ test.describe('Theme switching', () => {
     await page.goto('/');
     const header = page.locator('header');
     await expect(header).toBeVisible();
-    // Use :visible to skip hidden buttons (e.g. the mobile hamburger is hidden
-    // on desktop, and the desktop theme toggle is hidden on mobile)
+    // Use :visible to skip hidden buttons (the mobile hamburger is hidden on
+    // desktop; the desktop theme toggle is inside the mobile menu on mobile)
     await expect(
       header.locator('button:visible, [role="switch"]:visible').first(),
     ).toBeVisible();
@@ -16,30 +16,32 @@ test.describe('Theme switching', () => {
     page,
     isMobile,
   }) => {
-    // The theme toggle lives in the desktop Controls bar (hidden on mobile)
-    test.skip(isMobile, 'Theme toggle is in desktop nav, hidden on mobile');
     await page.goto('/');
     const bgBefore = await page.evaluate(
       () => getComputedStyle(document.body).backgroundColor,
     );
 
-    // Click the theme toggle — it's a button with aria-label about mode
-    await page.locator('header button[aria-label*="mode"]').click();
+    if (isMobile) {
+      // On mobile the toggle lives inside the slide-out menu
+      await page.locator('[aria-label="Open menu"]').click();
+      await page.locator('button[aria-label*="mode"]:visible').waitFor();
+    }
+    await page.locator('button[aria-label*="mode"]:visible').click();
 
     const bgAfter = await page.evaluate(
       () => getComputedStyle(document.body).backgroundColor,
     );
-
     expect(bgBefore).not.toBe(bgAfter);
   });
 
   test('theme mode persists across page reload', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'Theme toggle is in desktop nav, hidden on mobile');
     await page.goto('/');
 
-    // Toggle once to change theme
-    await page.locator('header button[aria-label*="mode"]').click();
-    // Wait for CSS transitions to complete before reading color
+    if (isMobile) {
+      await page.locator('[aria-label="Open menu"]').click();
+      await page.locator('button[aria-label*="mode"]:visible').waitFor();
+    }
+    await page.locator('button[aria-label*="mode"]:visible').click();
     await page.waitForTimeout(400);
 
     const bgAfterToggle = await page.evaluate(
@@ -61,9 +63,13 @@ test.describe('Theme switching', () => {
     page,
     isMobile,
   }) => {
-    test.skip(isMobile, 'Theme toggle is in desktop nav, hidden on mobile');
     await page.goto('/');
-    await page.locator('header button[aria-label*="mode"]').click();
+
+    if (isMobile) {
+      await page.locator('[aria-label="Open menu"]').click();
+      await page.locator('button[aria-label*="mode"]:visible').waitFor();
+    }
+    await page.locator('button[aria-label*="mode"]:visible').click();
 
     const storedTheme = await page.evaluate(() =>
       localStorage.getItem('theme-mode'),

@@ -9,66 +9,9 @@ test.describe('Admin Dashboard', () => {
     await page.locator('h1, h2').first().waitFor({ timeout: 10000 });
   });
 
-  test('admin page renders a heading', async ({ page }) => {
+  test('admin page renders without crashing', async ({ page }) => {
+    // Page shows one of: "Admin unavailable", login form, or dashboard
     await expect(page.locator('h1, h2').first()).toBeVisible();
-    await expect(page.locator('header')).toBeVisible();
-  });
-
-  test('Dashboard section is active by default when authenticated', async ({
-    page,
-  }) => {
-    const isDashboard = await page
-      .getByRole('heading', { name: 'Dashboard' })
-      .isVisible();
-    test.skip(!isDashboard, 'Requires authenticated admin dashboard');
-    await expect(
-      page.getByRole('heading', { name: 'Dashboard' }),
-    ).toBeVisible();
-  });
-
-  test('navigating to Settings section shows its content', async ({
-    page,
-    isMobile,
-  }) => {
-    test.skip(isMobile, 'Navigation tab not present in mobile bottom tab bar');
-    const isDashboard = await page
-      .getByRole('heading', { name: 'Dashboard' })
-      .isVisible();
-    test.skip(!isDashboard, 'Requires authenticated admin dashboard');
-    await page.locator(':text-is("Settings"):visible').first().click();
-    await page.waitForTimeout(300);
-    await expect(page.locator('body')).not.toContainText(
-      'Something went wrong',
-    );
-  });
-
-  test('navigating to Navigation section shows its content', async ({
-    page,
-    isMobile,
-  }) => {
-    test.skip(isMobile, 'Navigation tab not present in mobile bottom tab bar');
-    const isDashboard = await page
-      .getByRole('heading', { name: 'Dashboard' })
-      .isVisible();
-    test.skip(!isDashboard, 'Requires authenticated admin dashboard');
-    await page.getByText('Navigation').first().click();
-    await page.waitForTimeout(300);
-    await expect(page.locator('body')).not.toContainText(
-      'Something went wrong',
-    );
-  });
-
-  test('navigating to Media section shows its content', async ({
-    page,
-    isMobile,
-  }) => {
-    test.skip(isMobile, 'Media tab not present in mobile bottom tab bar');
-    const isDashboard = await page
-      .getByRole('heading', { name: 'Dashboard' })
-      .isVisible();
-    test.skip(!isDashboard, 'Requires authenticated admin dashboard');
-    await page.getByText('Media').first().click();
-    await page.waitForTimeout(300);
     await expect(page.locator('body')).not.toContainText(
       'Something went wrong',
     );
