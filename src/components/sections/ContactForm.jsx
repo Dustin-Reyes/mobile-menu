@@ -30,15 +30,15 @@ const FormRow = styled.div`
 
 const PrivacyRow = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: stretch;
   gap: 1rem;
   padding-top: 0.5rem;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    flex-direction: column;
-    align-items: stretch;
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 `;
 
@@ -70,6 +70,12 @@ const PrivacyLink = styled.a`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const ButtonContent = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.s1};
 `;
 
 const Label = styled.label`
@@ -379,7 +385,9 @@ export default function ContactForm() {
           </PrivacyIcon>
           <PrivacyText>
             {t('contact.privacy')}{' '}
-            <PrivacyLink href="#">{t('contact.privacyPolicy')}</PrivacyLink>
+            <PrivacyLink href="#" onClick={(e) => e.preventDefault()}>
+              {t('contact.privacyPolicy')}
+            </PrivacyLink>
           </PrivacyText>
         </PrivacyNote>
 
@@ -399,14 +407,10 @@ export default function ContactForm() {
               </span>
             </>
           ) : (
-            <>
+            <ButtonContent>
               {t('contactForm.send', 'Send Message')}
-              <Send
-                size={16}
-                style={{ marginLeft: '0.5rem' }}
-                aria-hidden="true"
-              />
-            </>
+              <Send size={16} aria-hidden="true" />
+            </ButtonContent>
           )}
         </Button>
       </PrivacyRow>
