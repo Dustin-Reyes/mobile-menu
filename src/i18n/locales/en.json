@@ -10,26 +10,26 @@
     "title": "Your Headline Here",
     "subtitle": "Vite + React starter with the full TranspiledCode toolchain.",
     "ctaText": "Get Started",
-    "hint": "Run yarn cleanup when ready to remove template scaffolding.",
-    "contactForm": {
-      "name": "Name",
-      "namePlaceholder": "Your name",
-      "email": "Email",
-      "emailPlaceholder": "your@email.com",
-      "subject": "Subject",
-      "subjectPlaceholder": "How can we help?",
-      "message": "Message",
-      "messagePlaceholder": "Tell us more about your project...",
-      "send": "Send Message",
-      "sending": "Sending...",
-      "success": "Thank you for your message! We will get back to you soon.",
-      "errors": {
-        "nameRequired": "Name is required",
-        "emailRequired": "Email is required",
-        "emailInvalid": "Email is invalid",
-        "subjectRequired": "Subject is required",
-        "messageRequired": "Message is required"
-      }
+    "hint": "Run yarn cleanup when ready to remove template scaffolding."
+  },
+  "contactForm": {
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "subject": "Subject",
+    "subjectPlaceholder": "How can we help?",
+    "message": "Message",
+    "messagePlaceholder": "Tell us more about your project...",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "success": "Thank you for your message! We will get back to you soon.",
+    "errors": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid",
+      "subjectRequired": "Subject is required",
+      "messageRequired": "Message is required"
     }
   },
   "contact": {

@@ -10,26 +10,26 @@
     "title": "Tu Título Aquí",
     "subtitle": "Vite + React starter con la cadena de herramientas completa de TranspiledCode.",
     "ctaText": "Comenzar",
-    "hint": "Ejecuta yarn cleanup cuando estés listo para eliminar el andamiaje de la plantilla.",
-    "contactForm": {
-      "name": "Nombre",
-      "namePlaceholder": "Tu nombre",
-      "email": "Correo",
-      "emailPlaceholder": "tu@correo.com",
-      "subject": "Asunto",
-      "subjectPlaceholder": "¿Cómo podemos ayudar?",
-      "message": "Mensaje",
-      "messagePlaceholder": "Cuéntanos más sobre tu proyecto...",
-      "send": "Enviar Mensaje",
-      "sending": "Enviando...",
-      "success": "¡Gracias por tu mensaje! Te contactaremos pronto.",
-      "errors": {
-        "nameRequired": "El nombre es requerido",
-        "emailRequired": "El correo es requerido",
-        "emailInvalid": "El correo es inválido",
-        "subjectRequired": "El asunto es requerido",
-        "messageRequired": "El mensaje es requerido"
-      }
+    "hint": "Ejecuta yarn cleanup cuando estés listo para eliminar el andamiaje de la plantilla."
+  },
+  "contactForm": {
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "email": "Correo",
+    "emailPlaceholder": "tu@correo.com",
+    "subject": "Asunto",
+    "subjectPlaceholder": "¿Cómo podemos ayudar?",
+    "message": "Mensaje",
+    "messagePlaceholder": "Cuéntanos más sobre tu proyecto...",
+    "send": "Enviar Mensaje",
+    "sending": "Enviando...",
+    "success": "¡Gracias por tu mensaje! Te contactaremos pronto.",
+    "errors": {
+      "nameRequired": "El nombre es requerido",
+      "emailRequired": "El correo es requerido",
+      "emailInvalid": "El correo es inválido",
+      "subjectRequired": "El asunto es requerido",
+      "messageRequired": "El mensaje es requerido"
     }
   },
   "contact": {

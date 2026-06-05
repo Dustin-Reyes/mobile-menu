@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { Loader2, CheckCircle2, ShieldCheck, Send } from 'lucide-react';
 import Button from 'components/ui/Button';
+
+const spinAnimation = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
@@ -206,6 +212,10 @@ const SuccessText = styled.p`
   line-height: 1.5;
 `;
 
+const SpinnerIcon = styled(Loader2)`
+  animation: ${spinAnimation} 1s linear infinite;
+`;
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function ContactForm() {
@@ -299,7 +309,7 @@ export default function ContactForm() {
       {isSubmitted && (
         <SuccessBanner>
           <SuccessIcon>
-            <CheckCircle2 size={20} />
+            <CheckCircle2 size={20} aria-hidden="true" />
           </SuccessIcon>
           <SuccessText>
             {t(
@@ -398,10 +408,7 @@ export default function ContactForm() {
         >
           {isSubmitting ? (
             <ButtonContent>
-              <Loader2
-                size={18}
-                style={{ animation: 'spin 1s linear infinite' }}
-              />
+              <SpinnerIcon size={18} aria-hidden="true" />
               {t('contactForm.sending', 'Sending...')}
             </ButtonContent>
           ) : (
