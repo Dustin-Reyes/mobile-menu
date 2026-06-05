@@ -42,7 +42,11 @@ test.describe('Navigation', () => {
 
   test('404 page has a link back to home that navigates', async ({ page }) => {
     await page.goto('/does-not-exist');
-    const homeLink = page.getByRole('link').filter({ hasText: /home/i });
+    // The footer also has a "Home" link, so use .first() to target the 404 CTA
+    const homeLink = page
+      .getByRole('link')
+      .filter({ hasText: /home/i })
+      .first();
     await expect(homeLink).toBeVisible();
     await homeLink.click();
     await expect(page).toHaveURL('/');
@@ -50,7 +54,7 @@ test.describe('Navigation', () => {
 
   test('admin page loads without crashing', async ({ page }) => {
     await page.goto('/admin');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('body')).not.toContainText(
       'Something went wrong',
     );

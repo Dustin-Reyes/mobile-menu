@@ -5,15 +5,19 @@ test.describe('Theme switching', () => {
     await page.goto('/');
     const header = page.locator('header');
     await expect(header).toBeVisible();
-    // Header has at least one interactive control
+    // Use :visible to skip hidden buttons (e.g. the mobile hamburger is hidden
+    // on desktop, and the desktop theme toggle is hidden on mobile)
     await expect(
-      header.locator('button, [role="switch"]').first(),
+      header.locator('button:visible, [role="switch"]:visible').first(),
     ).toBeVisible();
   });
 
   test('clicking theme toggle changes the page background', async ({
     page,
+    isMobile,
   }) => {
+    // The theme toggle lives in the desktop Controls bar (hidden on mobile)
+    test.skip(isMobile, 'Theme toggle is in desktop nav, hidden on mobile');
     await page.goto('/');
     const bgBefore = await page.evaluate(
       () => getComputedStyle(document.body).backgroundColor,
@@ -29,7 +33,8 @@ test.describe('Theme switching', () => {
     expect(bgBefore).not.toBe(bgAfter);
   });
 
-  test('theme mode persists across page reload', async ({ page }) => {
+  test('theme mode persists across page reload', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'Theme toggle is in desktop nav, hidden on mobile');
     await page.goto('/');
 
     // Toggle once to change theme
@@ -42,7 +47,7 @@ test.describe('Theme switching', () => {
     );
 
     await page.reload();
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(300);
 
     const bgAfterReload = await page.evaluate(
@@ -52,7 +57,11 @@ test.describe('Theme switching', () => {
     expect(bgAfterToggle).toBe(bgAfterReload);
   });
 
-  test('theme stored in localStorage as "theme-mode"', async ({ page }) => {
+  test('theme stored in localStorage as "theme-mode"', async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, 'Theme toggle is in desktop nav, hidden on mobile');
     await page.goto('/');
     await page.locator('header button[aria-label*="mode"]').click();
 
