@@ -10,9 +10,9 @@ export const lightColors = {
 
   // Semantic surface tokens
   text: '#111111',
-  background: '#FFFFFF',
-  secondaryBackground: '#f7f7f7',
-  surface: '#F5F5F5',
+  background: '#F0F2F5',
+  secondaryBackground: '#E0E3E7',
+  surface: '#D1D5DB',
   textSecondary: '#555555',
   textMuted: '#9CA3AF',
   border: '#E0E0E0',

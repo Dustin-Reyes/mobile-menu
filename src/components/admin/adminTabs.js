@@ -5,7 +5,6 @@ import {
   Newspaper,
   Image,
   Navigation,
-  TrendingUp,
 } from 'lucide-react';
 
 export const ADMIN_TABS = [
@@ -20,19 +19,13 @@ export const ADMIN_TABS = [
     shortLabel: 'Nav',
     icon: Navigation,
   },
-  {
-    id: 'analytics',
-    label: 'Analytics',
-    shortLabel: 'Analytics',
-    icon: TrendingUp,
-  },
 ];
 
 // Visual groupings for the desktop sidebar (dividers rendered between groups).
 export const ADMIN_TAB_GROUPS = [
   ['dashboard', 'settings'],
   ['pages', 'posts', 'media'],
-  ['navigation', 'analytics'],
+  ['navigation'],
 ];
 
 // Tabs surfaced in the mobile bottom bar (space constrained).

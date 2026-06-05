@@ -66,6 +66,11 @@ function GlobalStylesWithTheme() {
     }
 
     /* Set core root defaults */
+    html {
+      /* Offset anchor scroll targets so the sticky header doesn't overlap them */
+      scroll-padding-top: 64px;
+    }
+
     html:focus-within {
       scroll-behavior: smooth;
     }

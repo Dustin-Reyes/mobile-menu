@@ -200,6 +200,7 @@ const SaveStatus = styled('span', {
 
 function DesktopEditor({
   schema,
+  selectedSection,
   selectedLocale,
   availableLocales,
   formValues,
@@ -213,8 +214,13 @@ function DesktopEditor({
   onTranslateAll,
   onTranslateLocale,
 }) {
-  const groups = groupFields(schema.fields);
-  const fieldCount = schema.fields.length;
+  // Filter fields by selected section
+  const filteredFields = selectedSection
+    ? schema.fields.filter((field) => field.group === selectedSection)
+    : schema.fields;
+
+  const groups = groupFields(filteredFields);
+  const fieldCount = filteredFields.length;
   const localeCount = availableLocales.length;
 
   return (
@@ -405,14 +411,30 @@ const FieldRowPreview = styled.div`
 
 function MobileFieldList({
   schema,
+  selectedSection,
   selectedLocale,
   availableLocales,
   formValues,
   allLocaleContent,
   onLocaleChange,
   onSelectField,
+  onSelectSection,
   onBack,
 }) {
+  // Filter fields by selected section
+  const filteredFields = selectedSection
+    ? schema.fields.filter((field) => field.group === selectedSection)
+    : schema.fields;
+
+  // Extract unique sections
+  const sections = React.useMemo(() => {
+    const sectionSet = new Set();
+    schema.fields.forEach((field) => {
+      if (field.group) sectionSet.add(field.group);
+    });
+    return Array.from(sectionSet).sort();
+  }, [schema.fields]);
+
   const values = allLocaleContent[selectedLocale] ?? formValues ?? {};
   return (
     <div>
@@ -433,7 +455,26 @@ function MobileFieldList({
           </LocalePill>
         ))}
       </StickyLocaleRow>
-      {schema.fields.map((field) => (
+      {sections.length > 0 && (
+        <StickyLocaleRow>
+          <LocalePill
+            active={!selectedSection}
+            onClick={() => onSelectSection(null)}
+          >
+            All
+          </LocalePill>
+          {sections.map((section) => (
+            <LocalePill
+              key={section}
+              active={selectedSection === section}
+              onClick={() => onSelectSection(section)}
+            >
+              {section}
+            </LocalePill>
+          ))}
+        </StickyLocaleRow>
+      )}
+      {filteredFields.map((field) => (
         <FieldRow key={field.key} onClick={() => onSelectField(field.key)}>
           <FieldRowLeft>
             <FieldRowName>{field.label}</FieldRowName>

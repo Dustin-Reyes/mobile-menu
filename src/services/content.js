@@ -21,6 +21,85 @@ const localContent = {
 };
 
 /**
+ * Transform flat field names to nested section structure
+ * e.g., { heroTitle: '...', servicesTitle: '...' } → { hero: { title: '...' }, services: { title: '...' } }
+ */
+function transformFlatToNested(flatData) {
+  if (!flatData || typeof flatData !== 'object') return flatData;
+
+  const nested = {};
+  const sectionPrefixes = [
+    'hero',
+    'services',
+    'about',
+    'gallery',
+    'faq',
+    'contact',
+    'cta',
+    'header',
+    'features',
+    'footer',
+  ];
+
+  for (const [key, value] of Object.entries(flatData)) {
+    let matched = false;
+    for (const prefix of sectionPrefixes) {
+      if (key.startsWith(prefix)) {
+        const field = key.slice(prefix.length);
+        // Convert camelCase to lowercase first letter
+        const fieldName = field.charAt(0).toLowerCase() + field.slice(1);
+        if (!nested[prefix]) nested[prefix] = {};
+        nested[prefix][fieldName] = value;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      nested[key] = value;
+    }
+  }
+
+  return nested;
+}
+
+/**
+ * Transform nested section structure to flat field names
+ * e.g., { hero: { title: '...' }, services: { title: '...' } } → { heroTitle: '...', servicesTitle: '...' }
+ */
+function transformNestedToFlat(nestedData) {
+  if (!nestedData || typeof nestedData !== 'object') return nestedData;
+
+  const flat = {};
+  const sectionPrefixes = [
+    'hero',
+    'services',
+    'about',
+    'gallery',
+    'faq',
+    'contact',
+    'cta',
+    'header',
+    'features',
+    'footer',
+  ];
+
+  for (const [key, value] of Object.entries(nestedData)) {
+    if (sectionPrefixes.includes(key) && typeof value === 'object') {
+      // This is a section object, transform its fields
+      for (const [field, fieldValue] of Object.entries(value)) {
+        // Convert to camelCase with prefix
+        const flatKey = key + field.charAt(0).toUpperCase() + field.slice(1);
+        flat[flatKey] = fieldValue;
+      }
+    } else {
+      flat[key] = value;
+    }
+  }
+
+  return flat;
+}
+
+/**
  * Check if content is cached and still valid
  */
 function isCached(key) {
@@ -140,9 +219,33 @@ async function updateInFirebase(collection, docId, data) {
     throw new Error('Firebase Firestore not available');
   }
 
-  const { doc, setDoc } = await import('firebase/firestore');
+  const { doc, setDoc, getDoc } = await import('firebase/firestore');
   const docRef = doc(db, collection, docId);
-  await setDoc(docRef, data, { merge: true });
+
+  // For locale-based updates (e.g., { en: {...} }), we need to merge at the locale level
+  // to avoid losing other fields in the same locale object
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const existingData = docSnap.data();
+    // Deep merge the new data with existing data
+    const mergedData = { ...existingData };
+    for (const [key, value] of Object.entries(data)) {
+      if (
+        typeof value === 'object' &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
+        // Merge nested objects (e.g., locale objects)
+        mergedData[key] = { ...existingData[key], ...value };
+      } else {
+        mergedData[key] = value;
+      }
+    }
+    await setDoc(docRef, mergedData);
+  } else {
+    // Document doesn't exist, create it
+    await setDoc(docRef, data);
+  }
 
   return data;
 }
@@ -162,13 +265,18 @@ class ContentService {
         try {
           // One document per page; locale is a sub-field: pages/home → { en: {...}, es: {...} }
           const doc = await fetchFromFirebase('pages', pageId);
-          if (doc) return doc[locale] ?? doc['en'] ?? null;
+          if (doc) {
+            const localeData = doc[locale] ?? doc['en'] ?? null;
+            // Transform flat field names to nested section structure
+            return transformFlatToNested(localeData);
+          }
         } catch (error) {
           console.warn('Firebase fetch failed, using local content:', error);
         }
       }
 
       // Fallback to local content — with locale fallback to 'en'
+      // Local content is already nested, so no transformation needed
       return (
         localContent.pages[pageId]?.[locale] ??
         localContent.pages[pageId]?.['en'] ??
@@ -280,8 +388,10 @@ class ContentService {
     const cacheKey = `page_${pageId}_${locale}`;
 
     if (CMS_CONFIG.enabled) {
+      // Transform nested section structure to flat field names for Firebase
+      const flatData = transformNestedToFlat(data);
       // Write locale as a sub-field: pages/home → { en: {...} }
-      await updateInFirebase('pages', pageId, { [locale]: data });
+      await updateInFirebase('pages', pageId, { [locale]: flatData });
       // Clear cache so next read fetches the merged result from Firebase
       contentCache.delete(cacheKey);
       cacheTimestamps.delete(cacheKey);
@@ -417,13 +527,17 @@ class ContentService {
       const enContent = await this.getPage(pageId, 'en');
       if (!enContent) return null;
 
-      // If target locale is English, no translation needed
-      if (targetLocale === 'en') return enContent;
+      // Flatten nested content so we iterate over actual string values
+      // (getPage returns nested { hero: { title } }; we need flat { heroTitle })
+      const flatContent = transformNestedToFlat(enContent);
 
-      // Translate each field in the content
+      // If target locale is English, no translation needed — return flat
+      if (targetLocale === 'en') return flatContent;
+
+      // Translate each flat field in the content
       const translatedContent = {};
 
-      for (const [key, value] of Object.entries(enContent)) {
+      for (const [key, value] of Object.entries(flatContent)) {
         if (typeof value === 'string' && value.trim()) {
           try {
             // Call the Netlify translation function using the current window origin
@@ -476,6 +590,7 @@ export const contentService = new ContentService();
 export default contentService;
 
 // Named function exports for easy mocking and direct imports
+export { transformNestedToFlat };
 export const getPage = (...args) => contentService.getPage(...args);
 export const updatePage = (...args) => contentService.updatePage(...args);
 export const hasLocaleContent = (...args) =>

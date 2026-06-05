@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { pageSchema } from '../../content/schema';
 import { ContentPageList } from './AdminContentPageList';
 import { ContentFieldEditor } from './AdminContentFieldEditor';
+import ConfirmDialog from './ConfirmDialog';
 import { useMediaQuery } from 'hooks/useMediaQuery';
 import { useToast } from 'hooks/useToast';
 import * as contentService from 'services/content';
@@ -50,6 +51,7 @@ export function ContentEditor() {
 
   // Shared state
   const [selectedPage, setSelectedPage] = useState(null);
+  const [selectedSection, setSelectedSection] = useState(null);
   const [selectedLocale, setSelectedLocale] = useState(
     AVAILABLE_LOCALES[0] ?? 'en',
   );
@@ -58,6 +60,7 @@ export function ContentEditor() {
   const [isLoading, setIsLoading] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
   const [localeMap, setLocaleMap] = useState({});
+  const [confirmTranslateOpen, setConfirmTranslateOpen] = useState(false);
 
   // Mobile state
   const [mobileScreen, setMobileScreen] = useState('pages');
@@ -87,11 +90,13 @@ export function ContentEditor() {
   }, []);
 
   // Load content for selected page + locale
+  // getPage() returns nested data (e.g. { hero: { title } }); we flatten to
+  // match schema field keys (e.g. heroTitle) for the field editor form.
   const loadContent = useCallback(async (pageId, locale) => {
     setIsLoading(true);
     try {
       const content = await contentService.getPage(pageId, locale);
-      const values = content ?? {};
+      const values = contentService.transformNestedToFlat(content ?? {});
       setFormValues(values);
       setSavedValues(values);
     } finally {
@@ -103,12 +108,14 @@ export function ContentEditor() {
   const handleSelectPage = useCallback(
     async (pageId) => {
       setSelectedPage(pageId);
+      setSelectedSection(null); // Clear section when page changes
       if (isMobile) {
         setIsLoading(true);
         const all = {};
         await Promise.all(
           AVAILABLE_LOCALES.map(async (locale) => {
-            all[locale] = (await contentService.getPage(pageId, locale)) ?? {};
+            const nested = (await contentService.getPage(pageId, locale)) ?? {};
+            all[locale] = contentService.transformNestedToFlat(nested);
           }),
         );
         setAllLocaleContent(all);
@@ -120,6 +127,12 @@ export function ContentEditor() {
     },
     [isMobile, selectedLocale, loadContent],
   );
+
+  // Section selection
+  const handleSelectSection = useCallback(async (section) => {
+    setSelectedSection(section);
+    // No need to reload content - we'll filter fields in the editor
+  }, []);
 
   // Locale switch (discards unsaved changes silently)
   // On mobile, allLocaleContent already has all locales — skip the redundant fetch
@@ -164,8 +177,13 @@ export function ContentEditor() {
     setFormValues(savedValues);
   }, [savedValues]);
 
-  // Translate all locales from EN (EN tab only)
-  const handleTranslateAll = useCallback(async () => {
+  // Translate all locales from EN (EN tab only) — opens confirm dialog first
+  const handleTranslateAll = useCallback(() => {
+    if (!selectedPage) return;
+    setConfirmTranslateOpen(true);
+  }, [selectedPage]);
+
+  const executeTranslateAll = useCallback(async () => {
     if (!selectedPage) return;
     setIsTranslating(true);
     try {
@@ -202,6 +220,7 @@ export function ContentEditor() {
         selectedLocale,
       );
       if (translated) {
+        // translateContent already returns flat keys after our fix
         setFormValues(translated);
         showToast({ message: 'Translation complete', type: 'success' });
       }
@@ -241,6 +260,7 @@ export function ContentEditor() {
 
   const sharedEditorProps = {
     schema: selectedPage ? pageSchema[selectedPage] : null,
+    selectedSection,
     selectedLocale,
     availableLocales: AVAILABLE_LOCALES,
     formValues,
@@ -254,6 +274,7 @@ export function ContentEditor() {
     onCancel: handleCancel,
     onTranslateAll: handleTranslateAll,
     onTranslateLocale: handleTranslateLocale,
+    onSelectSection: handleSelectSection,
     // mobile
     allLocaleContent,
     selectedField,
@@ -272,8 +293,10 @@ export function ContentEditor() {
         <ContentPageList
           pages={pageSchema}
           selectedPage={selectedPage}
+          selectedSection={selectedSection}
           localeMap={localeMap}
-          onSelect={handleSelectPage}
+          onSelectPage={handleSelectPage}
+          onSelectSection={handleSelectSection}
           isMobile={true}
         />
       );
@@ -293,25 +316,47 @@ export function ContentEditor() {
     return null;
   }
 
+  const pageLabel = selectedPage
+    ? (pageSchema[selectedPage]?.label ?? selectedPage)
+    : '';
+
   // ─── Desktop render ───────────────────────────────────────────────────────
   return (
-    <SplitPane>
-      <ListPane>
-        <ContentPageList
-          pages={pageSchema}
-          selectedPage={selectedPage}
-          localeMap={localeMap}
-          onSelect={handleSelectPage}
-          isMobile={false}
-        />
-      </ListPane>
-      <EditorPane>
-        {selectedPage ? (
-          <ContentFieldEditor mode="editor" {...sharedEditorProps} />
-        ) : (
-          <Placeholder>Select a page to start editing</Placeholder>
-        )}
-      </EditorPane>
-    </SplitPane>
+    <>
+      <ConfirmDialog
+        open={confirmTranslateOpen}
+        onOpenChange={setConfirmTranslateOpen}
+        title="Translate all content?"
+        description={`This will translate all content fields for the "${pageLabel}" page into every non-English locale and save immediately. Any existing translations will be overwritten.`}
+        confirmLabel="Translate all"
+        onConfirm={executeTranslateAll}
+      />
+      <SplitPane>
+        <ListPane>
+          <ContentPageList
+            pages={pageSchema}
+            selectedPage={selectedPage}
+            selectedSection={selectedSection}
+            localeMap={localeMap}
+            onSelectPage={handleSelectPage}
+            onSelectSection={handleSelectSection}
+            isMobile={false}
+          />
+        </ListPane>
+        <EditorPane>
+          {selectedSection ||
+          (selectedPage &&
+            !pageSchema[selectedPage]?.fields?.some((f) => f.group)) ? (
+            <ContentFieldEditor mode="editor" {...sharedEditorProps} />
+          ) : (
+            <Placeholder>
+              {selectedPage
+                ? 'Select a section to start editing'
+                : 'Select a page to start editing'}
+            </Placeholder>
+          )}
+        </EditorPane>
+      </SplitPane>
+    </>
   );
 }

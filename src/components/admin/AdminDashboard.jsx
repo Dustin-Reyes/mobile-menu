@@ -11,7 +11,6 @@ import AdminNavigationTab from './AdminNavigationTab';
 import AdminPagesTab from './AdminPagesTab';
 import AdminPostsTab from './AdminPostsTab';
 import AdminMediaTab from './AdminMediaTab';
-import AdminAnalyticsTab from './AdminAnalyticsTab';
 import {
   AdminContainer,
   MainContent,
@@ -202,7 +201,6 @@ export default function AdminDashboard() {
             {activeTab === 'pages' && <AdminPagesTab />}
             {activeTab === 'posts' && <AdminPostsTab />}
             {activeTab === 'media' && <AdminMediaTab />}
-            {activeTab === 'analytics' && <AdminAnalyticsTab />}
           </AnimatePresence>
         </TabContent>
       </MainContent>

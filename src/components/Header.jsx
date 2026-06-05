@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { useAuth } from 'context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import HeaderLogo from './HeaderLogo';
 import UserMenu from './UserMenu';
 import MobileMenu from './MobileMenu';
+import { SECTIONS_CONFIG } from 'config/sections';
 
 const Wrapper = styled.header`
   position: sticky;
@@ -62,12 +64,13 @@ const MobileTrigger = styled.div`
   }
 `;
 
-const NavLink = styled(Link)`
+const AnchorLink = styled.a`
   font-size: ${({ theme }) => theme.typography.fontSizes.s3};
   color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
   font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
   transition: color ${({ theme }) => theme.transitions.fast};
+  cursor: pointer;
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
@@ -101,23 +104,54 @@ const ThemeBtn = styled.button`
 `;
 
 function Header() {
+  const { t } = useTranslation();
   const { isDark, toggleMode } = useTheme();
   const { isAuthenticated } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const isActive = (path) => location.pathname === path;
+  const handleAnchorClick = (e, sectionId) => {
+    e.preventDefault();
+    const isHomePage = location.pathname === '/';
+
+    if (isHomePage) {
+      // If already on home page, just scroll to section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      // If not on home page, navigate to home then scroll
+      navigate('/', { replace: true });
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  };
+
+  // Get enabled navigation links from config
+  const navLinks = SECTIONS_CONFIG.navigation.filter((nav) => nav.enabled);
 
   return (
     <Wrapper>
       <Inner>
         <HeaderLogo />
         <Nav>
-          <NavLink to="/" data-active={isActive('/')}>
-            Home
-          </NavLink>
-          <NavLink to="/about" data-active={isActive('/about')}>
-            About
-          </NavLink>
+          {navLinks.map((nav) => (
+            <AnchorLink
+              key={nav.id}
+              href={`#${nav.id}`}
+              onClick={(e) => handleAnchorClick(e, nav.id)}
+              data-active={
+                location.pathname === '/' && location.hash === `#${nav.id}`
+              }
+            >
+              {t(`nav.${nav.id}`)}
+            </AnchorLink>
+          ))}
         </Nav>
         <MobileTrigger>
           <MobileMenu />

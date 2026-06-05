@@ -94,6 +94,43 @@ const { pages } = await import('../src/content/pages.js');
 const { settings } = await import('../src/content/settings.js');
 const { navigation } = await import('../src/content/navigation.js');
 
+/**
+ * Transform nested section structure to flat field names
+ * e.g., { hero: { title: '...' }, services: { title: '...' } } → { heroTitle: '...', servicesTitle: '...' }
+ */
+function transformNestedToFlat(nestedData) {
+  if (!nestedData || typeof nestedData !== 'object') return nestedData;
+
+  const flat = {};
+  const sectionPrefixes = [
+    'hero',
+    'services',
+    'about',
+    'gallery',
+    'faq',
+    'contact',
+    'cta',
+    'header',
+    'features',
+    'footer',
+  ];
+
+  for (const [key, value] of Object.entries(nestedData)) {
+    if (sectionPrefixes.includes(key) && typeof value === 'object') {
+      // This is a section object, transform its fields
+      for (const [field, fieldValue] of Object.entries(value)) {
+        // Convert to camelCase with prefix
+        const flatKey = key + field.charAt(0).toUpperCase() + field.slice(1);
+        flat[flatKey] = fieldValue;
+      }
+    } else {
+      flat[key] = value;
+    }
+  }
+
+  return flat;
+}
+
 // ─── Write helpers ────────────────────────────────────────────────────────────
 
 async function upsert(collection, docId, data) {
@@ -110,10 +147,16 @@ async function upsert(collection, docId, data) {
 
 // ─── Seed pages ───────────────────────────────────────────────────────────────
 // Each page is one Firestore document with locale keys: { en: {...}, es: {...} }
+// Transform nested section structure to flat field names for Firebase
 
 console.log('\n📄  Seeding pages...');
 for (const [pageId, locales] of Object.entries(pages)) {
-  await upsert('pages', pageId, locales);
+  const transformedLocales = {};
+  for (const [locale, content] of Object.entries(locales)) {
+    // Transform nested to flat for Firebase storage
+    transformedLocales[locale] = transformNestedToFlat(content);
+  }
+  await upsert('pages', pageId, transformedLocales);
 }
 
 // ─── Seed settings ────────────────────────────────────────────────────────────

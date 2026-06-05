@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { usePage } from 'hooks/useContent';
 
 const Wrapper = styled.section`
   min-height: 100vh;
@@ -73,36 +74,52 @@ const FeatureItem = styled.li`
   }
 `;
 
-export default function About() {
+const FALLBACK_FEATURES = [
+  'Vite 6 for fast development and optimized builds',
+  'React 18 with modern hooks and patterns',
+  'Emotion for CSS-in-JS styling',
+  'Radix UI for accessible component primitives',
+  'Framer Motion for smooth animations',
+  'Firebase for authentication and CMS',
+  'i18next for internationalization',
+  'Sentry for error tracking',
+  'Jest for unit testing',
+  'Playwright for E2E testing',
+  'Netlify for seamless deployment',
+];
+
+export default function Development() {
+  const { content, loading } = usePage('development');
+
+  const title = content?.header?.title ?? (loading ? null : 'Development');
+  const description1 =
+    content?.header?.description1 ??
+    (loading
+      ? null
+      : 'A production-ready SPA starter template built with modern web technologies and best practices.');
+  const description2 =
+    content?.header?.description2 ??
+    (loading
+      ? null
+      : 'This template provides a solid foundation for building scalable web applications with React, featuring comprehensive tooling for development, testing, and deployment.');
+
+  const featuresRaw = content?.features?.items ?? null;
+  const features = featuresRaw
+    ? featuresRaw.split('\n').filter(Boolean)
+    : loading
+      ? []
+      : FALLBACK_FEATURES;
+
   return (
     <Wrapper>
       <Content>
-        <Title>About This Template</Title>
-        <Description>
-          A production-ready SPA starter template built with modern web
-          technologies and best practices.
-        </Description>
-        <Description>
-          This template provides a solid foundation for building scalable web
-          applications with React, featuring comprehensive tooling for
-          development, testing, and deployment.
-        </Description>
+        {title && <Title>{title}</Title>}
+        {description1 && <Description>{description1}</Description>}
+        {description2 && <Description>{description2}</Description>}
         <FeatureList>
-          <FeatureItem>
-            Vite 6 for fast development and optimized builds
-          </FeatureItem>
-          <FeatureItem>React 18 with modern hooks and patterns</FeatureItem>
-          <FeatureItem>Emotion for CSS-in-JS styling</FeatureItem>
-          <FeatureItem>
-            Radix UI for accessible component primitives
-          </FeatureItem>
-          <FeatureItem>Framer Motion for smooth animations</FeatureItem>
-          <FeatureItem>Firebase for authentication and CMS</FeatureItem>
-          <FeatureItem>i18next for internationalization</FeatureItem>
-          <FeatureItem>Sentry for error tracking</FeatureItem>
-          <FeatureItem>Jest for unit testing</FeatureItem>
-          <FeatureItem>Playwright for E2E testing</FeatureItem>
-          <FeatureItem>Netlify for seamless deployment</FeatureItem>
+          {features.map((item, i) => (
+            <FeatureItem key={i}>{item}</FeatureItem>
+          ))}
         </FeatureList>
       </Content>
     </Wrapper>

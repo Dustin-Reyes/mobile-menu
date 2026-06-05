@@ -16,10 +16,12 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from 'context/AuthContext';
 import { useTheme } from './ThemeProvider';
+import { useTranslation } from 'react-i18next';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import Button from 'components/ui/Button';
 import LanguageSwitcher from './LanguageSwitcher';
 import HeaderLogo from './HeaderLogo';
+import { SECTIONS_CONFIG } from 'config/sections';
 
 const Trigger = styled(RadixDialog.Trigger)`
   display: flex;
@@ -293,6 +295,7 @@ const AuthButtonWrapper = styled(RadixDialog.Close)`
 `;
 
 export default function MobileMenu() {
+  const { t } = useTranslation();
   const { user, isAuthenticated, logout } = useAuth();
   const { isDark, toggleMode } = useTheme();
   const navigate = useNavigate();
@@ -300,6 +303,26 @@ export default function MobileMenu() {
 
   const handleNavigate = (path) => {
     navigate(path);
+  };
+
+  const handleAnchorClick = (path) => {
+    const sectionId = path.replace('/#', '');
+    const isHomePage = location.pathname === '/';
+
+    if (isHomePage) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
   };
 
   const handleSignIn = () => {
@@ -331,14 +354,23 @@ export default function MobileMenu() {
   const isActive = (path) => location.pathname === path;
 
   const mainNavItems = [
-    { label: 'Home', path: '/', icon: Home },
-    { label: 'About', path: '/about', icon: Info },
+    { label: t('nav.home'), path: '/', icon: Home },
+    { label: t('nav.development'), path: '/development', icon: Info },
   ];
 
+  const sectionNavItems = SECTIONS_CONFIG.navigation
+    .filter((nav) => nav.enabled)
+    .map((nav) => ({
+      label: t(`nav.${nav.id}`),
+      path: `/#${nav.id}`,
+      icon: ChevronRight,
+      isAnchor: true,
+    }));
+
   const adminNavItems = [
-    { label: 'Admin Dashboard', path: '/admin', icon: LayoutDashboard },
-    { label: 'Navigation', path: '/admin', icon: Navigation },
-    { label: 'Analytics', path: '/admin', icon: TrendingUp },
+    { label: t('nav.adminDashboard'), path: '/admin', icon: LayoutDashboard },
+    { label: t('nav.navigation'), path: '/admin', icon: Navigation },
+    { label: t('nav.analytics'), path: '/admin', icon: TrendingUp },
   ];
 
   return (
@@ -372,12 +404,23 @@ export default function MobileMenu() {
             )}
 
             <NavSection>
-              <NavTitle>Navigation</NavTitle>
+              <NavTitle>{t('nav.menuTitle')}</NavTitle>
               {mainNavItems.map(({ label, path, icon: Icon }) => (
                 <NavLink
                   key={path + label}
                   $active={isActive(path)}
                   onClick={() => handleNavigate(path)}
+                >
+                  <Icon size={20} />
+                  <NavLinkLabel>{label}</NavLinkLabel>
+                  <ChevronRight size={16} style={{ opacity: 0.4 }} />
+                </NavLink>
+              ))}
+              {sectionNavItems.map(({ label, path, icon: Icon }) => (
+                <NavLink
+                  key={path + label}
+                  $active={false}
+                  onClick={() => handleAnchorClick(path)}
                 >
                   <Icon size={20} />
                   <NavLinkLabel>{label}</NavLinkLabel>
@@ -423,12 +466,12 @@ export default function MobileMenu() {
               {isAuthenticated ? (
                 <Button onClick={handleSignOut} variant="outline" fullWidth>
                   <LogOut size={16} style={{ marginRight: '8px' }} />
-                  Sign Out
+                  {t('nav.signOut')}
                 </Button>
               ) : (
                 <Button onClick={handleSignIn} fullWidth>
                   <LogIn size={16} style={{ marginRight: '8px' }} />
-                  Sign In
+                  {t('nav.signIn')}
                 </Button>
               )}
             </AuthButtonWrapper>

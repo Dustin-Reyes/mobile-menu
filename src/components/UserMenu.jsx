@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { LogOut, LayoutDashboard, Home, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import {
   DropdownMenuRoot,
   DropdownMenuTrigger,
@@ -40,6 +41,7 @@ const MenuItemContent = styled.div`
 `;
 
 export default function UserMenu() {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -71,8 +73,8 @@ export default function UserMenu() {
     navigate('/');
   };
 
-  const handleGoToAbout = () => {
-    navigate('/about');
+  const handleGoToDevelopment = () => {
+    navigate('/development');
   };
 
   return (
@@ -86,27 +88,27 @@ export default function UserMenu() {
         <DropdownMenuItem onClick={handleGoHome}>
           <MenuItemContent>
             <Home size={16} />
-            Home
+            {t('nav.home')}
           </MenuItemContent>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleGoToAbout}>
+        <DropdownMenuItem onClick={handleGoToDevelopment}>
           <MenuItemContent>
             <Info size={16} />
-            About
+            {t('nav.development')}
           </MenuItemContent>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleGoToAdmin}>
           <MenuItemContent>
             <LayoutDashboard size={16} />
-            Go to Admin Dashboard
+            {t('nav.goToAdminDashboard')}
           </MenuItemContent>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <MenuItemContent>
             <LogOut size={16} />
-            Sign out
+            {t('nav.signOut')}
           </MenuItemContent>
         </DropdownMenuItem>
       </DropdownMenuContent>

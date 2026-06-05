@@ -39,7 +39,7 @@ const Skeleton = styled.div`
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
 const Wrapper = styled.section`
-  min-height: 100vh;
+  min-height: min(100vh, 1080px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,14 +131,16 @@ export default function Hero() {
   // CMS content takes priority; i18n keys are the static fallback.
   // Don't resolve fallbacks until loading is settled — avoids a flash of
   // i18n text before Firestore responds.
-  const badge = content?.badge ?? (loading ? null : t('home.badge'));
-  const title = content?.title ?? (loading ? null : t('home.title'));
-  const subtitle = content?.subtitle ?? (loading ? null : t('home.subtitle'));
-  const ctaText = content?.ctaText ?? (loading ? null : t('home.ctaText'));
-  const ctaHref = content?.ctaHref ?? '/';
+  const badge = content?.hero?.badge ?? (loading ? null : t('home.badge'));
+  const title = content?.hero?.title ?? (loading ? null : t('home.title'));
+  const subtitle =
+    content?.hero?.subtitle ?? (loading ? null : t('home.subtitle'));
+  const ctaText =
+    content?.hero?.ctaText ?? (loading ? null : t('home.ctaText'));
+  const ctaHref = content?.hero?.ctaHref ?? '/';
 
   return (
-    <Wrapper>
+    <Wrapper id="hero">
       {loading ? (
         <Skeleton width="140px" height="26px" radius="999px" mb="2rem" />
       ) : (

@@ -27,11 +27,12 @@ export const PROJECT_CONFIG = {
       },
     },
     social: {
-      twitter: '',
-      github: '',
-      linkedin: '',
       facebook: '',
       instagram: '',
+      twitter: '',
+      linkedin: '',
+      github: '',
+      youtube: '',
     },
   },
 
@@ -49,6 +50,13 @@ export const PROJECT_CONFIG = {
       title: 'Your Company',
       description: 'Your project description.',
       keywords: [],
+      image: 'https://yourproject.com/og-image.png',
+    },
+    development: {
+      title: 'Development | your-project-name',
+      description:
+        'Development information and tech stack for your-project-name.',
+      keywords: ['development', 'tech stack', 'technologies'],
       image: 'https://yourproject.com/og-image.png',
     },
     demo: {

@@ -3,13 +3,14 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
 import PageTransition from 'components/PageTransition';
 import { ToastProvider } from 'components/ToastProvider';
 import PageSEO from 'components/PageSEO';
 import { AuthProvider } from 'context/AuthContext';
 import RequireAuth from 'components/admin/RequireAuth';
 import Home from 'pages/Home';
-import About from 'pages/About';
+import Development from 'pages/Development';
 import NotFound from 'pages/NotFound';
 
 const Demo =
@@ -23,6 +24,7 @@ function App() {
   const location = useLocation();
 
   const isProduction = process.env.NODE_ENV === 'production';
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <ErrorBoundary>
@@ -40,10 +42,10 @@ function App() {
               }
             />
             <Route
-              path="/about"
+              path="/development"
               element={
                 <PageTransition>
-                  <About />
+                  <Development />
                 </PageTransition>
               }
             />
@@ -79,6 +81,7 @@ function App() {
             />
           </Routes>
         </AnimatePresence>
+        {!isAdminRoute && <Footer />}
       </AuthProvider>
       <ToastProvider position="bottom-right" />
     </ErrorBoundary>

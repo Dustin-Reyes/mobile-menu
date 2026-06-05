@@ -1,0 +1,183 @@
+import { useState } from 'react';
+import styled from '@emotion/styled';
+import { usePage } from 'hooks/useContent';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+
+const Wrapper = styled.section`
+  min-height: min(100vh, 1080px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  background-color: ${({ theme }) => theme.colors.background};
+`;
+
+const SectionHeader = styled.div`
+  text-align: center;
+  margin-bottom: 4rem;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s6};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.extrabold};
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+`;
+
+const SectionSubtitle = styled.p`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s4};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  max-width: 600px;
+  margin: 0 auto;
+`;
+
+const FAQContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const FAQItem = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const FAQQuestion = styled.button`
+  width: 100%;
+  padding: 1.5rem;
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'};
+  border: 1px solid
+    ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'};
+  border-radius: ${({ theme }) => theme.borderRadius.s2};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition:
+    background ${({ theme }) => theme.transitions.fast},
+    border-color ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const FAQAnswer = styled.div`
+  padding: ${({ isOpen }) => (isOpen ? '1.5rem' : '0 1.5rem')};
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)'};
+  border: 1px solid
+    ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'};
+  border-top: none;
+  border-radius: 0 0 ${({ theme }) => theme.borderRadius.s2}
+    ${({ theme }) => theme.borderRadius.s2};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  line-height: 1.6;
+  max-height: ${({ isOpen }) => (isOpen ? '500px' : '0')};
+  overflow: hidden;
+  opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
+  transition:
+    max-height ${({ theme }) => theme.transitions.fast},
+    opacity ${({ theme }) => theme.transitions.fast},
+    padding ${({ theme }) => theme.transitions.fast};
+`;
+
+const IconWrapper = styled.div`
+  flex-shrink: 0;
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+export default function FAQ() {
+  const { content, loading } = usePage('home');
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  const title =
+    content?.faq?.title ?? (loading ? null : 'Frequently Asked Questions');
+  const subtitle =
+    content?.faq?.subtitle ??
+    (loading ? null : 'Find answers to common questions');
+  const faqs =
+    content?.faq?.items ??
+    (loading
+      ? null
+      : [
+          {
+            question: 'What services do you offer?',
+            answer:
+              'We offer a comprehensive range of services including web development, design, consulting, and ongoing support to help your business succeed.',
+          },
+          {
+            question: 'How long does a project take?',
+            answer:
+              'Project timelines vary based on scope and complexity. Typically, projects range from 4-12 weeks. We provide detailed timelines during our initial consultation.',
+          },
+          {
+            question: 'What is your pricing structure?',
+            answer:
+              'We offer flexible pricing options including fixed-price projects and hourly rates. Contact us for a custom quote based on your specific needs.',
+          },
+          {
+            question: 'Do you provide ongoing support?',
+            answer:
+              'Yes, we offer various maintenance and support packages to ensure your project continues to perform optimally after launch.',
+          },
+        ]);
+
+  if (!faqs) return null;
+
+  return (
+    <Wrapper id="faq">
+      <SectionHeader>
+        {loading ? (
+          <div style={{ height: '40px', marginBottom: '1rem' }} />
+        ) : (
+          <SectionTitle>{title}</SectionTitle>
+        )}
+        {loading ? (
+          <div
+            style={{ height: '24px', maxWidth: '400px', margin: '0 auto' }}
+          />
+        ) : (
+          <SectionSubtitle>{subtitle}</SectionSubtitle>
+        )}
+      </SectionHeader>
+
+      <FAQContainer>
+        {faqs.map((faq, index) => (
+          <FAQItem key={index}>
+            <FAQQuestion onClick={() => toggleFAQ(index)}>
+              {faq.question}
+              <IconWrapper>
+                {openIndex === index ? (
+                  <ChevronUp size={20} />
+                ) : (
+                  <ChevronDown size={20} />
+                )}
+              </IconWrapper>
+            </FAQQuestion>
+            <FAQAnswer isOpen={openIndex === index}>{faq.answer}</FAQAnswer>
+          </FAQItem>
+        ))}
+      </FAQContainer>
+    </Wrapper>
+  );
+}
