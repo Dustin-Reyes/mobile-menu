@@ -162,12 +162,10 @@ const ContactValue = styled.span`
 
 const FormPanel = styled.div`
   background: ${({ theme }) =>
-    theme.mode === 'dark' ? theme.colors.surface : '#fff'};
+    theme.mode === 'dark' ? theme.colors.surface : theme.colors.background};
   border-radius: ${({ theme }) => theme.borderRadius.s3};
   padding: 3rem;
-  border: 1px solid
-    ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'};
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -207,7 +205,7 @@ export default function Contact() {
           {/* Left Panel - Contact Info */}
           <InfoPanel>
             <PanelIconBox>
-              <Send size={20} />
+              <Send size={20} aria-hidden="true" />
             </PanelIconBox>
             <PanelHeader>
               <PanelTitle>{t('contact.getInTouch')}</PanelTitle>
@@ -218,10 +216,10 @@ export default function Contact() {
               {footer.contactEmail && (
                 <ContactItem href={`mailto:${footer.contactEmail}`}>
                   <IconWrapper>
-                    <Mail size={18} />
+                    <Mail size={18} aria-hidden="true" />
                   </IconWrapper>
                   <ContactText>
-                    <ContactLabel>Email</ContactLabel>
+                    <ContactLabel>{t('contact.emailLabel')}</ContactLabel>
                     <ContactValue>{footer.contactEmail}</ContactValue>
                   </ContactText>
                 </ContactItem>
@@ -230,10 +228,10 @@ export default function Contact() {
               {footer.contactPhone && (
                 <ContactItem href={`tel:${footer.contactPhone}`}>
                   <IconWrapper>
-                    <Phone size={18} />
+                    <Phone size={18} aria-hidden="true" />
                   </IconWrapper>
                   <ContactText>
-                    <ContactLabel>Phone</ContactLabel>
+                    <ContactLabel>{t('contact.phoneLabel')}</ContactLabel>
                     <ContactValue>{footer.contactPhone}</ContactValue>
                   </ContactText>
                 </ContactItem>
@@ -242,10 +240,10 @@ export default function Contact() {
               {footer.address && (
                 <ContactItemStatic>
                   <IconWrapper>
-                    <MapPin size={18} />
+                    <MapPin size={18} aria-hidden="true" />
                   </IconWrapper>
                   <ContactText>
-                    <ContactLabel>Address</ContactLabel>
+                    <ContactLabel>{t('contact.addressLabel')}</ContactLabel>
                     <ContactValue style={{ whiteSpace: 'pre-line' }}>
                       {footer.address}
                     </ContactValue>

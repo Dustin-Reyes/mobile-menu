@@ -36,7 +36,10 @@
     "getInTouch": "Get in touch",
     "getInTouchSubtitle": "Have a question or want to work together? Reach out and let's make it happen.",
     "privacy": "We'll never share your information.",
-    "privacyPolicy": "View our Privacy Policy"
+    "privacyPolicy": "View our Privacy Policy",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "addressLabel": "Address"
   },
   "nav": {
     "getAQuote": "Get a Quote",

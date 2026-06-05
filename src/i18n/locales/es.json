@@ -36,7 +36,10 @@
     "getInTouch": "Contáctanos",
     "getInTouchSubtitle": "¿Tienes alguna pregunta o quieres trabajar juntos? Escríbenos y hagámoslo realidad.",
     "privacy": "Nunca compartiremos tu información.",
-    "privacyPolicy": "Ver nuestra Política de Privacidad"
+    "privacyPolicy": "Ver nuestra Política de Privacidad",
+    "emailLabel": "Correo",
+    "phoneLabel": "Teléfono",
+    "addressLabel": "Dirección"
   },
   "nav": {
     "getAQuote": "Obtener Cotización",
