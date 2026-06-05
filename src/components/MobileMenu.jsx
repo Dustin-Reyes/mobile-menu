@@ -315,13 +315,7 @@ export default function MobileMenu() {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
-      navigate('/');
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
+      navigate('/', { state: { scrollTo: sectionId } });
     }
   };
 

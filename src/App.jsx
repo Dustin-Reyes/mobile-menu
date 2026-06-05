@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -25,6 +25,23 @@ function App() {
 
   const isProduction = process.env.NODE_ENV === 'production';
   const isAdminRoute = location.pathname.startsWith('/admin');
+
+  // After the exit animation (0.2s), scroll to top or to a specific section when
+  // navigating from another page via an anchor link (state.scrollTo is the section id).
+  useEffect(() => {
+    const scrollTo = location.state?.scrollTo;
+    const timer = setTimeout(() => {
+      if (scrollTo) {
+        const element = document.getElementById(scrollTo);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }
+    }, 220);
+    return () => clearTimeout(timer);
+  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ErrorBoundary>

@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useCMS, useSettings, useNavigation, usePosts } from 'hooks/useContent';
-import { useAuth } from 'context/AuthContext';
 import { toast } from '@/utils/toast';
 import AdminSidebar from './AdminSidebar';
 import AdminBottomTabBar from './AdminBottomTabBar';
@@ -32,7 +31,6 @@ export default function AdminDashboard() {
     updateNavigation,
   } = useNavigation();
   const { posts } = usePosts();
-  const { logout } = useAuth();
 
   const [settingsForm, setSettingsForm] = useState({
     title: '',
@@ -130,15 +128,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleSignOut = async () => {
-    try {
-      await logout();
-      toast.success('Signed out');
-    } catch {
-      toast.error('Failed to sign out');
-    }
-  };
-
   const calculatedStats = useMemo(
     () => ({
       pages: stats?.pages || 1,
@@ -151,11 +140,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminContainer>
-      <AdminSidebar
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        onSignOut={handleSignOut}
-      />
+      <AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
       <MainContent>
         <TabContent>

@@ -18,7 +18,7 @@ export const Sidebar = styled.div`
   position: fixed;
   top: 10rem;
   left: 0;
-  width: 160px;
+  width: 200px;
   height: calc(100vh - 10rem);
   background: ${(p) => p.theme.colors.background};
   border-right: 1px solid rgba(255, 255, 255, 0.06);
@@ -66,7 +66,7 @@ export const SidebarSpacer = styled.div`
 
 export const MainContent = styled.div`
   flex: 1;
-  margin-left: 160px;
+  margin-left: 200px;
   overflow: hidden;
   display: flex;
   flex-direction: column;

@@ -121,41 +121,40 @@ function Header() {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
-      // If not on home page, navigate to home then scroll
-      navigate('/', { replace: true });
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
+      // Navigate to home and let App.jsx's scroll effect handle the section scroll
+      navigate('/', { state: { scrollTo: sectionId } });
     }
   };
 
   // Get enabled navigation links from config
   const navLinks = SECTIONS_CONFIG.navigation.filter((nav) => nav.enabled);
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <Wrapper>
       <Inner>
         <HeaderLogo />
-        <Nav>
-          {navLinks.map((nav) => (
-            <AnchorLink
-              key={nav.id}
-              href={`#${nav.id}`}
-              onClick={(e) => handleAnchorClick(e, nav.id)}
-              data-active={
-                location.pathname === '/' && location.hash === `#${nav.id}`
-              }
-            >
-              {t(`nav.${nav.id}`)}
-            </AnchorLink>
-          ))}
-        </Nav>
-        <MobileTrigger>
-          <MobileMenu />
-        </MobileTrigger>
+        {!isAdminRoute && (
+          <Nav>
+            {navLinks.map((nav) => (
+              <AnchorLink
+                key={nav.id}
+                href={`#${nav.id}`}
+                onClick={(e) => handleAnchorClick(e, nav.id)}
+                data-active={
+                  location.pathname === '/' && location.hash === `#${nav.id}`
+                }
+              >
+                {t(`nav.${nav.id}`)}
+              </AnchorLink>
+            ))}
+          </Nav>
+        )}
+        {!isAdminRoute && (
+          <MobileTrigger>
+            <MobileMenu />
+          </MobileTrigger>
+        )}
         <Controls>
           <LanguageSwitcher compact />
           <ThemeBtn

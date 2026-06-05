@@ -1,14 +1,8 @@
 import { Fragment } from 'react';
-import { LogOut } from 'lucide-react';
-import {
-  Sidebar,
-  SidebarItem,
-  SidebarDivider,
-  SidebarSpacer,
-} from './AdminDashboard.styles';
+import { Sidebar, SidebarItem, SidebarDivider } from './AdminDashboard.styles';
 import { ADMIN_TAB_GROUPS, getAdminTab } from './adminTabs';
 
-export default function AdminSidebar({ activeTab, onTabChange, onSignOut }) {
+export default function AdminSidebar({ activeTab, onTabChange }) {
   return (
     <Sidebar>
       {ADMIN_TAB_GROUPS.map((group, groupIndex) => (
@@ -30,16 +24,6 @@ export default function AdminSidebar({ activeTab, onTabChange, onSignOut }) {
           })}
         </Fragment>
       ))}
-
-      {onSignOut && (
-        <>
-          <SidebarSpacer />
-          <SidebarItem onClick={onSignOut}>
-            <LogOut size={14} />
-            Sign Out
-          </SidebarItem>
-        </>
-      )}
     </Sidebar>
   );
 }
