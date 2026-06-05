@@ -397,15 +397,13 @@ export default function ContactForm() {
           style={{ height: '48px' }}
         >
           {isSubmitting ? (
-            <>
+            <ButtonContent>
               <Loader2
                 size={18}
                 style={{ animation: 'spin 1s linear infinite' }}
               />
-              <span style={{ marginLeft: '0.5rem' }}>
-                {t('contactForm.sending', 'Sending...')}
-              </span>
-            </>
+              {t('contactForm.sending', 'Sending...')}
+            </ButtonContent>
           ) : (
             <ButtonContent>
               {t('contactForm.send', 'Send Message')}
