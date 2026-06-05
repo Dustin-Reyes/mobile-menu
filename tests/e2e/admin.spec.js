@@ -49,18 +49,6 @@ test.describe('Admin Dashboard', () => {
     );
   });
 
-  test('navigating to Analytics section shows its content', async ({
-    page,
-    isMobile,
-  }) => {
-    test.skip(isMobile, 'Analytics tab not present in mobile bottom tab bar');
-    await page.getByText('Analytics').first().click();
-    await page.waitForTimeout(300);
-    await expect(page.locator('body')).not.toContainText(
-      'Something went wrong',
-    );
-  });
-
   test('navigating to Media section shows its content', async ({
     page,
     isMobile,

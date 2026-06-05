@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Navigation', () => {
   test('home page loads and shows the site content', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText('transpiled-web-template')).toBeVisible();
+    await expect(page.getByText('TranspiledCode Template')).toBeVisible();
   });
 
   test('home page displays tech stack pills', async ({ page }) => {
