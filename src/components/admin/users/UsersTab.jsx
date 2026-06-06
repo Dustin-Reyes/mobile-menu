@@ -167,6 +167,13 @@ const RetryButton = styled(Button)`
   margin-top: 8px;
 `;
 
+const AddUserButton = styled(Button)`
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  }
+`;
+
 const UsersIcon = styled(Users)`
   opacity: 0.3;
 `;
@@ -252,10 +259,10 @@ export default function UsersTab() {
           <PageSubtitle>Manage team members and their roles</PageSubtitle>
         </div>
         {canManageUsers(userRole) && (
-          <Button onClick={() => setShowCreate(true)}>
+          <AddUserButton onClick={() => setShowCreate(true)}>
             <UserPlus size={14} />
             Add User
-          </Button>
+          </AddUserButton>
         )}
       </PageHeader>
 
