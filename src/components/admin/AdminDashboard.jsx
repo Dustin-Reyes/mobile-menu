@@ -1,15 +1,16 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { useCMS, useSettings, useNavigation, usePosts } from 'hooks/useContent';
+import { useCMS, useSettings, usePosts } from 'hooks/useContent';
 import { toast } from '@/utils/toast';
 import AdminSidebar from './AdminSidebar';
 import AdminBottomTabBar from './AdminBottomTabBar';
 import AdminDashboardTab from './AdminDashboardTab';
 import AdminSettingsTab from './AdminSettingsTab';
-import AdminNavigationTab from './AdminNavigationTab';
 import AdminPagesTab from './AdminPagesTab';
 import AdminPostsTab from './AdminPostsTab';
 import AdminMediaTab from './AdminMediaTab';
+import AdminProfileTab from './AdminProfileTab';
 import {
   AdminContainer,
   MainContent,
@@ -17,19 +18,22 @@ import {
 } from './AdminDashboard.styles';
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(
+    location.state?.tab || 'dashboard',
+  );
+
+  useEffect(() => {
+    if (location.state?.tab) {
+      setActiveTab(location.state.tab);
+    }
+  }, [location.state?.tab]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const [editingSettings, setEditingSettings] = useState(false);
-  const [editingNavigation, setEditingNavigation] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [editingNavItem, setEditingNavItem] = useState(null);
 
   const { isCMSEnabled, clearCache, stats } = useCMS();
   const { settings, updateSettings } = useSettings('site');
-  const {
-    navigation,
-    loading: navigationLoading,
-    updateNavigation,
-  } = useNavigation();
   const { posts } = usePosts();
 
   const [settingsForm, setSettingsForm] = useState({
@@ -37,12 +41,6 @@ export default function AdminDashboard() {
     description: '',
     author: '',
     url: '',
-  });
-
-  const [navigationForm, setNavigationForm] = useState({
-    label: '',
-    path: '',
-    order: 1,
   });
 
   useEffect(() => {
@@ -70,55 +68,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleNavigationSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const updatedNav = editingNavItem
-        ? navigation.map((item) =>
-            item.id === editingNavItem.id
-              ? { ...item, ...navigationForm }
-              : item,
-          )
-        : [...navigation, { ...navigationForm, id: Date.now().toString() }];
-      await updateNavigation(updatedNav);
-      setEditingNavigation(false);
-      setEditingNavItem(null);
-      setNavigationForm({ label: '', path: '', order: 1 });
-      toast.success('Navigation updated successfully!');
-    } catch {
-      toast.error('Failed to update navigation');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDeleteNavigation = async (id) => {
-    try {
-      const updatedNav = navigation.filter((item) => item.id !== id);
-      await updateNavigation(updatedNav);
-      toast.success('Navigation item deleted successfully!');
-    } catch {
-      toast.error('Failed to delete navigation item');
-    }
-  };
-
-  const handleEditNavigation = (item) => {
-    setEditingNavItem(item);
-    setNavigationForm({
-      label: item.label,
-      path: item.path,
-      order: item.order,
-    });
-    setEditingNavigation(true);
-  };
-
-  const handleCancelNavigation = () => {
-    setEditingNavigation(false);
-    setEditingNavItem(null);
-    setNavigationForm({ label: '', path: '', order: 1 });
-  };
-
   const handleClearCache = async () => {
     try {
       await clearCache();
@@ -132,10 +81,9 @@ export default function AdminDashboard() {
     () => ({
       pages: stats?.pages || 1,
       posts: posts?.length || 0,
-      navItems: navigation?.length || 0,
       cacheSize: stats?.cacheSize || 0,
     }),
-    [stats, posts, navigation],
+    [stats, posts],
   );
 
   return (
@@ -166,26 +114,10 @@ export default function AdminDashboard() {
               />
             )}
 
-            {activeTab === 'navigation' && (
-              <AdminNavigationTab
-                navigation={navigation}
-                navigationLoading={navigationLoading}
-                editingNavigation={editingNavigation}
-                setEditingNavigation={setEditingNavigation}
-                editingNavItem={editingNavItem}
-                navigationForm={navigationForm}
-                setNavigationForm={setNavigationForm}
-                loading={loading}
-                onSubmit={handleNavigationSubmit}
-                onEdit={handleEditNavigation}
-                onDelete={handleDeleteNavigation}
-                onCancel={handleCancelNavigation}
-              />
-            )}
-
             {activeTab === 'pages' && <AdminPagesTab />}
             {activeTab === 'posts' && <AdminPostsTab />}
             {activeTab === 'media' && <AdminMediaTab />}
+            {activeTab === 'profile' && <AdminProfileTab />}
           </AnimatePresence>
         </TabContent>
       </MainContent>

@@ -56,7 +56,13 @@
     "contact": "Contacto",
     "navigation": "Navegación",
     "analytics": "Analítica",
-    "menuTitle": "Navegación"
+    "menuTitle": "Navegación",
+    "homeSubtitle": "Ver tu sitio",
+    "developmentSubtitle": "Ver información del sitio",
+    "goToAdminDashboardSubtitle": "Administrar el contenido de tu sitio",
+    "signOutSubtitle": "Cerrar sesión de tu cuenta",
+    "settings": "Configuración",
+    "settingsSubtitle": "Administrar configuración del sitio"
   },
   "footer": {
     "tagline": "Tu eslogan aquí.",
@@ -88,6 +94,10 @@
       "signingIn": "Iniciando sesión...",
       "signIn": "Iniciar Sesión"
     }
+  },
+  "theme": {
+    "light": "Modo claro",
+    "dark": "Modo oscuro"
   },
   "common": {
     "days": {

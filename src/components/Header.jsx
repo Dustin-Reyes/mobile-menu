@@ -150,11 +150,9 @@ function Header() {
             ))}
           </Nav>
         )}
-        {!isAdminRoute && (
-          <MobileTrigger>
-            <MobileMenu />
-          </MobileTrigger>
-        )}
+        <MobileTrigger>
+          <MobileMenu />
+        </MobileTrigger>
         <Controls>
           <LanguageSwitcher compact />
           <ThemeBtn

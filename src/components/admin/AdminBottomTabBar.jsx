@@ -6,6 +6,7 @@ export default function AdminBottomTabBar({ activeTab, onTabChange }) {
     <BottomTabBar>
       {BOTTOM_TAB_IDS.map((tabId) => {
         const tab = getAdminTab(tabId);
+        if (!tab?.enabled) return null;
         const Icon = tab.icon;
         return (
           <BottomTab

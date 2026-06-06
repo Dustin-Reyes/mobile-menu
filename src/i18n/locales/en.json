@@ -57,7 +57,13 @@
     "contact": "Contact",
     "navigation": "Navigation",
     "analytics": "Analytics",
-    "menuTitle": "Navigation"
+    "menuTitle": "Navigation",
+    "homeSubtitle": "View your site",
+    "developmentSubtitle": "View site information",
+    "goToAdminDashboardSubtitle": "Manage your site content",
+    "signOutSubtitle": "Sign out of your account",
+    "settings": "Settings",
+    "settingsSubtitle": "Manage site settings"
   },
   "footer": {
     "tagline": "Your tagline here.",
@@ -89,6 +95,10 @@
       "signingIn": "Signing in...",
       "signIn": "Sign In"
     }
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode"
   },
   "common": {
     "days": {

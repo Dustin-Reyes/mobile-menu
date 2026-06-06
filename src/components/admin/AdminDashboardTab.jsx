@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Settings, Navigation, FileText, RefreshCw } from 'lucide-react';
+import { Settings, FileText, RefreshCw } from 'lucide-react';
 import {
   PageHeader,
   PageTitle,
@@ -53,10 +53,6 @@ export default function AdminDashboardTab({
           <StatLabel>Posts</StatLabel>
         </StatCard>
         <StatCard>
-          <StatValue>{stats.navItems}</StatValue>
-          <StatLabel>Nav Items</StatLabel>
-        </StatCard>
-        <StatCard>
           <StatValue>{stats.cacheSize}</StatValue>
           <StatLabel>Cached</StatLabel>
         </StatCard>
@@ -73,10 +69,6 @@ export default function AdminDashboardTab({
           <GhostTealButton onClick={() => onTabChange('settings')}>
             <Settings size={12} />
             Edit Settings
-          </GhostTealButton>
-          <GhostTealButton onClick={() => onTabChange('navigation')}>
-            <Navigation size={12} />
-            Manage Navigation
           </GhostTealButton>
           <GhostTealButton onClick={() => onTabChange('pages')}>
             <FileText size={12} />

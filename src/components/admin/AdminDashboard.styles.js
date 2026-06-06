@@ -434,9 +434,9 @@ export const BottomTabBar = styled.nav`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 56px;
-    background: ${(p) => p.theme.colors.background};
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    height: 60px;
+    background: ${(p) => p.theme.colors.surface};
+    border-top: 1px solid ${(p) => p.theme.colors.border};
     z-index: ${(p) => p.theme.zIndex.sticky};
   }
 `;
@@ -447,16 +447,14 @@ export const BottomTab = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  padding: 4px 0;
+  gap: 3px;
+  padding: 6px 0;
   background: transparent;
   border: none;
   cursor: pointer;
   font-family: inherit;
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: ${(p) =>
-    p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.3)'};
+    p.active ? p.theme.colors.primary : p.theme.colors.textSecondary};
   transition: color ${(p) => p.theme.transitions.fast};
 `;

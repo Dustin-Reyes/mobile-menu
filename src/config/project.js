@@ -87,6 +87,7 @@ export const PROJECT_CONFIG = {
     darkMode: true,
     errorReporting: process.env.NODE_ENV === 'production',
     performanceMonitoring: process.env.NODE_ENV === 'production',
+    posts: false,
   },
 
   security: {
@@ -125,6 +126,7 @@ function getEnvOverrides() {
           darkMode: true,
           errorReporting: true,
           performanceMonitoring: true,
+          posts: false,
         },
         security: {
           contentSecurityPolicy: true,
@@ -141,6 +143,7 @@ function getEnvOverrides() {
           darkMode: true,
           errorReporting: false,
           performanceMonitoring: false,
+          posts: false,
         },
         security: {
           contentSecurityPolicy: false,
@@ -157,6 +160,7 @@ function getEnvOverrides() {
           darkMode: true,
           errorReporting: false,
           performanceMonitoring: false,
+          posts: false,
         },
         security: {
           contentSecurityPolicy: false,

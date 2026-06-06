@@ -1,18 +1,5 @@
 import styled from '@emotion/styled';
-import {
-  Menu,
-  X,
-  LayoutDashboard,
-  LogIn,
-  LogOut,
-  Sun,
-  Moon,
-  Home,
-  Info,
-  ChevronRight,
-  Navigation,
-  TrendingUp,
-} from 'lucide-react';
+import { Menu, X, LogIn, Sun, Moon, ChevronRight } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from 'context/AuthContext';
 import { useTheme } from './ThemeProvider';
@@ -22,6 +9,10 @@ import Button from 'components/ui/Button';
 import LanguageSwitcher from './LanguageSwitcher';
 import HeaderLogo from './HeaderLogo';
 import { SECTIONS_CONFIG } from 'config/sections';
+import { ADMIN_TABS } from 'components/admin/adminTabs';
+import { getUserInitials, getUserDisplayName } from 'utils/userHelpers';
+
+// ─── Shell ────────────────────────────────────────────────────────────────────
 
 const Trigger = styled(RadixDialog.Trigger)`
   display: flex;
@@ -46,10 +37,7 @@ const Trigger = styled(RadixDialog.Trigger)`
 
 const Overlay = styled(RadixDialog.Overlay)`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: ${({ theme }) => theme.colors.overlay};
   z-index: ${({ theme }) => theme.zIndex.modal};
   animation: fadeIn 0.2s ease;
@@ -86,7 +74,7 @@ const Content = styled(RadixDialog.Content)`
   }
 `;
 
-const Header = styled.div`
+const MenuHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -122,40 +110,40 @@ const CloseButton = styled(RadixDialog.Close)`
 const ScrollArea = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 1.25rem 1rem;
+  padding: 1rem 1.25rem;
 `;
 
-const ProfileCard = styled(RadixDialog.Close)`
+// ─── User info ────────────────────────────────────────────────────────────────
+
+const UserInfo = styled(RadixDialog.Close)`
   display: flex;
   align-items: center;
-  gap: 0.875rem;
+  gap: 12px;
+  padding: 4px 0 16px;
   width: 100%;
-  padding: 0.875rem 1rem;
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.s2};
+  background: none;
+  border: none;
   cursor: pointer;
   text-align: left;
-  margin-bottom: 1.5rem;
-  transition: background ${({ theme }) => theme.transitions.fast};
+`;
 
-  &:hover {
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.09)' : 'rgba(0,0,0,0.07)'};
-  }
+const UserChevron = styled.div`
+  color: ${({ theme }) => theme.colors.textSecondary};
+  opacity: 0.4;
+  flex-shrink: 0;
+  margin-left: auto;
 `;
 
 const UserAvatar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.onPrimary};
   border-radius: 50%;
-  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s4};
   font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
   flex-shrink: 0;
 `;
@@ -168,7 +156,7 @@ const UserDetails = styled.div`
 const UserName = styled.span`
   display: block;
   font-size: ${({ theme }) => theme.typography.fontSizes.s4};
-  font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.text};
 `;
 
@@ -181,118 +169,135 @@ const UserEmail = styled.span`
   white-space: nowrap;
 `;
 
-const NavSection = styled.nav`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.5rem;
+// ─── Nav section ──────────────────────────────────────────────────────────────
+
+const Divider = styled.div`
+  height: 1px;
+  background: ${({ theme }) => theme.colors.border};
+  margin: 0 0 12px;
 `;
 
-const NavTitle = styled.h3`
+const SectionLabel = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSizes.s1};
   font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
   color: ${({ theme }) => theme.colors.textSecondary};
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin: 0 0 0.5rem 0.5rem;
+  margin: 12px 0 4px 12px;
 `;
 
-const NavLink = styled(RadixDialog.Close)`
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  padding: 0.875rem 1rem;
+// ─── Simple nav item ──────────────────────────────────────────────────────────
+
+const NavItem = styled(RadixDialog.Close)`
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
   background: ${({ $active, theme }) =>
-    $active
-      ? theme.mode === 'dark'
-        ? 'rgba(255, 186, 0, 0.1)'
-        : 'rgba(255, 186, 0, 0.08)'
-      : 'none'};
+    $active ? `${theme.colors.primary}14` : 'transparent'};
   border: none;
-  border-left: 3px solid
-    ${({ $active, theme }) => ($active ? theme.colors.primary : 'transparent')};
-  border-radius: 0 ${({ theme }) => theme.borderRadius.s1}
-    ${({ theme }) => theme.borderRadius.s1} 0;
-  color: ${({ $active, theme }) =>
-    $active ? theme.colors.primary : theme.colors.text};
-  font-size: ${({ theme }) => theme.typography.fontSizes.s4};
-  font-weight: ${({ $active, theme }) =>
-    $active
-      ? theme.typography.fontWeights.bold
-      : theme.typography.fontWeights.medium};
+  border-radius: ${({ theme }) => theme.borderRadius.s1};
   cursor: pointer;
   text-align: left;
-  width: 100%;
-  transition:
-    background ${({ theme }) => theme.transitions.fast},
-    color ${({ theme }) => theme.transitions.fast};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s4};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.primary : theme.colors.text};
+  transition: background ${({ theme }) => theme.transitions.fast};
 
   &:hover {
     background: ${({ $active, theme }) =>
       $active
-        ? theme.mode === 'dark'
-          ? 'rgba(255, 186, 0, 0.15)'
-          : 'rgba(255, 186, 0, 0.12)'
+        ? `${theme.colors.primary}1e`
         : theme.mode === 'dark'
-          ? 'rgba(255,255,255,0.06)'
-          : 'rgba(0,0,0,0.05)'};
-  }
-
-  svg:first-of-type {
-    color: ${({ $active, theme }) =>
-      $active ? theme.colors.primary : theme.colors.textSecondary};
-    flex-shrink: 0;
+          ? 'rgba(255,255,255,0.05)'
+          : 'rgba(0,0,0,0.04)'};
   }
 `;
 
-const NavLinkLabel = styled.span`
-  flex: 1;
+// ─── Admin / sign-out items (two-line, no icon) ───────────────────────────────
+
+const TwoLineItem = styled(RadixDialog.Close)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.s1};
+  cursor: pointer;
+  text-align: left;
+  transition: background ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    background: ${({ $destructive, theme }) =>
+      $destructive
+        ? 'rgba(239,68,68,0.06)'
+        : theme.mode === 'dark'
+          ? 'rgba(255,255,255,0.05)'
+          : 'rgba(0,0,0,0.04)'};
+  }
 `;
 
-const SectionDivider = styled.div`
-  height: 1px;
-  background: ${({ theme }) => theme.colors.border};
-  margin: 0.75rem 0 1.25rem;
+const TwoLineLabel = styled.span`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s4};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
+  color: ${({ $destructive }) => ($destructive ? '#ef4444' : 'inherit')};
+  line-height: 1.3;
 `;
+
+const TwoLineSubtitle = styled.span`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
+  color: ${({ $destructive, theme }) =>
+    $destructive ? 'rgba(239,68,68,0.6)' : theme.colors.textSecondary};
+  line-height: 1.3;
+`;
+
+// ─── Admin actions (pinned above bottom bar) ──────────────────────────────────
+
+const AdminSection = styled.div`
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 0.5rem 1.25rem;
+  flex-shrink: 0;
+`;
+
+// ─── Bottom bar ───────────────────────────────────────────────────────────────
 
 const BottomBar = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1rem;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   flex-shrink: 0;
-`;
-
-const BottomControls = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 `;
 
 const ThemeButton = styled.button`
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
   background: none;
   border: none;
   cursor: pointer;
-  padding: ${({ theme }) => theme.spacing.s0};
-  border-radius: ${({ theme }) => theme.borderRadius.s1};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  padding: 0.5rem 1rem;
+  border-radius: ${({ theme }) => theme.borderRadius.s2};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s4};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
   transition:
     color ${({ theme }) => theme.transitions.fast},
     background ${({ theme }) => theme.transitions.fast};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+    background: ${({ theme }) => theme.colors.background};
   }
 `;
 
 const AuthButtonWrapper = styled(RadixDialog.Close)`
   flex: 1;
 `;
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function MobileMenu() {
   const { t } = useTranslation();
@@ -301,26 +306,18 @@ export default function MobileMenu() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleNavigate = (path) => {
-    navigate(path);
-  };
+  const handleNavigate = (path, state) =>
+    navigate(path, state ? { state } : undefined);
 
   const handleAnchorClick = (path) => {
     const sectionId = path.replace('/#', '');
-    const isHomePage = location.pathname === '/';
-
-    if (isHomePage) {
+    if (location.pathname === '/') {
       const element = document.getElementById(sectionId);
-      if (element) {
+      if (element)
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
     } else {
       navigate('/', { state: { scrollTo: sectionId } });
     }
-  };
-
-  const handleSignIn = () => {
-    navigate('/admin');
   };
 
   const handleSignOut = async () => {
@@ -333,23 +330,11 @@ export default function MobileMenu() {
     }
   };
 
-  const getUserInitials = () => {
-    const email = user?.email || '';
-    const username = email.split('@')[0] || '';
-    return username.slice(0, 2).toUpperCase();
-  };
-
-  const getUserDisplayName = () => {
-    const email = user?.email || '';
-    const username = email.split('@')[0] || '';
-    return username.charAt(0).toUpperCase() + username.slice(1);
-  };
-
   const isActive = (path) => location.pathname === path;
 
   const mainNavItems = [
-    { label: t('nav.home'), path: '/', icon: Home },
-    { label: t('nav.development'), path: '/development', icon: Info },
+    { label: t('nav.home'), path: '/' },
+    { label: t('nav.development'), path: '/development' },
   ];
 
   const sectionNavItems = SECTIONS_CONFIG.navigation
@@ -357,15 +342,7 @@ export default function MobileMenu() {
     .map((nav) => ({
       label: t(`nav.${nav.id}`),
       path: `/#${nav.id}`,
-      icon: ChevronRight,
-      isAnchor: true,
     }));
-
-  const adminNavItems = [
-    { label: t('nav.adminDashboard'), path: '/admin', icon: LayoutDashboard },
-    { label: t('nav.navigation'), path: '/admin', icon: Navigation },
-    { label: t('nav.analytics'), path: '/admin', icon: TrendingUp },
-  ];
 
   return (
     <RadixDialog.Root>
@@ -375,100 +352,112 @@ export default function MobileMenu() {
       <RadixDialog.Portal>
         <Overlay />
         <Content>
-          <Header>
+          <MenuHeader>
             <HeaderLogo />
             <CloseButton aria-label="Close menu">
               <X size={18} />
             </CloseButton>
-          </Header>
+          </MenuHeader>
 
           <ScrollArea>
             {isAuthenticated && (
-              <ProfileCard onClick={() => handleNavigate('/admin')}>
-                <UserAvatar>{getUserInitials()}</UserAvatar>
-                <UserDetails>
-                  <UserName>{getUserDisplayName()}</UserName>
-                  <UserEmail>{user?.email}</UserEmail>
-                </UserDetails>
-                <ChevronRight
-                  size={18}
-                  style={{ color: 'inherit', opacity: 0.4, flexShrink: 0 }}
-                />
-              </ProfileCard>
+              <>
+                <UserInfo
+                  onClick={() => handleNavigate('/admin', { tab: 'profile' })}
+                >
+                  <UserAvatar>{getUserInitials(user?.email)}</UserAvatar>
+                  <UserDetails>
+                    <UserName>{getUserDisplayName(user?.email)}</UserName>
+                    <UserEmail>{user?.email}</UserEmail>
+                  </UserDetails>
+                  <UserChevron>
+                    <ChevronRight size={16} />
+                  </UserChevron>
+                </UserInfo>
+                <Divider />
+              </>
             )}
 
-            <NavSection>
-              <NavTitle>{t('nav.menuTitle')}</NavTitle>
-              {mainNavItems.map(({ label, path, icon: Icon }) => (
-                <NavLink
-                  key={path + label}
-                  $active={isActive(path)}
-                  onClick={() => handleNavigate(path)}
-                >
-                  <Icon size={20} />
-                  <NavLinkLabel>{label}</NavLinkLabel>
-                  <ChevronRight size={16} style={{ opacity: 0.4 }} />
-                </NavLink>
-              ))}
-              {sectionNavItems.map(({ label, path, icon: Icon }) => (
-                <NavLink
-                  key={path + label}
+            {mainNavItems.map(({ label, path }) => (
+              <NavItem
+                key={path}
+                $active={isActive(path)}
+                onClick={() => handleNavigate(path)}
+              >
+                {label}
+              </NavItem>
+            ))}
+
+            {location.pathname === '/' &&
+              sectionNavItems.map(({ label, path }) => (
+                <NavItem
+                  key={path}
                   $active={false}
                   onClick={() => handleAnchorClick(path)}
                 >
-                  <Icon size={20} />
-                  <NavLinkLabel>{label}</NavLinkLabel>
-                  <ChevronRight size={16} style={{ opacity: 0.4 }} />
-                </NavLink>
+                  {label}
+                </NavItem>
               ))}
-            </NavSection>
 
-            {isAuthenticated && (
+            {isAuthenticated && location.pathname.startsWith('/admin') && (
               <>
-                <SectionDivider />
-                <NavSection>
-                  {adminNavItems.map(({ label, path, icon: Icon }) => (
-                    <NavLink
-                      key={label}
+                <SectionLabel>Admin</SectionLabel>
+                {ADMIN_TABS.filter((tab) => tab.enabled).map(
+                  ({ id, label }) => (
+                    <NavItem
+                      key={id}
                       $active={false}
-                      onClick={() => handleNavigate(path)}
+                      onClick={() => handleNavigate('/admin', { tab: id })}
                     >
-                      <Icon size={20} />
-                      <NavLinkLabel>{label}</NavLinkLabel>
-                      <ChevronRight size={16} style={{ opacity: 0.4 }} />
-                    </NavLink>
-                  ))}
-                </NavSection>
+                      {label}
+                    </NavItem>
+                  ),
+                )}
               </>
             )}
           </ScrollArea>
 
+          {isAuthenticated && (
+            <AdminSection>
+              {!location.pathname.startsWith('/admin') && (
+                <TwoLineItem
+                  onClick={() => handleNavigate('/admin', { tab: 'dashboard' })}
+                >
+                  <TwoLineLabel>{t('nav.goToAdminDashboard')}</TwoLineLabel>
+                  <TwoLineSubtitle>
+                    {t('nav.goToAdminDashboardSubtitle')}
+                  </TwoLineSubtitle>
+                </TwoLineItem>
+              )}
+
+              <TwoLineItem $destructive onClick={handleSignOut}>
+                <TwoLineLabel $destructive>{t('nav.signOut')}</TwoLineLabel>
+                <TwoLineSubtitle $destructive>
+                  {t('nav.signOutSubtitle')}
+                </TwoLineSubtitle>
+              </TwoLineItem>
+            </AdminSection>
+          )}
+
           <BottomBar>
-            <BottomControls>
-              <LanguageSwitcher compact />
-              <ThemeButton
-                onClick={toggleMode}
-                aria-label={
-                  isDark ? 'Switch to light mode' : 'Switch to dark mode'
-                }
-                title={isDark ? 'Light mode' : 'Dark mode'}
-              >
-                {isDark ? <Sun size={20} /> : <Moon size={20} />}
-              </ThemeButton>
-            </BottomControls>
-            <AuthButtonWrapper>
-              {isAuthenticated ? (
-                <Button onClick={handleSignOut} variant="outline" fullWidth>
-                  <LogOut size={16} style={{ marginRight: '8px' }} />
-                  {t('nav.signOut')}
-                </Button>
-              ) : (
-                <Button onClick={handleSignIn} fullWidth>
+            <LanguageSwitcher />
+            <ThemeButton
+              onClick={toggleMode}
+              aria-label={
+                isDark ? 'Switch to light mode' : 'Switch to dark mode'
+              }
+            >
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+              {isDark ? t('theme.light') : t('theme.dark')}
+            </ThemeButton>
+            {!isAuthenticated && (
+              <AuthButtonWrapper>
+                <Button onClick={() => navigate('/admin')} fullWidth>
                   <LogIn size={16} style={{ marginRight: '8px' }} />
                   {t('nav.signIn')}
                 </Button>
-              )}
-            </AuthButtonWrapper>
+              </AuthButtonWrapper>
+            )}
           </BottomBar>
         </Content>
       </RadixDialog.Portal>

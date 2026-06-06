@@ -10,6 +10,7 @@ export default function AdminSidebar({ activeTab, onTabChange }) {
           {groupIndex > 0 && <SidebarDivider />}
           {group.map((tabId) => {
             const tab = getAdminTab(tabId);
+            if (!tab?.enabled) return null;
             const Icon = tab.icon;
             return (
               <SidebarItem
