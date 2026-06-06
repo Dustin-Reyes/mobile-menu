@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { Settings, Edit2 } from 'lucide-react';
@@ -159,6 +159,26 @@ export default function SettingsTab({ settings, updateSettings }) {
       setLoading(false);
     }
   };
+
+  const settingsDisplay = useMemo(
+    () => [
+      ['Title', settings?.title],
+      ['Description', settings?.description],
+      ['Tagline', settings?.tagline],
+      ['Author', settings?.author],
+      ['URL', settings?.url],
+      ['Facebook', settings?.facebook],
+      ['Instagram', settings?.instagram],
+      ['Twitter', settings?.twitter],
+      ['LinkedIn', settings?.linkedin],
+      ['GitHub', settings?.github],
+      ['YouTube', settings?.youtube],
+      ['Contact Phone', settings?.contactPhone],
+      ['Contact Email', settings?.contactEmail],
+      ['Address', settings?.address],
+    ],
+    [settings],
+  );
 
   return (
     <motion.div key="settings" {...motionProps}>
@@ -361,22 +381,7 @@ export default function SettingsTab({ settings, updateSettings }) {
           </Form>
         ) : (
           <SettingsViewGrid>
-            {[
-              ['Title', settings?.title],
-              ['Description', settings?.description],
-              ['Tagline', settings?.tagline],
-              ['Author', settings?.author],
-              ['URL', settings?.url],
-              ['Facebook', settings?.facebook],
-              ['Instagram', settings?.instagram],
-              ['Twitter', settings?.twitter],
-              ['LinkedIn', settings?.linkedin],
-              ['GitHub', settings?.github],
-              ['YouTube', settings?.youtube],
-              ['Contact Phone', settings?.contactPhone],
-              ['Contact Email', settings?.contactEmail],
-              ['Address', settings?.address],
-            ].map(([label, value]) => (
+            {settingsDisplay.map(([label, value]) => (
               <div key={label}>
                 <SettingsLabel>{label}</SettingsLabel>
                 <SettingsValue hasValue={!!value}>
