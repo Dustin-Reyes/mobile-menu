@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import {
@@ -426,14 +426,18 @@ export default function PageEditor({ pageId }) {
 
   const [confirmTranslateOpen, setConfirmTranslateOpen] = useState(false);
 
-  const sections = schema ? getSections(schema) : [];
+  const sections = useMemo(() => (schema ? getSections(schema) : []), [schema]);
   const [activeSection, setActiveSection] = useState(() => sections[0] ?? null);
 
-  const filteredFields = schema
-    ? activeSection
-      ? schema.fields.filter((f) => f.group === activeSection)
-      : schema.fields
-    : [];
+  const filteredFields = useMemo(
+    () =>
+      schema
+        ? activeSection
+          ? schema.fields.filter((f) => f.group === activeSection)
+          : schema.fields
+        : [],
+    [schema, activeSection],
+  );
 
   const busy = isLoading || isSaving || isTranslating;
 
