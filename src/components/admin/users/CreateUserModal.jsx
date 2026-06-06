@@ -99,6 +99,11 @@ const ModalActions = styled.div`
 
 const WideDialogContent = styled(DialogContent)`
   max-width: 440px;
+
+  @media (max-width: 768px) {
+    max-width: 90vw;
+    margin: 16px;
+  }
 `;
 
 const FormContainer = styled.form`

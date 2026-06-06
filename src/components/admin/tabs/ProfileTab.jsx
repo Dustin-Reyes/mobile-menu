@@ -20,6 +20,11 @@ const ProfileCard = styled.div`
   align-items: center;
   gap: 16px;
   padding: 4px 0 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+  }
 `;
 
 const Avatar = styled.div`
@@ -39,6 +44,10 @@ const Avatar = styled.div`
 const ProfileDetails = styled.div`
   min-width: 0;
   flex: 1;
+
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 
 const ProfileName = styled.div`
@@ -68,6 +77,10 @@ const RoleBadge = styled.div`
   background: ${(p) => p.theme.colors.primary}18;
   color: ${(p) => p.theme.colors.primary};
   border: 1px solid ${(p) => p.theme.colors.primary}30;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `;
 
 const NoRoleBadge = styled(RoleBadge)`
@@ -99,6 +112,11 @@ const SignOutButton = styled.button`
   &:hover {
     background: rgba(239, 68, 68, 0.08);
     border-color: rgba(239, 68, 68, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
   }
 `;
 

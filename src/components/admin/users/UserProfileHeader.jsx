@@ -12,6 +12,11 @@ const DetailProfile = styled.div`
   background: rgba(255, 255, 255, 0.025);
   border-radius: ${(p) => p.theme.borderRadius.s2}
     ${(p) => p.theme.borderRadius.s2} 0 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+  }
 `;
 
 const DetailAvatarWrap = styled.div`
@@ -36,6 +41,10 @@ const DetailInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3px;
+
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 
 const NameRow = styled.div`
@@ -120,6 +129,10 @@ const DetailBadges = styled.div`
   gap: 6px;
   padding: 12px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `;
 
 const RoleBadge = styled.span`

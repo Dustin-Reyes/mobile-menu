@@ -48,7 +48,7 @@ const UserRow = styled.div`
     background: rgba(255, 255, 255, 0.05);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     flex-wrap: wrap;
   }
 `;
@@ -102,7 +102,7 @@ const BadgesRow = styled.div`
   gap: 6px;
   flex-shrink: 0;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     order: 3;
     margin-left: 46px;
   }

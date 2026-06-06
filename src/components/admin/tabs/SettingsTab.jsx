@@ -76,11 +76,19 @@ const ActionButtons = styled.div`
   gap: 8px;
   justify-content: flex-end;
   margin-top: 4px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const SettingsViewGrid = styled.div`
   display: grid;
   gap: 8px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const SettingsLabel = styled.div`

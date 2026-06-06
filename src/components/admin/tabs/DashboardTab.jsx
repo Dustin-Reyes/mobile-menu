@@ -76,7 +76,7 @@ const ContentCardsGrid = styled.div`
   gap: 10px;
   margin-bottom: 12px;
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
 `;

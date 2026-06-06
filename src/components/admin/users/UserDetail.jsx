@@ -30,6 +30,10 @@ const BackButton = styled.button`
   &:hover {
     color: rgba(255, 255, 255, 0.75);
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 8px;
+  }
 `;
 
 // ─── Motion ───────────────────────────────────────────────────────────────────

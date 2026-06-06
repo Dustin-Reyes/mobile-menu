@@ -13,6 +13,10 @@ const ActionButtonGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const ActionButton = styled.button`
@@ -46,6 +50,10 @@ const DestructiveButton = styled(ActionButton)`
   &:hover {
     background: rgba(239, 68, 68, 0.12);
     border-color: rgba(239, 68, 68, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 0;
   }
 `;
 

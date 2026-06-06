@@ -65,6 +65,10 @@ const EmailDescription = styled.p`
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.4);
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
 `;
 
 // ─── Component ───────────────────────────────────────────────────────────────────

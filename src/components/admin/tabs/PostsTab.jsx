@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import styled from '@emotion/styled';
 import { Newspaper } from 'lucide-react';
 import { PageHeader, PageTitle, PageSubtitle } from '../shared/PageHeader';
 import {
@@ -6,10 +7,6 @@ import {
   SectionCardHeader,
   SectionCardTitle,
 } from '../shared/SectionCard';
-import {
-  CompactEmptyState,
-  CompactEmptyIcon,
-} from '../shared/CompactEmptyState';
 
 const motionProps = {
   initial: { opacity: 0, y: 10 },
@@ -17,6 +14,25 @@ const motionProps = {
   exit: { opacity: 0, y: -10 },
   transition: { duration: 0.2 },
 };
+
+const CompactEmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+`;
+
+const CompactEmptyIcon = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s7};
+  margin-bottom: 2px;
+`;
 
 export default function PostsTab() {
   return (
