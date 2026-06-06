@@ -87,6 +87,15 @@ const UserPrimary = styled.div`
   text-overflow: ellipsis;
 `;
 
+const UserSecondary = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const BadgesRow = styled.div`
   display: flex;
   align-items: center;
@@ -364,6 +373,7 @@ export default function UsersTab() {
                     <UserPrimary title={u.displayName ?? u.email}>
                       {u.displayName ?? u.email}
                     </UserPrimary>
+                    <UserSecondary>{u.email}</UserSecondary>
                     <MobileRole>
                       {u.role ? (ROLE_LABELS[u.role] ?? u.role) : null}
                     </MobileRole>
