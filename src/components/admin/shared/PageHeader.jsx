@@ -3,13 +3,9 @@ import styled from '@emotion/styled';
 export const PageHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 12px;
-  }
 `;
 
 export const PageTitle = styled.h1`
