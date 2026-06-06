@@ -107,9 +107,6 @@ const ContentCardHint = styled.div`
 `;
 
 const StatusLine = styled.div`
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -119,11 +116,7 @@ const StatusLine = styled.div`
   border-radius: 9999px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: rgba(255, 255, 255, 0.3);
-  z-index: ${(p) => p.theme.zIndex.sticky};
-
-  @media (max-width: 768px) {
-    bottom: 76px;
-  }
+  flex-shrink: 0;
 `;
 
 const StatusDot = styled.div`
@@ -170,6 +163,10 @@ export default function DashboardTab({
             </SiteUrlPlaceholder>
           )}
         </SiteDetails>
+        <StatusLine>
+          <StatusDot $active={isCMSEnabled} />
+          {isCMSEnabled ? 'Database connected' : 'No database connection'}
+        </StatusLine>
       </SiteIdentityCard>
 
       <ContentCardsGrid>
@@ -209,11 +206,6 @@ export default function DashboardTab({
           <ContentCardHint>Edit →</ContentCardHint>
         </ContentCard>
       </ContentCardsGrid>
-
-      <StatusLine>
-        <StatusDot $active={isCMSEnabled} />
-        {isCMSEnabled ? 'Database connected' : 'No database connection'}
-      </StatusLine>
     </motion.div>
   );
 }
