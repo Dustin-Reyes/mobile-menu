@@ -32,7 +32,6 @@ const motionProps = {
 const UserList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1px;
 `;
 
 const UserRow = styled.div`
@@ -41,15 +40,16 @@ const UserRow = styled.div`
   gap: 12px;
   padding: 10px 14px;
   border-radius: ${(p) => p.theme.borderRadius.s1};
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   cursor: pointer;
   transition: background ${(p) => p.theme.transitions.fast};
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.05);
+  &:last-child {
+    border-bottom: none;
   }
 
-  @media (max-width: 768px) {
-    flex-wrap: wrap;
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
   }
 `;
 
