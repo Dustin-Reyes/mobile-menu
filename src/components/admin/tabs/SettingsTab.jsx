@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { Settings, Edit2 } from 'lucide-react';
@@ -9,6 +10,7 @@ import {
   SectionCardHeader,
   SectionCardTitle,
 } from '../shared/SectionCard';
+import { toast } from '@/utils/toast';
 
 const GhostTealButton = styled.button`
   display: inline-flex;
@@ -102,15 +104,62 @@ const motionProps = {
   transition: { duration: 0.2 },
 };
 
-export default function SettingsTab({
-  settings,
-  settingsForm,
-  setSettingsForm,
-  editingSettings,
-  setEditingSettings,
-  loading,
-  onSubmit,
-}) {
+export default function SettingsTab({ settings, updateSettings }) {
+  const [editingSettings, setEditingSettings] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [settingsForm, setSettingsForm] = useState({
+    title: '',
+    description: '',
+    author: '',
+    url: '',
+    tagline: '',
+    facebook: '',
+    instagram: '',
+    twitter: '',
+    linkedin: '',
+    github: '',
+    youtube: '',
+    contactPhone: '',
+    contactEmail: '',
+    address: '',
+  });
+
+  useEffect(() => {
+    if (settings) {
+      setSettingsForm({
+        title: settings.title || '',
+        description: settings.description || '',
+        author: settings.author || '',
+        url: settings.url || '',
+        tagline: settings.tagline || '',
+        facebook: settings.facebook || '',
+        instagram: settings.instagram || '',
+        twitter: settings.twitter || '',
+        linkedin: settings.linkedin || '',
+        github: settings.github || '',
+        youtube: settings.youtube || '',
+        contactPhone: settings.contactPhone || '',
+        contactEmail: settings.contactEmail || '',
+        address: settings.address || '',
+      });
+    }
+  }, [settings]);
+
+  const handleSettingsSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await updateSettings(settingsForm);
+      setEditingSettings(false);
+      toast.success('Settings updated successfully!');
+    } catch {
+      toast.error('Failed to update settings');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <motion.div key="settings" {...motionProps}>
       <PageHeader>
@@ -135,7 +184,7 @@ export default function SettingsTab({
         </SectionCardHeader>
 
         {editingSettings ? (
-          <Form onSubmit={onSubmit}>
+          <Form onSubmit={handleSettingsSubmit}>
             <FormGroup>
               <FormLabel>Site Title</FormLabel>
               <Input

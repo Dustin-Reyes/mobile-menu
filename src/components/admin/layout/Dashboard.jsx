@@ -4,7 +4,6 @@ import { AnimatePresence } from 'framer-motion';
 import styled from '@emotion/styled';
 import { useCMS, useSettings, usePosts } from 'hooks/useContent';
 import PROJECT_CONFIG from 'config/project';
-import { toast } from '@/utils/toast';
 import { useAuth } from 'context/AuthContext';
 import { pageSchema } from '../../../content/schema';
 import Sidebar from './Sidebar';
@@ -66,64 +65,9 @@ export default function Dashboard() {
     }
   }, [location.state?.tab]);
 
-  const [editingSettings, setEditingSettings] = useState(false);
-  const [loading, setLoading] = useState(false);
-
   const { isCMSEnabled, stats } = useCMS();
   const { settings, updateSettings } = useSettings('site');
   const { posts } = usePosts();
-
-  const [settingsForm, setSettingsForm] = useState({
-    title: '',
-    description: '',
-    author: '',
-    url: '',
-    tagline: '',
-    facebook: '',
-    instagram: '',
-    twitter: '',
-    linkedin: '',
-    github: '',
-    youtube: '',
-    contactPhone: '',
-    contactEmail: '',
-    address: '',
-  });
-
-  useEffect(() => {
-    if (settings) {
-      setSettingsForm({
-        title: settings.title || '',
-        description: settings.description || '',
-        author: settings.author || '',
-        url: settings.url || '',
-        tagline: settings.tagline || '',
-        facebook: settings.facebook || '',
-        instagram: settings.instagram || '',
-        twitter: settings.twitter || '',
-        linkedin: settings.linkedin || '',
-        github: settings.github || '',
-        youtube: settings.youtube || '',
-        contactPhone: settings.contactPhone || '',
-        contactEmail: settings.contactEmail || '',
-        address: settings.address || '',
-      });
-    }
-  }, [settings]);
-
-  const handleSettingsSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await updateSettings(settingsForm);
-      setEditingSettings(false);
-      toast.success('Settings updated successfully!');
-    } catch {
-      toast.error('Failed to update settings');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const calculatedStats = useMemo(
     () => ({
@@ -160,12 +104,7 @@ export default function Dashboard() {
             {activeTab === 'settings' && (
               <SettingsTab
                 settings={settings}
-                settingsForm={settingsForm}
-                setSettingsForm={setSettingsForm}
-                editingSettings={editingSettings}
-                setEditingSettings={setEditingSettings}
-                loading={loading}
-                onSubmit={handleSettingsSubmit}
+                updateSettings={updateSettings}
               />
             )}
 
