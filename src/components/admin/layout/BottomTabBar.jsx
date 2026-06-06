@@ -29,12 +29,17 @@ const BottomTab = styled.button`
   padding: 6px 0;
   background: transparent;
   border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
   cursor: pointer;
   font-family: inherit;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: ${(p) =>
     p.active ? p.theme.colors.primary : p.theme.colors.textSecondary};
   transition: color ${(p) => p.theme.transitions.fast};
+
+  &:last-child {
+    border-right: none;
+  }
 `;
 
 export default function BottomTabBar({ activeTab, onTabChange, userRole }) {
@@ -59,7 +64,6 @@ export default function BottomTabBar({ activeTab, onTabChange, userRole }) {
             onClick={() => onTabChange(tab.id)}
           >
             <Icon size={16} />
-            {tab.shortLabel}
           </BottomTab>
         );
       })}
