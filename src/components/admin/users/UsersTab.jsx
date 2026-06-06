@@ -169,7 +169,8 @@ const RetryButton = styled(Button)`
 
 const AddUserButton = styled(Button)`
   @media (max-width: 768px) {
-    padding: 6px 10px;
+    width: 100%;
+    padding: 10px 16px;
     font-size: ${(p) => p.theme.typography.fontSizes.s3};
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.1);
