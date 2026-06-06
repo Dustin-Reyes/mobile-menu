@@ -103,7 +103,7 @@ const BadgesRow = styled.div`
   gap: 6px;
   flex-shrink: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 `;
@@ -111,7 +111,7 @@ const BadgesRow = styled.div`
 const MobileRole = styled.div`
   display: none;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: block;
     font-size: ${(p) => p.theme.typography.fontSizes.s2};
     color: rgba(255, 255, 255, 0.3);
@@ -122,7 +122,7 @@ const MobileRole = styled.div`
 const MobileChevron = styled.div`
   display: none;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: flex;
     align-items: center;
     color: rgba(255, 255, 255, 0.2);
