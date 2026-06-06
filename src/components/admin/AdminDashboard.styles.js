@@ -5,6 +5,7 @@ import * as RadixSeparator from '@radix-ui/react-separator';
 
 export const AdminContainer = styled.div`
   height: calc(100vh - 67px);
+  overflow: hidden;
   background: ${(p) => p.theme.colors.background};
   display: flex;
 
@@ -76,10 +77,14 @@ export const MainContent = styled.div`
   }
 `;
 
-export const TabContent = styled.div`
+export const TabContent = styled('div', {
+  shouldForwardProp: (p) => p !== 'flush',
+})`
   flex: 1;
-  overflow-y: auto;
-  padding: 60px 20px 16px;
+  overflow-y: ${(p) => (p.flush ? 'hidden' : 'auto')};
+  padding: ${(p) => (p.flush ? '0' : '60px 20px 16px')};
+  display: flex;
+  flex-direction: column;
 `;
 
 // ─── Page header ─────────────────────────────────────────────────────────────

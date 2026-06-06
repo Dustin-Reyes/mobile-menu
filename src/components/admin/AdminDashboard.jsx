@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useCMS, useSettings, usePosts } from 'hooks/useContent';
 import PROJECT_CONFIG from 'config/project';
 import { toast } from '@/utils/toast';
+import { pageSchema } from '../../content/schema';
 import AdminSidebar from './AdminSidebar';
 import AdminBottomTabBar from './AdminBottomTabBar';
 import AdminDashboardTab from './AdminDashboardTab';
@@ -22,6 +23,9 @@ export default function AdminDashboard() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(
     location.state?.tab || 'dashboard',
+  );
+  const [selectedPage, setSelectedPage] = useState(
+    () => Object.keys(pageSchema)[0],
   );
 
   useEffect(() => {
@@ -80,10 +84,15 @@ export default function AdminDashboard() {
 
   return (
     <AdminContainer>
-      <AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <AdminSidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        selectedPage={selectedPage}
+        onPageChange={setSelectedPage}
+      />
 
       <MainContent>
-        <TabContent>
+        <TabContent flush={activeTab === 'pages'}>
           <AnimatePresence mode="wait">
             {activeTab === 'dashboard' && (
               <AdminDashboardTab
@@ -107,7 +116,12 @@ export default function AdminDashboard() {
               />
             )}
 
-            {activeTab === 'pages' && <AdminPagesTab />}
+            {activeTab === 'pages' && (
+              <AdminPagesTab
+                selectedPage={selectedPage}
+                onPageChange={setSelectedPage}
+              />
+            )}
             {activeTab === 'posts' && <AdminPostsTab />}
             {activeTab === 'media' && <AdminMediaTab />}
             {activeTab === 'profile' && <AdminProfileTab />}

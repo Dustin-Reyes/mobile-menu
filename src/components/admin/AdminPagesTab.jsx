@@ -1,32 +1,18 @@
 import { motion } from 'framer-motion';
-import { ContentEditor } from './AdminContentEditor';
-import {
-  PageHeader,
-  PageTitle,
-  PageSubtitle,
-  FlushSectionCard,
-} from './AdminDashboard.styles';
+import AdminPageEditor from './AdminPageEditor';
 
 const motionProps = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -10 },
   transition: { duration: 0.2 },
+  style: { flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 },
 };
 
-export default function AdminPagesTab() {
+export default function AdminPagesTab({ selectedPage }) {
   return (
     <motion.div key="pages" {...motionProps}>
-      <PageHeader>
-        <div>
-          <PageTitle>Pages</PageTitle>
-          <PageSubtitle>Manage site pages</PageSubtitle>
-        </div>
-      </PageHeader>
-
-      <FlushSectionCard>
-        <ContentEditor />
-      </FlushSectionCard>
+      <AdminPageEditor key={selectedPage} pageId={selectedPage} />
     </motion.div>
   );
 }

@@ -1,0 +1,486 @@
+import { useState } from 'react';
+import styled from '@emotion/styled';
+import { Type, AlignLeft, Eye, MoreVertical } from 'lucide-react';
+import Button from 'components/ui/Button';
+import ConfirmDialog from './ConfirmDialog';
+import { usePageEditor } from 'hooks/usePageEditor';
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function getSections(schema) {
+  const seen = new Map();
+  for (const field of schema?.fields ?? []) {
+    if (field.group && !seen.has(field.group)) {
+      seen.set(field.group, true);
+    }
+  }
+  return Array.from(seen.keys());
+}
+
+function getFieldIcon(type) {
+  return type === 'textarea' ? AlignLeft : Type;
+}
+
+// ─── Styled Components ────────────────────────────────────────────────────────
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 10rem);
+  min-height: 0;
+`;
+
+const Placeholder = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+`;
+
+const TitleGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+`;
+
+const PageTitle = styled.h2`
+  font-size: ${(p) => p.theme.typography.fontSizes.s5};
+  font-weight: ${(p) => p.theme.typography.fontWeights.bold};
+  color: ${(p) => p.theme.colors.text};
+  margin: 0;
+  white-space: nowrap;
+`;
+
+const PublishedBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background: rgba(34, 197, 94, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 9999px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s1};
+  font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
+  white-space: nowrap;
+  flex-shrink: 0;
+`;
+
+const PageMeta = styled.span`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+`;
+
+const HeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+`;
+
+const IconBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  color: rgba(255, 255, 255, 0.35);
+  cursor: default;
+  font-family: inherit;
+  opacity: 0.6;
+`;
+
+const LocaleBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+`;
+
+const LocaleLabel = styled.span`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: rgba(255, 255, 255, 0.35);
+  margin-right: 4px;
+`;
+
+const LocaleTab = styled('button', {
+  shouldForwardProp: (p) => p !== 'active',
+})`
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid
+    ${(p) =>
+      p.active ? `${p.theme.colors.primary}4d` : 'rgba(255,255,255,0.1)'};
+  background: ${(p) =>
+    p.active ? `${p.theme.colors.primary}40` : 'transparent'};
+  color: ${(p) =>
+    p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.4)'};
+  font-family: inherit;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const SectionTabBar = styled.div`
+  display: flex;
+  gap: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const SectionTab = styled('button', {
+  shouldForwardProp: (p) => p !== 'active',
+})`
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid
+    ${(p) => (p.active ? p.theme.colors.primary : 'transparent')};
+  color: ${(p) =>
+    p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.4)'};
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-weight: ${(p) =>
+    p.active
+      ? p.theme.typography.fontWeights.semibold
+      : p.theme.typography.fontWeights.normal};
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s;
+  font-family: inherit;
+  margin-bottom: -1px;
+
+  &:hover {
+    color: ${(p) =>
+      p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.7)'};
+  }
+`;
+
+const FieldsArea = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px 80px;
+  min-height: 0;
+`;
+
+const FieldCard = styled.div`
+  display: flex;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+`;
+
+const FieldIconWrap = styled.div`
+  display: flex;
+  align-items: flex-start;
+  padding-top: 3px;
+  color: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+`;
+
+const FieldBody = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
+const FieldLabel = styled.label`
+  display: block;
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 6px;
+`;
+
+const FieldInput = styled.input`
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-family: inherit;
+  color: ${(p) => p.theme.colors.text};
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  outline: none;
+  transition: border-color 0.15s;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.15);
+  }
+
+  &:focus {
+    border-color: ${(p) => p.theme.colors.primary};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const FieldTextarea = styled.textarea`
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 72px;
+  resize: vertical;
+  padding: 7px 10px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-family: inherit;
+  color: ${(p) => p.theme.colors.text};
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  outline: none;
+  transition: border-color 0.15s;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.15);
+  }
+
+  &:focus {
+    border-color: ${(p) => p.theme.colors.primary};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const Footer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 200px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${(p) => p.theme.colors.background};
+  z-index: 50;
+
+  @media (max-width: 768px) {
+    left: 0;
+    bottom: 56px;
+  }
+`;
+
+const ChangeStatus = styled('div', {
+  shouldForwardProp: (p) => p !== 'dirty',
+})`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: ${(p) => (p.dirty ? '#f59e0b' : 'rgba(255,255,255,0.3)')};
+`;
+
+const DirtyDot = styled.div`
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59e0b;
+  flex-shrink: 0;
+`;
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+export default function AdminPageEditor({ pageId }) {
+  const {
+    schema,
+    formValues,
+    hasChanges,
+    selectedLocale,
+    availableLocales,
+    isLoading,
+    isSaving,
+    isTranslating,
+    handleLocaleChange,
+    handleFieldChange,
+    handleSave,
+    handleCancel,
+    handleTranslateAll,
+  } = usePageEditor(pageId);
+
+  const [confirmTranslateOpen, setConfirmTranslateOpen] = useState(false);
+
+  const sections = schema ? getSections(schema) : [];
+  const [activeSection, setActiveSection] = useState(() => sections[0] ?? null);
+
+  const filteredFields = schema
+    ? activeSection
+      ? schema.fields.filter((f) => f.group === activeSection)
+      : schema.fields
+    : [];
+
+  const busy = isLoading || isSaving || isTranslating;
+
+  if (!schema) {
+    return (
+      <Container>
+        <Placeholder>Select a page to start editing</Placeholder>
+      </Container>
+    );
+  }
+
+  const fieldCount = schema.fields.length;
+  const localeCount = availableLocales.length;
+
+  return (
+    <>
+      <ConfirmDialog
+        open={confirmTranslateOpen}
+        onOpenChange={setConfirmTranslateOpen}
+        title="Translate all content?"
+        description={`This will translate all content for "${schema.label}" into every non-English locale and save immediately. Existing translations will be overwritten.`}
+        confirmLabel="Translate all"
+        onConfirm={handleTranslateAll}
+      />
+
+      <Container>
+        <Header>
+          <TitleGroup>
+            <PageTitle>{schema.label}</PageTitle>
+            <PublishedBadge>Published</PublishedBadge>
+            <PageMeta>
+              {fieldCount} field{fieldCount !== 1 ? 's' : ''} &middot;{' '}
+              {localeCount} locale{localeCount !== 1 ? 's' : ''}
+            </PageMeta>
+          </TitleGroup>
+          <HeaderActions>
+            <IconBtn title="Preview (coming soon)" aria-label="Preview">
+              <Eye size={14} />
+            </IconBtn>
+            <IconBtn title="More options" aria-label="More options">
+              <MoreVertical size={14} />
+            </IconBtn>
+          </HeaderActions>
+        </Header>
+
+        <LocaleBar>
+          <LocaleLabel>Translate:</LocaleLabel>
+          {availableLocales.map((locale) => (
+            <LocaleTab
+              key={locale}
+              active={locale === selectedLocale}
+              onClick={() => handleLocaleChange(locale)}
+              disabled={busy}
+            >
+              {locale.toUpperCase()}
+            </LocaleTab>
+          ))}
+        </LocaleBar>
+
+        <SectionTabBar>
+          {sections.map((section) => (
+            <SectionTab
+              key={section}
+              active={activeSection === section}
+              onClick={() => setActiveSection(section)}
+            >
+              {section}
+            </SectionTab>
+          ))}
+        </SectionTabBar>
+
+        <FieldsArea>
+          {filteredFields.map((field) => {
+            const FieldIcon = getFieldIcon(field.type);
+            return (
+              <FieldCard key={field.key}>
+                <FieldIconWrap>
+                  <FieldIcon size={14} />
+                </FieldIconWrap>
+                <FieldBody>
+                  <FieldLabel htmlFor={`pf-${field.key}`}>
+                    {field.label}
+                  </FieldLabel>
+                  {field.type === 'textarea' ? (
+                    <FieldTextarea
+                      id={`pf-${field.key}`}
+                      value={formValues[field.key] ?? ''}
+                      onChange={(e) =>
+                        handleFieldChange(field.key, e.target.value)
+                      }
+                      placeholder={`Enter ${field.label.toLowerCase()}…`}
+                      disabled={busy}
+                    />
+                  ) : (
+                    <FieldInput
+                      id={`pf-${field.key}`}
+                      value={formValues[field.key] ?? ''}
+                      onChange={(e) =>
+                        handleFieldChange(field.key, e.target.value)
+                      }
+                      placeholder={`Enter ${field.label.toLowerCase()}…`}
+                      disabled={busy}
+                    />
+                  )}
+                </FieldBody>
+              </FieldCard>
+            );
+          })}
+        </FieldsArea>
+
+        <Footer>
+          <ChangeStatus dirty={hasChanges}>
+            {hasChanges && <DirtyDot />}
+            {hasChanges ? 'Unsaved changes' : 'No unsaved changes'}
+          </ChangeStatus>
+          <Button
+            variant="ghost"
+            onClick={handleCancel}
+            disabled={!hasChanges || busy}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            disabled={!hasChanges || busy}
+          >
+            Save Changes
+          </Button>
+        </Footer>
+      </Container>
+    </>
+  );
+}
