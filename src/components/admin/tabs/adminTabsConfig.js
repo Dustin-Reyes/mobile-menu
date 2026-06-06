@@ -72,7 +72,7 @@ export const ADMIN_TAB_GROUPS = [
 ];
 
 // Tabs surfaced in the mobile bottom bar (space constrained — Users omitted).
-export const BOTTOM_TAB_IDS = ['dashboard', 'pages', 'posts', 'settings'];
+export const BOTTOM_TAB_IDS = ['dashboard', 'pages', 'posts', 'media'];
 
 export const getAdminTab = (id) => ADMIN_TABS.find((tab) => tab.id === id);
 
