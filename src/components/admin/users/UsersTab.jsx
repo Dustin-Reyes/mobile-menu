@@ -194,18 +194,18 @@ const RetryButton = styled(Button)`
 `;
 
 const AddUserButton = styled(Button)`
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 10px 16px;
-    font-size: ${(p) => p.theme.typography.fontSizes.s3};
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
+  gap: 6px;
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: rgba(255, 255, 255, 0.9);
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    min-width: unset;
+    border-radius: ${(p) => p.theme.borderRadius.s1};
+    flex-shrink: 0;
+
+    span {
+      display: none;
     }
   }
 `;
@@ -306,9 +306,13 @@ export default function UsersTab() {
           <PageSubtitle>Manage team members and their roles</PageSubtitle>
         </div>
         {canManageUsers(userRole) && (
-          <AddUserButton onClick={() => setShowCreate(true)}>
-            <UserPlus size={14} />
-            Add User
+          <AddUserButton
+            onClick={() => setShowCreate(true)}
+            title="Add user"
+            aria-label="Add user"
+          >
+            <UserPlus size={16} />
+            <span>Add User</span>
           </AddUserButton>
         )}
       </PageHeader>
