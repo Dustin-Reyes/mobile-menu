@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import styled from '@emotion/styled';
 import * as RadixSeparator from '@radix-ui/react-separator';
 import { ChevronDown } from 'lucide-react';
@@ -103,8 +103,11 @@ export default function Sidebar({
   userRole,
 }) {
   const pagesOpen = activeTab === 'pages';
-  const pages = Object.entries(pageSchema);
-  const visibleGroups = getVisibleTabGroups(userRole);
+  const pages = useMemo(() => Object.entries(pageSchema), []);
+  const visibleGroups = useMemo(
+    () => getVisibleTabGroups(userRole),
+    [userRole],
+  );
 
   return (
     <SidebarContainer>
