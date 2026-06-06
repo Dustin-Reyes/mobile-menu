@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { BOTTOM_TAB_IDS, getAdminTab } from '../tabs/adminTabsConfig';
 import { isTabVisible } from 'utils/roleHelpers';
@@ -37,11 +38,19 @@ const BottomTab = styled.button`
 `;
 
 export default function BottomTabBar({ activeTab, onTabChange, userRole }) {
-  return (
-    <BottomTabBarContainer>
-      {BOTTOM_TAB_IDS.map((tabId) => {
+  const visibleTabs = useMemo(
+    () =>
+      BOTTOM_TAB_IDS.map((tabId) => {
         const tab = getAdminTab(tabId);
         if (!tab || !isTabVisible(tab, userRole)) return null;
+        return tab;
+      }).filter(Boolean),
+    [userRole],
+  );
+
+  return (
+    <BottomTabBarContainer>
+      {visibleTabs.map((tab) => {
         const Icon = tab.icon;
         return (
           <BottomTab
