@@ -47,6 +47,9 @@ const TabContent = styled('div', {
   padding: ${(p) => (p.flush ? '0' : '60px 20px 16px')};
   display: flex;
   flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 export default function Dashboard() {
