@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
-import { ExternalLink, Settings, Image } from 'lucide-react';
+import { Settings, Image } from 'lucide-react';
 
 const SiteIdentityCard = styled.div`
   display: flex;
@@ -47,27 +47,6 @@ const SiteUrlPlaceholder = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   color: rgba(255, 255, 255, 0.25);
   font-style: italic;
-`;
-
-const ViewSiteButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  font-weight: ${(p) => p.theme.typography.fontWeights.medium};
-  padding: 6px 12px;
-  background: ${(p) => p.theme.colors.primary}1a;
-  color: ${(p) => p.theme.colors.primary};
-  border: 1px solid ${(p) => p.theme.colors.primary}40;
-  border-radius: ${(p) => p.theme.borderRadius.s1};
-  text-decoration: none;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: background ${(p) => p.theme.transitions.fast};
-
-  &:hover {
-    background: ${(p) => p.theme.colors.primary}2a;
-  }
 `;
 
 const ContentCardsGrid = styled.div`
@@ -191,16 +170,6 @@ export default function DashboardTab({
             </SiteUrlPlaceholder>
           )}
         </SiteDetails>
-        {siteUrl && (
-          <ViewSiteButton
-            href={siteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ExternalLink size={12} />
-            View Site
-          </ViewSiteButton>
-        )}
       </SiteIdentityCard>
 
       <ContentCardsGrid>
