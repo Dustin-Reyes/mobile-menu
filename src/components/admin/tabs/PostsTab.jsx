@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
-import { Image } from 'lucide-react';
+import { Newspaper } from 'lucide-react';
+import { PageHeader, PageTitle, PageSubtitle } from '../shared/PageHeader';
 import {
-  PageHeader,
-  PageTitle,
-  PageSubtitle,
   SectionCard,
   SectionCardHeader,
   SectionCardTitle,
+} from '../shared/SectionCard';
+import {
   CompactEmptyState,
   CompactEmptyIcon,
-} from './AdminDashboard.styles';
+} from '../shared/CompactEmptyState';
 
 const motionProps = {
   initial: { opacity: 0, y: 10 },
@@ -18,26 +18,26 @@ const motionProps = {
   transition: { duration: 0.2 },
 };
 
-export default function AdminMediaTab() {
+export default function PostsTab() {
   return (
-    <motion.div key="media" {...motionProps}>
+    <motion.div key="posts" {...motionProps}>
       <PageHeader>
         <div>
-          <PageTitle>Media Library</PageTitle>
-          <PageSubtitle>Manage images, videos and files</PageSubtitle>
+          <PageTitle>Blog Posts</PageTitle>
+          <PageSubtitle>Manage blog posts and articles</PageSubtitle>
         </div>
       </PageHeader>
 
       <SectionCard>
         <SectionCardHeader>
           <SectionCardTitle>
-            <Image size={12} />
-            Media Library
+            <Newspaper size={12} />
+            Blog Posts
           </SectionCardTitle>
         </SectionCardHeader>
         <CompactEmptyState>
-          <CompactEmptyIcon>🖼️</CompactEmptyIcon>
-          Media management is coming soon
+          <CompactEmptyIcon>📝</CompactEmptyIcon>
+          Blog post management is coming soon
         </CompactEmptyState>
       </SectionCard>
     </motion.div>

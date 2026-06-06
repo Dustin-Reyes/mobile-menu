@@ -1,25 +1,10 @@
+import { Pencil, ShieldCheck, Check, X } from 'lucide-react';
 import styled from '@emotion/styled';
+import { ROLE_LABELS } from 'utils/roleHelpers';
+import { getUserInitials } from 'utils/userHelpers';
+import { getUserStatus, getProviderLabel } from 'utils/admin/userHelpers';
 
-export const BackButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 0;
-  margin-bottom: 12px;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  font-family: inherit;
-  cursor: pointer;
-  transition: color ${(p) => p.theme.transitions.fast};
-
-  &:hover {
-    color: rgba(255, 255, 255, 0.75);
-  }
-`;
-
-export const DetailProfile = styled.div`
+const DetailProfile = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
@@ -29,7 +14,7 @@ export const DetailProfile = styled.div`
     ${(p) => p.theme.borderRadius.s2} 0 0;
 `;
 
-export const DetailAvatarWrap = styled.div`
+const DetailAvatarWrap = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -45,7 +30,7 @@ export const DetailAvatarWrap = styled.div`
   border: 2px solid ${(p) => p.theme.colors.primary}20;
 `;
 
-export const DetailInfo = styled.div`
+const DetailInfo = styled.div`
   flex: 1;
   min-width: 0;
   display: flex;
@@ -53,13 +38,13 @@ export const DetailInfo = styled.div`
   gap: 3px;
 `;
 
-export const NameRow = styled.div`
+const NameRow = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
 `;
 
-export const NameDisplay = styled.span`
+const NameDisplay = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s5};
   font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
   color: ${(p) => p.theme.colors.text};
@@ -69,13 +54,13 @@ export const NameDisplay = styled.span`
   text-overflow: ellipsis;
 `;
 
-export const NamePlaceholder = styled(NameDisplay)`
+const NamePlaceholder = styled(NameDisplay)`
   color: rgba(255, 255, 255, 0.2);
   font-style: italic;
   font-weight: ${(p) => p.theme.typography.fontWeights.normal};
 `;
 
-export const EditNameButton = styled.button`
+const EditNameButton = styled.button`
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.2);
@@ -94,14 +79,14 @@ export const EditNameButton = styled.button`
   }
 `;
 
-export const NameEditForm = styled.form`
+const NameEditForm = styled.form`
   display: flex;
   align-items: center;
   gap: 6px;
   flex: 1;
 `;
 
-export const IconButton = styled.button`
+const IconButton = styled.button`
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.4);
@@ -120,7 +105,7 @@ export const IconButton = styled.button`
   }
 `;
 
-export const DetailEmail = styled.div`
+const DetailEmail = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   color: rgba(255, 255, 255, 0.35);
   white-space: nowrap;
@@ -128,7 +113,7 @@ export const DetailEmail = styled.div`
   text-overflow: ellipsis;
 `;
 
-export const DetailBadges = styled.div`
+const DetailBadges = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -137,7 +122,7 @@ export const DetailBadges = styled.div`
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 `;
 
-export const RoleBadge = styled.span`
+const RoleBadge = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -151,7 +136,7 @@ export const RoleBadge = styled.span`
   white-space: nowrap;
 `;
 
-export const StatusBadge = styled.span`
+const StatusBadge = styled.span`
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
@@ -165,7 +150,7 @@ export const StatusBadge = styled.span`
   white-space: nowrap;
 `;
 
-export const ProviderBadge = styled.span`
+const ProviderBadge = styled.span`
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
@@ -177,115 +162,97 @@ export const ProviderBadge = styled.span`
   white-space: nowrap;
 `;
 
-export const DetailSection = styled.div`
-  padding: 16px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-`;
-
-export const InfoRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-`;
-
-export const InfoRowLabel = styled.span`
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.35);
-  flex-shrink: 0;
-`;
-
-export const InfoRowValue = styled.span`
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: ${(p) => p.theme.colors.text};
-  text-align: right;
-`;
-
-export const UidField = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 2px 7px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: ${(p) => p.theme.borderRadius.s1};
-  cursor: pointer;
-  font-family: monospace;
-  font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.25);
-  max-width: 180px;
-  transition:
-    background ${(p) => p.theme.transitions.fast},
-    color ${(p) => p.theme.transitions.fast};
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.55);
-  }
-
-  span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-`;
-
-export const ActionButtonGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-export const ActionButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: ${(p) => p.theme.borderRadius.s2};
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  font-family: inherit;
-  cursor: pointer;
-  color: ${(p) => p.theme.colors.text};
-  transition:
-    background ${(p) => p.theme.transitions.fast},
-    border-color ${(p) => p.theme.transitions.fast};
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-`;
-
-export const DestructiveButton = styled(ActionButton)`
-  margin-left: auto;
-  color: #f87171;
-  background: rgba(239, 68, 68, 0.06);
-  border-color: rgba(239, 68, 68, 0.22);
-
-  &:hover {
-    background: rgba(239, 68, 68, 0.12);
-    border-color: rgba(239, 68, 68, 0.4);
-  }
-`;
-
-export const AvatarImage = styled.img`
+const AvatarImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
 
-export const NameEditInput = styled.input`
+const NameEditInput = styled.input`
   flex: 1;
   min-width: 0;
   padding: 4px 10px;
   font-size: 0.875rem;
 `;
 
-export const CopyIcon = styled.span`
-  flex-shrink: 0;
-`;
+export default function UserProfileHeader({
+  targetUser,
+  canEdit,
+  editingName,
+  displayName,
+  savingName,
+  onEditName,
+  onSaveName,
+  onCancelEdit,
+  onDisplayNameChange,
+}) {
+  const status = getUserStatus(targetUser);
+
+  return (
+    <DetailProfile>
+      <DetailAvatarWrap>
+        {targetUser.photoURL ? (
+          <AvatarImage
+            src={targetUser.photoURL}
+            alt=""
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          getUserInitials(targetUser.email)
+        )}
+      </DetailAvatarWrap>
+
+      <DetailInfo>
+        {editingName ? (
+          <NameEditForm onSubmit={onSaveName}>
+            <NameEditInput
+              value={displayName}
+              onChange={onDisplayNameChange}
+              placeholder="Display name"
+              autoFocus
+            />
+            <IconButton type="submit" disabled={savingName} title="Save">
+              <Check size={14} />
+            </IconButton>
+            <IconButton
+              type="button"
+              $danger
+              onClick={onCancelEdit}
+              title="Cancel"
+            >
+              <X size={14} />
+            </IconButton>
+          </NameEditForm>
+        ) : (
+          <NameRow>
+            {targetUser.displayName ? (
+              <NameDisplay>{targetUser.displayName}</NameDisplay>
+            ) : (
+              <NamePlaceholder>No display name</NamePlaceholder>
+            )}
+            {canEdit && (
+              <EditNameButton onClick={onEditName} title="Edit display name">
+                <Pencil size={11} />
+              </EditNameButton>
+            )}
+          </NameRow>
+        )}
+        <DetailEmail>{targetUser.email}</DetailEmail>
+        <DetailBadges>
+          {targetUser.role && (
+            <RoleBadge>
+              <ShieldCheck size={10} />
+              {ROLE_LABELS[targetUser.role] ?? targetUser.role}
+            </RoleBadge>
+          )}
+          <ProviderBadge>
+            {getProviderLabel(targetUser.providers)}
+          </ProviderBadge>
+          <StatusBadge $disabled={status === 'disabled'}>
+            {status === 'disabled' ? 'Disabled' : 'Active'}
+          </StatusBadge>
+        </DetailBadges>
+      </DetailInfo>
+    </DetailProfile>
+  );
+}

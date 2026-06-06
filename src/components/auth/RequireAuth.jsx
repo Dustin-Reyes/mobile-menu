@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { ShieldAlert } from 'lucide-react';
 import { useAuth } from 'context/AuthContext';
-import AdminLogin from './AdminLogin';
-import { LoadingSpinner } from './AdminDashboard.styles';
+import Login from './Login';
+import { LoadingSpinner } from '../admin/shared/LoadingSpinner';
 
 const CenteredMessage = styled.div`
   min-height: 100vh;
@@ -56,7 +56,7 @@ export default function RequireAuth({ children }) {
   }
 
   if (!isAuthenticated) {
-    return <AdminLogin />;
+    return <Login />;
   }
 
   return children;

@@ -9,7 +9,7 @@ import Button from 'components/ui/Button';
 import LanguageSwitcher from './LanguageSwitcher';
 import HeaderLogo from './HeaderLogo';
 import { SECTIONS_CONFIG } from 'config/sections';
-import { ADMIN_TABS } from 'components/admin/adminTabs';
+import { ADMIN_TABS } from 'components/admin/tabs/adminTabsConfig';
 import { getUserInitials, getUserDisplayName } from 'utils/userHelpers';
 
 // ─── Shell ────────────────────────────────────────────────────────────────────

@@ -5,7 +5,28 @@ import { keyframes } from '@emotion/react';
 import Button from 'components/ui/Button';
 import Input from 'components/ui/Input';
 import { useAuth } from 'context/AuthContext';
-import { Form, FormGroup, FormLabel } from './AdminDashboard.styles';
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const FormLabel = styled.label`
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-weight: ${(p) => p.theme.typography.fontWeights.medium};
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  display: block;
+`;
 
 const fadeInUp = keyframes`
   from {

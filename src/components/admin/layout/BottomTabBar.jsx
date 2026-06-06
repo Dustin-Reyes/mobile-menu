@@ -1,0 +1,59 @@
+import styled from '@emotion/styled';
+import { BOTTOM_TAB_IDS, getAdminTab } from '../tabs/adminTabsConfig';
+import { isTabVisible } from 'utils/roleHelpers';
+
+const BottomTabBarContainer = styled.nav`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: ${(p) => p.theme.colors.surface};
+    border-top: 1px solid ${(p) => p.theme.colors.border};
+    z-index: ${(p) => p.theme.zIndex.sticky};
+  }
+`;
+
+const BottomTab = styled.button`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: ${(p) =>
+    p.active ? p.theme.colors.primary : p.theme.colors.textSecondary};
+  transition: color ${(p) => p.theme.transitions.fast};
+`;
+
+export default function BottomTabBar({ activeTab, onTabChange, userRole }) {
+  return (
+    <BottomTabBarContainer>
+      {BOTTOM_TAB_IDS.map((tabId) => {
+        const tab = getAdminTab(tabId);
+        if (!tab || !isTabVisible(tab, userRole)) return null;
+        const Icon = tab.icon;
+        return (
+          <BottomTab
+            key={tab.id}
+            active={activeTab === tab.id}
+            onClick={() => onTabChange(tab.id)}
+          >
+            <Icon size={16} />
+            {tab.shortLabel}
+          </BottomTab>
+        );
+      })}
+    </BottomTabBarContainer>
+  );
+}

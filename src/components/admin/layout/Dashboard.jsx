@@ -1,27 +1,56 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import styled from '@emotion/styled';
 import { useCMS, useSettings, usePosts } from 'hooks/useContent';
 import PROJECT_CONFIG from 'config/project';
 import { toast } from '@/utils/toast';
 import { useAuth } from 'context/AuthContext';
-import { pageSchema } from '../../content/schema';
-import AdminSidebar from './AdminSidebar';
-import AdminBottomTabBar from './AdminBottomTabBar';
-import AdminDashboardTab from './AdminDashboardTab';
-import AdminSettingsTab from './AdminSettingsTab';
-import AdminPagesTab from './AdminPagesTab';
-import AdminPostsTab from './AdminPostsTab';
-import AdminMediaTab from './AdminMediaTab';
-import AdminProfileTab from './AdminProfileTab';
-import AdminUsersTab from './AdminUsersTab';
-import {
-  AdminContainer,
-  MainContent,
-  TabContent,
-} from './AdminDashboard.styles';
+import { pageSchema } from '../../../content/schema';
+import Sidebar from './Sidebar';
+import BottomTabBar from './BottomTabBar';
+import DashboardTab from '../tabs/DashboardTab';
+import SettingsTab from '../tabs/SettingsTab';
+import PagesTab from '../tabs/PagesTab';
+import PostsTab from '../tabs/PostsTab';
+import MediaTab from '../tabs/MediaTab';
+import ProfileTab from '../tabs/ProfileTab';
+import UsersTab from '../users/UsersTab';
 
-export default function AdminDashboard() {
+const AdminContainer = styled.div`
+  height: calc(100vh - 67px);
+  overflow: hidden;
+  background: ${(p) => p.theme.colors.background};
+  display: flex;
+
+  @media (max-width: 768px) {
+    padding-bottom: 60px;
+  }
+`;
+
+const MainContent = styled.div`
+  flex: 1;
+  margin-left: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+`;
+
+const TabContent = styled('div', {
+  shouldForwardProp: (p) => p !== 'flush',
+})`
+  flex: 1;
+  overflow-y: ${(p) => (p.flush ? 'hidden' : 'auto')};
+  padding: ${(p) => (p.flush ? '0' : '60px 20px 16px')};
+  display: flex;
+  flex-direction: column;
+`;
+
+export default function Dashboard() {
   const location = useLocation();
   const { userRole } = useAuth();
   const [activeTab, setActiveTab] = useState(
@@ -49,6 +78,16 @@ export default function AdminDashboard() {
     description: '',
     author: '',
     url: '',
+    tagline: '',
+    facebook: '',
+    instagram: '',
+    twitter: '',
+    linkedin: '',
+    github: '',
+    youtube: '',
+    contactPhone: '',
+    contactEmail: '',
+    address: '',
   });
 
   useEffect(() => {
@@ -58,6 +97,16 @@ export default function AdminDashboard() {
         description: settings.description || '',
         author: settings.author || '',
         url: settings.url || '',
+        tagline: settings.tagline || '',
+        facebook: settings.facebook || '',
+        instagram: settings.instagram || '',
+        twitter: settings.twitter || '',
+        linkedin: settings.linkedin || '',
+        github: settings.github || '',
+        youtube: settings.youtube || '',
+        contactPhone: settings.contactPhone || '',
+        contactEmail: settings.contactEmail || '',
+        address: settings.address || '',
       });
     }
   }, [settings]);
@@ -87,7 +136,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminContainer>
-      <AdminSidebar
+      <Sidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
         selectedPage={selectedPage}
@@ -99,7 +148,7 @@ export default function AdminDashboard() {
         <TabContent flush={activeTab === 'pages'}>
           <AnimatePresence mode="wait">
             {activeTab === 'dashboard' && (
-              <AdminDashboardTab
+              <DashboardTab
                 isCMSEnabled={isCMSEnabled}
                 stats={calculatedStats}
                 settings={settings}
@@ -109,7 +158,7 @@ export default function AdminDashboard() {
             )}
 
             {activeTab === 'settings' && (
-              <AdminSettingsTab
+              <SettingsTab
                 settings={settings}
                 settingsForm={settingsForm}
                 setSettingsForm={setSettingsForm}
@@ -121,20 +170,20 @@ export default function AdminDashboard() {
             )}
 
             {activeTab === 'pages' && (
-              <AdminPagesTab
+              <PagesTab
                 selectedPage={selectedPage}
                 onPageChange={setSelectedPage}
               />
             )}
-            {activeTab === 'users' && <AdminUsersTab />}
-            {activeTab === 'posts' && <AdminPostsTab />}
-            {activeTab === 'media' && <AdminMediaTab />}
-            {activeTab === 'profile' && <AdminProfileTab />}
+            {activeTab === 'users' && <UsersTab />}
+            {activeTab === 'posts' && <PostsTab />}
+            {activeTab === 'media' && <MediaTab />}
+            {activeTab === 'profile' && <ProfileTab />}
           </AnimatePresence>
         </TabContent>
       </MainContent>
 
-      <AdminBottomTabBar
+      <BottomTabBar
         activeTab={activeTab}
         onTabChange={setActiveTab}
         userRole={userRole}

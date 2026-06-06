@@ -8,7 +8,7 @@ import PageTransition from 'components/PageTransition';
 import { ToastProvider } from 'components/ToastProvider';
 import PageSEO from 'components/PageSEO';
 import { AuthProvider } from 'context/AuthContext';
-import RequireAuth from 'components/admin/RequireAuth';
+import RequireAuth from 'components/auth/RequireAuth';
 import Home from 'pages/Home';
 import Development from 'pages/Development';
 import NotFound from 'pages/NotFound';
@@ -18,7 +18,7 @@ const Demo =
     ? lazy(() => import('pages/Demo'))
     : null;
 
-const AdminDashboard = lazy(() => import('components/admin/AdminDashboard'));
+const Dashboard = lazy(() => import('components/admin/layout/Dashboard'));
 
 function App() {
   const location = useLocation();
@@ -83,7 +83,7 @@ function App() {
               element={
                 <RequireAuth>
                   <Suspense fallback={<div>Loading admin...</div>}>
-                    <AdminDashboard />
+                    <Dashboard />
                   </Suspense>
                 </RequireAuth>
               }

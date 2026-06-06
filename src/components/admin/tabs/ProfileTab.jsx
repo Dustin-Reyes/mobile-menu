@@ -5,12 +5,8 @@ import { useAuth } from 'context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { ROLE_LABELS } from 'utils/roleHelpers';
 import { getUserInitials, getUserDisplayName } from 'utils/userHelpers';
-import {
-  PageHeader,
-  PageTitle,
-  PageSubtitle,
-  SectionCard,
-} from './AdminDashboard.styles';
+import { PageHeader, PageTitle, PageSubtitle } from '../shared/PageHeader';
+import { SectionCard } from '../shared/SectionCard';
 
 const motionProps = {
   initial: { opacity: 0, y: 10 },
@@ -106,7 +102,7 @@ const SignOutButton = styled.button`
   }
 `;
 
-export default function AdminProfileTab() {
+export default function ProfileTab() {
   const { user, userRole, logout } = useAuth();
   const navigate = useNavigate();
 

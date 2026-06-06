@@ -1,17 +1,36 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import styled from '@emotion/styled';
 import { ChevronLeft } from 'lucide-react';
 import { useAuth } from 'context/AuthContext';
 import { toast } from '@/utils/toast';
 import { canManageUsers } from 'utils/roleHelpers';
 import { callUserManagement } from 'utils/admin/userHelpers';
-import ConfirmDialog from './ConfirmDialog';
+import ConfirmDialog from '../shared/ConfirmDialog';
 import EditRoleModal from './EditRoleModal';
-import { SectionCard } from './AdminDashboard.styles';
-import { BackButton } from './UserDetail.styles';
+import { SectionCard } from '../shared/SectionCard';
 import UserProfileHeader from './UserProfileHeader';
 import UserInfoSection from './UserInfoSection';
 import UserActionsSection from './UserActionsSection';
+
+const BackButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 0;
+  margin-bottom: 12px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-family: inherit;
+  cursor: pointer;
+  transition: color ${(p) => p.theme.transitions.fast};
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.75);
+  }
+`;
 
 // ─── Motion ───────────────────────────────────────────────────────────────────
 

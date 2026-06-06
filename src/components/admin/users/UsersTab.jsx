@@ -12,13 +12,9 @@ import {
   callUserManagement,
 } from 'utils/admin/userHelpers';
 import Button from 'components/ui/Button';
-import {
-  PageHeader,
-  PageTitle,
-  PageSubtitle,
-  SectionCard,
-  LoadingSpinner,
-} from './AdminDashboard.styles';
+import { PageHeader, PageTitle, PageSubtitle } from '../shared/PageHeader';
+import { SectionCard } from '../shared/SectionCard';
+import { LoadingSpinner } from '../shared/LoadingSpinner';
 import CreateUserModal from './CreateUserModal';
 import UserDetail from './UserDetail';
 
@@ -177,7 +173,7 @@ const UsersIcon = styled(Users)`
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function AdminUsersTab() {
+export default function UsersTab() {
   const { user, userRole } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);

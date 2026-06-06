@@ -1,9 +1,56 @@
 import { Fragment } from 'react';
 import styled from '@emotion/styled';
+import * as RadixSeparator from '@radix-ui/react-separator';
 import { ChevronDown } from 'lucide-react';
-import { Sidebar, SidebarItem, SidebarDivider } from './AdminDashboard.styles';
-import { getAdminTab, getVisibleTabGroups } from './adminTabs';
-import { pageSchema } from '../../content/schema';
+import { getAdminTab, getVisibleTabGroups } from '../tabs/adminTabsConfig';
+import { pageSchema } from '../../../content/schema';
+
+const SidebarContainer = styled.div`
+  position: fixed;
+  top: 67px;
+  left: 0;
+  width: 200px;
+  height: calc(100vh - 67px);
+  background: ${(p) => p.theme.colors.background};
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 60px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  z-index: ${(p) => p.theme.zIndex.sticky - 1};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const SidebarItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  cursor: pointer;
+  transition: all ${(p) => p.theme.transitions.fast};
+  color: ${(p) => (p.active ? p.theme.colors.primary : p.theme.colors.text)};
+  background: ${(p) =>
+    p.active ? `${p.theme.colors.primary}1a` : 'transparent'};
+
+  &:hover {
+    background: ${(p) =>
+      p.active ? `${p.theme.colors.primary}1a` : 'rgba(255,255,255,0.04)'};
+    color: ${(p) =>
+      p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.7)'};
+  }
+`;
+
+const SidebarDivider = styled(RadixSeparator.Root)`
+  margin: 12px 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.06);
+`;
 
 const PageSubList = styled.div`
   display: flex;
@@ -48,7 +95,7 @@ const ChevronWrap = styled.span`
   transition: transform 0.15s;
 `;
 
-export default function AdminSidebar({
+export default function Sidebar({
   activeTab,
   onTabChange,
   selectedPage,
@@ -60,7 +107,7 @@ export default function AdminSidebar({
   const visibleGroups = getVisibleTabGroups(userRole);
 
   return (
-    <Sidebar>
+    <SidebarContainer>
       {visibleGroups.map((group, groupIndex) => (
         <Fragment key={group.join('-')}>
           {groupIndex > 0 && <SidebarDivider />}
@@ -106,6 +153,6 @@ export default function AdminSidebar({
           })}
         </Fragment>
       ))}
-    </Sidebar>
+    </SidebarContainer>
   );
 }

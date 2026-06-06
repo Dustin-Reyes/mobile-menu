@@ -22,9 +22,9 @@ import {
   Youtube,
 } from 'lucide-react';
 import Button from 'components/ui/Button';
-import ConfirmDialog from './ConfirmDialog';
+import ConfirmDialog from '../shared/ConfirmDialog';
 import { usePageEditor } from 'hooks/usePageEditor';
-import { FaqItemsEditor } from './AdminContentFieldEditor';
+import { FaqItemsEditor } from './ContentFieldEditor';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -406,7 +406,7 @@ const Spinner = styled.span`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function AdminPageEditor({ pageId }) {
+export default function PageEditor({ pageId }) {
   const {
     schema,
     formValues,

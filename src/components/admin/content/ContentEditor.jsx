@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from '@emotion/styled';
-import { pageSchema } from '../../content/schema';
-import { ContentPageList } from './AdminContentPageList';
-import { ContentFieldEditor } from './AdminContentFieldEditor';
-import ConfirmDialog from './ConfirmDialog';
+import { pageSchema } from '../../../content/schema';
+import { ContentPageList } from './ContentPageList';
+import { ContentFieldEditor } from './ContentFieldEditor';
+import ConfirmDialog from '../shared/ConfirmDialog';
 import { useMediaQuery } from 'hooks/useMediaQuery';
 import { useToast } from 'hooks/useToast';
 import * as contentService from 'services/content';

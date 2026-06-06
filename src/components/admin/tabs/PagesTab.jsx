@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import AdminPageEditor from './AdminPageEditor';
+import PageEditor from '../content/PageEditor';
 
 const motionProps = {
   initial: { opacity: 0, y: 10 },
@@ -9,10 +9,10 @@ const motionProps = {
   style: { flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 },
 };
 
-export default function AdminPagesTab({ selectedPage }) {
+export default function PagesTab({ selectedPage }) {
   return (
     <motion.div key="pages" {...motionProps}>
-      <AdminPageEditor key={selectedPage} pageId={selectedPage} />
+      <PageEditor key={selectedPage} pageId={selectedPage} />
     </motion.div>
   );
 }
