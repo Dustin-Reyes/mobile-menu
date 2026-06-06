@@ -54,10 +54,6 @@ const ContentCardsGrid = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   margin-bottom: 12px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 `;
 
 const ContentCard = styled.button`
