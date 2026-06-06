@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { ChevronLeft } from 'lucide-react';
@@ -60,30 +60,33 @@ export default function UserDetail({
 
   const canEdit = canManageUsers(callerRole);
 
-  const handleSaveName = async (e) => {
-    e.preventDefault();
-    setSavingName(true);
-    try {
-      await callUserManagement('update-profile', user, {
-        uid: targetUser.uid,
-        displayName: displayName.trim() || null,
-      });
-      toast.success('Display name updated');
-      setEditingName(false);
-      onUpdated();
-    } catch (err) {
-      toast.error(err.message || 'Failed to update display name');
-    } finally {
-      setSavingName(false);
-    }
-  };
+  const handleSaveName = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setSavingName(true);
+      try {
+        await callUserManagement('update-profile', user, {
+          uid: targetUser.uid,
+          displayName: displayName.trim() || null,
+        });
+        toast.success('Display name updated');
+        setEditingName(false);
+        onUpdated();
+      } catch (err) {
+        toast.error(err.message || 'Failed to update display name');
+      } finally {
+        setSavingName(false);
+      }
+    },
+    [user, targetUser.uid, displayName, onUpdated],
+  );
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = useCallback(() => {
     setDisplayName(targetUser.displayName ?? '');
     setEditingName(false);
-  };
+  }, [targetUser.displayName]);
 
-  const handleToggleDisabled = async () => {
+  const handleToggleDisabled = useCallback(async () => {
     try {
       const action = targetUser.disabled ? 'enable' : 'disable';
       await callUserManagement(action, user, { uid: targetUser.uid });
@@ -94,9 +97,9 @@ export default function UserDetail({
     } catch (err) {
       toast.error(err.message || 'Failed to update account status');
     }
-  };
+  }, [targetUser.disabled, user, targetUser.uid, onUpdated]);
 
-  const confirmDelete = async () => {
+  const confirmDelete = useCallback(async () => {
     try {
       await callUserManagement('delete', user, { uid: targetUser.uid });
       toast.success('User deleted');
@@ -104,9 +107,9 @@ export default function UserDetail({
     } catch (err) {
       toast.error(err.message || 'Failed to delete user');
     }
-  };
+  }, [user, targetUser.uid, onDeleted]);
 
-  const confirmResetPassword = async () => {
+  const confirmResetPassword = useCallback(async () => {
     try {
       await callUserManagement('reset-password', user, {
         email: targetUser.email,
@@ -115,21 +118,21 @@ export default function UserDetail({
     } catch (err) {
       toast.error(err.message || 'Failed to send reset email');
     }
-  };
+  }, [user, targetUser.email]);
 
-  const handleCopyUid = () => {
+  const handleCopyUid = useCallback(() => {
     navigator.clipboard.writeText(targetUser.uid).then(() => {
       toast.success('User ID copied');
     });
-  };
+  }, [targetUser.uid]);
 
-  const handleEditName = () => {
+  const handleEditName = useCallback(() => {
     setEditingName(true);
-  };
+  }, []);
 
-  const handleDisplayNameChange = (e) => {
+  const handleDisplayNameChange = useCallback((e) => {
     setDisplayName(e.target.value);
-  };
+  }, []);
 
   return (
     <motion.div key="detail" {...motionProps}>
