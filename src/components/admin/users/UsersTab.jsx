@@ -1,13 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
-import {
-  UserPlus,
-  Users,
-  ShieldCheck,
-  ChevronRight,
-  Search,
-} from 'lucide-react';
+import { UserPlus, Users, ShieldCheck, ChevronRight } from 'lucide-react';
+import SearchInput from 'components/ui/SearchInput';
 import { useAuth } from 'context/AuthContext';
 import { ROLE_LABELS, canManageUsers } from 'utils/roleHelpers';
 import { getUserInitials } from 'utils/userHelpers';
@@ -135,41 +130,8 @@ const MobileChevron = styled.div`
   }
 `;
 
-const SearchInput = styled.input`
-  width: 100%;
-  padding: 9px 12px 9px 36px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: ${(p) => p.theme.borderRadius.s1};
-  color: ${(p) => p.theme.colors.text};
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  font-family: inherit;
-  outline: none;
+const SearchBar = styled.div`
   margin-bottom: 12px;
-  transition: border-color ${(p) => p.theme.transitions.fast};
-
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.25);
-  }
-
-  &:focus {
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-`;
-
-const SearchWrapper = styled.div`
-  position: relative;
-`;
-
-const SearchIcon = styled.div`
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.25);
-  pointer-events: none;
-  display: flex;
-  align-items: center;
 `;
 
 const RoleBadge = styled.span`
@@ -351,17 +313,14 @@ export default function UsersTab() {
         )}
       </PageHeader>
 
-      <SearchWrapper>
-        <SearchIcon>
-          <Search size={14} />
-        </SearchIcon>
+      <SearchBar>
         <SearchInput
-          type="text"
           placeholder="Search users..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onClear={() => setSearch('')}
         />
-      </SearchWrapper>
+      </SearchBar>
 
       <SectionCard>
         {loading && <LoadingSpinner />}
