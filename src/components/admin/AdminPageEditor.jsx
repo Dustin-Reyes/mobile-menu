@@ -1,6 +1,25 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { Type, AlignLeft, Eye, MoreVertical } from 'lucide-react';
+import {
+  Type,
+  AlignLeft,
+  Eye,
+  MoreVertical,
+  Tag,
+  Heading2,
+  Heading3,
+  MousePointerClick,
+  Mail,
+  Phone,
+  MapPin,
+  List,
+  Facebook,
+  Instagram,
+  Twitter,
+  Linkedin,
+  Github,
+  Youtube,
+} from 'lucide-react';
 import Button from 'components/ui/Button';
 import ConfirmDialog from './ConfirmDialog';
 import { usePageEditor } from 'hooks/usePageEditor';
@@ -17,7 +36,22 @@ function getSections(schema) {
   return Array.from(seen.keys());
 }
 
-function getFieldIcon(type) {
+function getFieldIcon(key, type) {
+  const k = key.toLowerCase();
+  if (k.includes('facebook')) return Facebook;
+  if (k.includes('instagram')) return Instagram;
+  if (k.includes('twitter')) return Twitter;
+  if (k.includes('linkedin')) return Linkedin;
+  if (k.includes('github')) return Github;
+  if (k.includes('youtube')) return Youtube;
+  if (k.includes('email')) return Mail;
+  if (k.includes('phone')) return Phone;
+  if (k.includes('address')) return MapPin;
+  if (k.includes('badge')) return Tag;
+  if (k.includes('cta') || k.endsWith('text')) return MousePointerClick;
+  if (k.includes('items')) return List;
+  if (k.includes('title') || k.includes('headline')) return Heading2;
+  if (k.includes('subtitle') || k.includes('description')) return Heading3;
   return type === 'textarea' ? AlignLeft : Type;
 }
 
@@ -120,6 +154,35 @@ const LocaleLabel = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: rgba(255, 255, 255, 0.35);
   margin-right: 4px;
+`;
+
+const LocaleBarSpacer = styled.div`
+  flex: 1;
+`;
+
+const TranslateBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  padding: 3px 10px;
+  background: ${(p) => p.theme.colors.primary}1a;
+  color: ${(p) => p.theme.colors.primary};
+  border: 1px solid ${(p) => p.theme.colors.primary}40;
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  cursor: pointer;
+  font-family: inherit;
+  transition: all ${(p) => p.theme.transitions.fast};
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: ${(p) => p.theme.colors.primary}2a;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
 
 const LocaleTab = styled('button', {
@@ -338,6 +401,7 @@ export default function AdminPageEditor({ pageId }) {
     handleSave,
     handleCancel,
     handleTranslateAll,
+    handleTranslateLocale,
   } = usePageEditor(pageId);
 
   const [confirmTranslateOpen, setConfirmTranslateOpen] = useState(false);
@@ -396,7 +460,7 @@ export default function AdminPageEditor({ pageId }) {
         </Header>
 
         <LocaleBar>
-          <LocaleLabel>Translate:</LocaleLabel>
+          <LocaleLabel>Locale:</LocaleLabel>
           {availableLocales.map((locale) => (
             <LocaleTab
               key={locale}
@@ -407,6 +471,19 @@ export default function AdminPageEditor({ pageId }) {
               {locale.toUpperCase()}
             </LocaleTab>
           ))}
+          <LocaleBarSpacer />
+          {selectedLocale === 'en' ? (
+            <TranslateBtn
+              onClick={() => setConfirmTranslateOpen(true)}
+              disabled={busy}
+            >
+              ✨ Translate all
+            </TranslateBtn>
+          ) : (
+            <TranslateBtn onClick={handleTranslateLocale} disabled={busy}>
+              ↺ Translate from EN
+            </TranslateBtn>
+          )}
         </LocaleBar>
 
         <SectionTabBar>
@@ -423,7 +500,7 @@ export default function AdminPageEditor({ pageId }) {
 
         <FieldsArea>
           {filteredFields.map((field) => {
-            const FieldIcon = getFieldIcon(field.type);
+            const FieldIcon = getFieldIcon(field.key, field.type);
             return (
               <FieldCard key={field.key}>
                 <FieldIconWrap>

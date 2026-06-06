@@ -40,12 +40,6 @@ export const pageSchema = {
         type: 'text',
         group: 'Hero',
       },
-      {
-        key: 'heroCtaHref',
-        label: 'Hero CTA Button URL',
-        type: 'text',
-        group: 'Hero',
-      },
       // Services section
       {
         key: 'servicesTitle',
@@ -137,20 +131,8 @@ export const pageSchema = {
         group: 'CTA',
       },
       {
-        key: 'ctaPrimaryHref',
-        label: 'CTA Primary Button URL',
-        type: 'text',
-        group: 'CTA',
-      },
-      {
         key: 'ctaSecondaryText',
         label: 'CTA Secondary Button Text',
-        type: 'text',
-        group: 'CTA',
-      },
-      {
-        key: 'ctaSecondaryHref',
-        label: 'CTA Secondary Button URL',
         type: 'text',
         group: 'CTA',
       },
@@ -161,13 +143,6 @@ export const pageSchema = {
     label: 'Site (Global)',
     emoji: '🌐',
     fields: [
-      // Header section (global header content)
-      {
-        key: 'headerLinkUrl',
-        label: 'Header Link URL',
-        type: 'text',
-        group: 'Header',
-      },
       // Footer section (global footer content)
       {
         key: 'footerAddress',
