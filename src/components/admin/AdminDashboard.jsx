@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useCMS, useSettings, usePosts } from 'hooks/useContent';
+import PROJECT_CONFIG from 'config/project';
 import { toast } from '@/utils/toast';
 import AdminSidebar from './AdminSidebar';
 import AdminBottomTabBar from './AdminBottomTabBar';
@@ -27,12 +28,12 @@ export default function AdminDashboard() {
     if (location.state?.tab) {
       setActiveTab(location.state.tab);
     }
-  }, [location.state?.tab]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [location.state?.tab]);
 
   const [editingSettings, setEditingSettings] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { isCMSEnabled, clearCache, stats } = useCMS();
+  const { isCMSEnabled, stats } = useCMS();
   const { settings, updateSettings } = useSettings('site');
   const { posts } = usePosts();
 
@@ -68,15 +69,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleClearCache = async () => {
-    try {
-      await clearCache();
-      toast.success('Cache cleared successfully!');
-    } catch {
-      toast.error('Failed to clear cache');
-    }
-  };
-
   const calculatedStats = useMemo(
     () => ({
       pages: stats?.pages || 1,
@@ -97,8 +89,9 @@ export default function AdminDashboard() {
               <AdminDashboardTab
                 isCMSEnabled={isCMSEnabled}
                 stats={calculatedStats}
+                settings={settings}
+                postsEnabled={PROJECT_CONFIG.features.posts}
                 onTabChange={setActiveTab}
-                onClearCache={handleClearCache}
               />
             )}
 

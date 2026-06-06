@@ -1,20 +1,20 @@
 import { motion } from 'framer-motion';
-import { Settings, FileText, RefreshCw } from 'lucide-react';
+import { ExternalLink, Settings, Image } from 'lucide-react';
 import {
-  PageHeader,
-  PageTitle,
-  PageSubtitle,
-  CmsBadge,
-  CmsDot,
-  StatsGrid,
-  StatCard,
-  StatValue,
-  StatLabel,
-  SectionCard,
-  SectionCardHeader,
-  SectionCardTitle,
-  GhostTealButton,
-  QuickActionsRow,
+  SiteIdentityCard,
+  SiteDetails,
+  SiteNameText,
+  SiteUrlLink,
+  SiteUrlPlaceholder,
+  ViewSiteButton,
+  ContentCardsGrid,
+  ContentCard,
+  ContentCardCount,
+  ContentCardIcon,
+  ContentCardLabel,
+  ContentCardHint,
+  StatusLine,
+  StatusDot,
 } from './AdminDashboard.styles';
 
 const motionProps = {
@@ -27,59 +27,80 @@ const motionProps = {
 export default function AdminDashboardTab({
   isCMSEnabled,
   stats,
+  settings,
+  postsEnabled,
   onTabChange,
-  onClearCache,
 }) {
+  const siteName = settings?.title || 'Your Site';
+  const siteUrl = settings?.url || '';
+
   return (
     <motion.div key="dashboard" {...motionProps}>
-      <PageHeader>
-        <div>
-          <PageTitle>Dashboard</PageTitle>
-          <PageSubtitle>Overview of your site</PageSubtitle>
-        </div>
-        <CmsBadge active={isCMSEnabled}>
-          <CmsDot />
-          {isCMSEnabled ? 'Firebase Active' : 'Local Mode'}
-        </CmsBadge>
-      </PageHeader>
+      <SiteIdentityCard>
+        <SiteDetails>
+          <SiteNameText>{siteName}</SiteNameText>
+          {siteUrl ? (
+            <SiteUrlLink
+              href={siteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {siteUrl}
+            </SiteUrlLink>
+          ) : (
+            <SiteUrlPlaceholder>
+              No URL configured — add it in Settings
+            </SiteUrlPlaceholder>
+          )}
+        </SiteDetails>
+        {siteUrl && (
+          <ViewSiteButton
+            href={siteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ExternalLink size={12} />
+            View Site
+          </ViewSiteButton>
+        )}
+      </SiteIdentityCard>
 
-      <StatsGrid>
-        <StatCard>
-          <StatValue>{stats.pages}</StatValue>
-          <StatLabel>Pages</StatLabel>
-        </StatCard>
-        <StatCard>
-          <StatValue>{stats.posts}</StatValue>
-          <StatLabel>Posts</StatLabel>
-        </StatCard>
-        <StatCard>
-          <StatValue>{stats.cacheSize}</StatValue>
-          <StatLabel>Cached</StatLabel>
-        </StatCard>
-      </StatsGrid>
+      <ContentCardsGrid>
+        <ContentCard onClick={() => onTabChange('pages')}>
+          <ContentCardCount>{stats.pages}</ContentCardCount>
+          <ContentCardLabel>Pages</ContentCardLabel>
+          <ContentCardHint>Manage →</ContentCardHint>
+        </ContentCard>
 
-      <SectionCard>
-        <SectionCardHeader>
-          <SectionCardTitle>
-            <RefreshCw size={12} />
-            Quick Actions
-          </SectionCardTitle>
-        </SectionCardHeader>
-        <QuickActionsRow>
-          <GhostTealButton onClick={() => onTabChange('settings')}>
-            <Settings size={12} />
-            Edit Settings
-          </GhostTealButton>
-          <GhostTealButton onClick={() => onTabChange('pages')}>
-            <FileText size={12} />
-            Manage Pages
-          </GhostTealButton>
-          <GhostTealButton onClick={onClearCache}>
-            <RefreshCw size={12} />
-            Clear Cache
-          </GhostTealButton>
-        </QuickActionsRow>
-      </SectionCard>
+        {postsEnabled && (
+          <ContentCard onClick={() => onTabChange('posts')}>
+            <ContentCardCount>{stats.posts}</ContentCardCount>
+            <ContentCardLabel>Posts</ContentCardLabel>
+            <ContentCardHint>Manage →</ContentCardHint>
+          </ContentCard>
+        )}
+
+        <ContentCard onClick={() => onTabChange('media')}>
+          <ContentCardIcon>
+            <Image size={22} />
+          </ContentCardIcon>
+          <ContentCardLabel>Media</ContentCardLabel>
+          <ContentCardHint>Browse →</ContentCardHint>
+        </ContentCard>
+
+        <ContentCard onClick={() => onTabChange('settings')}>
+          <ContentCardIcon>
+            <Settings size={22} />
+          </ContentCardIcon>
+          <ContentCardLabel>Settings</ContentCardLabel>
+          <ContentCardHint>Edit →</ContentCardHint>
+        </ContentCard>
+      </ContentCardsGrid>
+
+      <StatusLine>
+        <StatusDot $active={isCMSEnabled} />
+        {isCMSEnabled ? 'Database connected' : 'No database connection'}
+      </StatusLine>
     </motion.div>
   );
 }

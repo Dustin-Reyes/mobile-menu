@@ -4,29 +4,29 @@ import * as RadixSeparator from '@radix-ui/react-separator';
 // ─── Layout ──────────────────────────────────────────────────────────────────
 
 export const AdminContainer = styled.div`
-  min-height: 100vh;
+  height: calc(100vh - 67px);
   background: ${(p) => p.theme.colors.background};
   display: flex;
-  margin-top: 10rem;
 
   @media (max-width: 768px) {
-    padding-bottom: 56px;
+    padding-bottom: 60px;
   }
 `;
 
 export const Sidebar = styled.div`
   position: fixed;
-  top: 10rem;
+  top: 67px;
   left: 0;
   width: 200px;
-  height: calc(100vh - 10rem);
+  height: calc(100vh - 67px);
   background: ${(p) => p.theme.colors.background};
   border-right: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 20px 12px;
+  padding: 60px 12px 20px;
   display: flex;
   flex-direction: column;
   gap: 2px;
   overflow-y: auto;
+  z-index: ${(p) => p.theme.zIndex.sticky - 1};
 
   @media (max-width: 768px) {
     display: none;
@@ -79,7 +79,7 @@ export const MainContent = styled.div`
 export const TabContent = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 24px;
+  padding: 60px 20px 16px;
 `;
 
 // ─── Page header ─────────────────────────────────────────────────────────────
@@ -369,6 +369,159 @@ export const QuickActionsRow = styled.div`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+`;
+
+export const SiteIdentityCard = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: ${(p) => p.theme.borderRadius.s2};
+  padding: 20px;
+  margin-bottom: 12px;
+`;
+
+export const SiteDetails = styled.div`
+  min-width: 0;
+  flex: 1;
+`;
+
+export const SiteNameText = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s6};
+  font-weight: ${(p) => p.theme.typography.fontWeights.bold};
+  color: ${(p) => p.theme.colors.text};
+  line-height: 1.2;
+  margin-bottom: 4px;
+`;
+
+export const SiteUrlLink = styled.a`
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  color: ${(p) => p.theme.colors.primary};
+  text-decoration: none;
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  transition: opacity ${(p) => p.theme.transitions.fast};
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+export const SiteUrlPlaceholder = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  color: rgba(255, 255, 255, 0.25);
+  font-style: italic;
+`;
+
+export const ViewSiteButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-weight: ${(p) => p.theme.typography.fontWeights.medium};
+  padding: 6px 12px;
+  background: ${(p) => p.theme.colors.primary}1a;
+  color: ${(p) => p.theme.colors.primary};
+  border: 1px solid ${(p) => p.theme.colors.primary}40;
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background ${(p) => p.theme.transitions.fast};
+
+  &:hover {
+    background: ${(p) => p.theme.colors.primary}2a;
+  }
+`;
+
+export const ContentCardsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+export const ContentCard = styled.button`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: ${(p) => p.theme.borderRadius.s2};
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all ${(p) => p.theme.transitions.fast};
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: ${(p) => p.theme.colors.primary}40;
+  }
+`;
+
+export const ContentCardCount = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s7};
+  font-weight: ${(p) => p.theme.typography.fontWeights.bold};
+  color: ${(p) => p.theme.colors.primary};
+  line-height: 1;
+  margin-bottom: 6px;
+`;
+
+export const ContentCardIcon = styled.div`
+  color: ${(p) => p.theme.colors.primary};
+  opacity: 0.7;
+  margin-bottom: 6px;
+`;
+
+export const ContentCardLabel = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+`;
+
+export const ContentCardHint = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: rgba(255, 255, 255, 0.2);
+  margin-top: 4px;
+`;
+
+export const StatusLine = styled.div`
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: rgba(255, 255, 255, 0.3);
+  z-index: ${(p) => p.theme.zIndex.sticky};
+
+  @media (max-width: 768px) {
+    bottom: 76px;
+  }
+`;
+
+export const StatusDot = styled.div`
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: ${(p) => (p.$active ? '#4ade80' : '#f87171')};
+  flex-shrink: 0;
 `;
 
 // ─── Analytics tab ────────────────────────────────────────────────────────────
