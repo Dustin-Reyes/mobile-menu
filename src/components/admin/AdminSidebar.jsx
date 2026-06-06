@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import styled from '@emotion/styled';
 import { ChevronDown } from 'lucide-react';
 import { Sidebar, SidebarItem, SidebarDivider } from './AdminDashboard.styles';
-import { ADMIN_TAB_GROUPS, getAdminTab } from './adminTabs';
+import { getAdminTab, getVisibleTabGroups } from './adminTabs';
 import { pageSchema } from '../../content/schema';
 
 const PageSubList = styled.div`
@@ -53,18 +53,20 @@ export default function AdminSidebar({
   onTabChange,
   selectedPage,
   onPageChange,
+  userRole,
 }) {
   const pagesOpen = activeTab === 'pages';
   const pages = Object.entries(pageSchema);
+  const visibleGroups = getVisibleTabGroups(userRole);
 
   return (
     <Sidebar>
-      {ADMIN_TAB_GROUPS.map((group, groupIndex) => (
+      {visibleGroups.map((group, groupIndex) => (
         <Fragment key={group.join('-')}>
           {groupIndex > 0 && <SidebarDivider />}
           {group.map((tabId) => {
             const tab = getAdminTab(tabId);
-            if (!tab?.enabled) return null;
+            if (!tab) return null;
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
 

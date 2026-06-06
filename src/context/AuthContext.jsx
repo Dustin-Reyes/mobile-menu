@@ -12,13 +12,31 @@ import {
   signOut,
 } from 'firebase/auth';
 import { auth } from 'config/firebase';
+import { canManageUsers } from 'utils/roleHelpers';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const isAuthAvailable = !!auth;
   const [user, setUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(isAuthAvailable);
+
+  const loadUserRole = useCallback(
+    async (currentUser, forceRefresh = false) => {
+      if (!currentUser) {
+        setUserRole(null);
+        return;
+      }
+      try {
+        const tokenResult = await currentUser.getIdTokenResult(forceRefresh);
+        setUserRole(tokenResult.claims.role ?? null);
+      } catch {
+        setUserRole(null);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!isAuthAvailable) {
@@ -26,13 +44,14 @@ export function AuthProvider({ children }) {
       return undefined;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      await loadUserRole(currentUser);
       setLoading(false);
     });
 
     return unsubscribe;
-  }, [isAuthAvailable]);
+  }, [isAuthAvailable, loadUserRole]);
 
   const signIn = useCallback(
     (email, password) => {
@@ -53,16 +72,27 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }, [isAuthAvailable]);
 
+  // Force-refresh the ID token to pick up a newly assigned custom claim role
+  const refreshUserRole = useCallback(async () => {
+    if (user) {
+      await loadUserRole(user, true);
+    }
+  }, [user, loadUserRole]);
+
   const value = useMemo(
     () => ({
       user,
+      userRole,
       loading,
       isAuthAvailable,
       isAuthenticated: !!user,
+      isAdmin: userRole === 'admin',
+      canManageUsers: canManageUsers(userRole),
       signIn,
       logout,
+      refreshUserRole,
     }),
-    [user, loading, isAuthAvailable, signIn, logout],
+    [user, userRole, loading, isAuthAvailable, signIn, logout, refreshUserRole],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

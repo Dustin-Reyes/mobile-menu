@@ -69,6 +69,7 @@ export const CMS_CONFIG = {
     navigation: 'navigation',
     i18n: 'i18n',
     media: 'media',
+    users: 'users',
   },
   cache: {
     ttl: 5 * 60 * 1000, // 5 minutes

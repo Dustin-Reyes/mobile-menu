@@ -1,0 +1,176 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ChevronLeft } from 'lucide-react';
+import { useAuth } from 'context/AuthContext';
+import { toast } from '@/utils/toast';
+import { canManageUsers } from 'utils/roleHelpers';
+import { callUserManagement } from 'utils/admin/userHelpers';
+import ConfirmDialog from './ConfirmDialog';
+import EditRoleModal from './EditRoleModal';
+import { SectionCard } from './AdminDashboard.styles';
+import { BackButton } from './UserDetail.styles';
+import UserProfileHeader from './UserProfileHeader';
+import UserInfoSection from './UserInfoSection';
+import UserActionsSection from './UserActionsSection';
+
+// ─── Motion ───────────────────────────────────────────────────────────────────
+
+const motionProps = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+  transition: { duration: 0.2 },
+};
+
+// ─── Component ───────────────────────────────────────────────────────────────────
+
+export default function UserDetail({
+  targetUser,
+  callerRole,
+  onBack,
+  onUpdated,
+  onDeleted,
+}) {
+  const { user } = useAuth();
+  const [editingName, setEditingName] = useState(false);
+  const [displayName, setDisplayName] = useState(targetUser.displayName ?? '');
+  const [savingName, setSavingName] = useState(false);
+  const [showEditRole, setShowEditRole] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [resetDialog, setResetDialog] = useState(false);
+
+  const canEdit = canManageUsers(callerRole);
+
+  const handleSaveName = async (e) => {
+    e.preventDefault();
+    setSavingName(true);
+    try {
+      await callUserManagement('update-profile', user, {
+        uid: targetUser.uid,
+        displayName: displayName.trim() || null,
+      });
+      toast.success('Display name updated');
+      setEditingName(false);
+      onUpdated();
+    } catch (err) {
+      toast.error(err.message || 'Failed to update display name');
+    } finally {
+      setSavingName(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setDisplayName(targetUser.displayName ?? '');
+    setEditingName(false);
+  };
+
+  const handleToggleDisabled = async () => {
+    try {
+      const action = targetUser.disabled ? 'enable' : 'disable';
+      await callUserManagement(action, user, { uid: targetUser.uid });
+      toast.success(
+        targetUser.disabled ? 'Account enabled' : 'Account disabled',
+      );
+      onUpdated();
+    } catch (err) {
+      toast.error(err.message || 'Failed to update account status');
+    }
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await callUserManagement('delete', user, { uid: targetUser.uid });
+      toast.success('User deleted');
+      onDeleted();
+    } catch (err) {
+      toast.error(err.message || 'Failed to delete user');
+    }
+  };
+
+  const confirmResetPassword = async () => {
+    try {
+      await callUserManagement('reset-password', user, {
+        email: targetUser.email,
+      });
+      toast.success('Password reset email sent');
+    } catch (err) {
+      toast.error(err.message || 'Failed to send reset email');
+    }
+  };
+
+  const handleCopyUid = () => {
+    navigator.clipboard.writeText(targetUser.uid).then(() => {
+      toast.success('User ID copied');
+    });
+  };
+
+  const handleEditName = () => {
+    setEditingName(true);
+  };
+
+  const handleDisplayNameChange = (e) => {
+    setDisplayName(e.target.value);
+  };
+
+  return (
+    <motion.div key="detail" {...motionProps}>
+      <BackButton onClick={onBack}>
+        <ChevronLeft size={15} />
+        All Users
+      </BackButton>
+
+      <SectionCard style={{ padding: 0 }}>
+        <UserProfileHeader
+          targetUser={targetUser}
+          canEdit={canEdit}
+          editingName={editingName}
+          displayName={displayName}
+          savingName={savingName}
+          onEditName={handleEditName}
+          onSaveName={handleSaveName}
+          onCancelEdit={handleCancelEdit}
+          onDisplayNameChange={handleDisplayNameChange}
+        />
+
+        <UserInfoSection targetUser={targetUser} onCopyUid={handleCopyUid} />
+
+        {canEdit && (
+          <UserActionsSection
+            targetUser={targetUser}
+            onEditRole={() => setShowEditRole(true)}
+            onResetPassword={() => setResetDialog(true)}
+            onToggleDisabled={handleToggleDisabled}
+            onDelete={() => setDeleteDialog(true)}
+          />
+        )}
+      </SectionCard>
+
+      <EditRoleModal
+        open={showEditRole}
+        onOpenChange={setShowEditRole}
+        targetUser={targetUser}
+        onUpdated={onUpdated}
+        callerRole={callerRole}
+      />
+
+      <ConfirmDialog
+        open={deleteDialog}
+        onOpenChange={setDeleteDialog}
+        title="Delete User"
+        description={`Permanently delete ${targetUser.email}? This cannot be undone.`}
+        confirmLabel="Delete"
+        destructive
+        onConfirm={confirmDelete}
+      />
+
+      <ConfirmDialog
+        open={resetDialog}
+        onOpenChange={setResetDialog}
+        title="Reset Password"
+        description={`Send a password reset email to ${targetUser.email}?`}
+        confirmLabel="Send Email"
+        onConfirm={confirmResetPassword}
+      />
+    </motion.div>
+  );
+}

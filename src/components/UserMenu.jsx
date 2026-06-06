@@ -19,6 +19,7 @@ import {
   DropdownMenuSeparator,
 } from 'components/ui/DropdownMenu';
 import { getUserInitials, getUserDisplayName } from 'utils/userHelpers';
+import { ROLE_LABELS } from 'utils/roleHelpers';
 
 // ─── Trigger ─────────────────────────────────────────────────────────────────
 
@@ -204,7 +205,7 @@ const DestructiveItem = styled(MenuItem)`
 
 export default function UserMenu() {
   const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { user, userRole, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -240,6 +241,11 @@ export default function UserMenu() {
           <HeaderDetails>
             <HeaderName>{displayName}</HeaderName>
             <HeaderEmail>{user.email}</HeaderEmail>
+            {userRole && (
+              <HeaderEmail style={{ marginTop: '2px' }}>
+                {ROLE_LABELS[userRole]}
+              </HeaderEmail>
+            )}
           </HeaderDetails>
           <MenuChevron>
             <ChevronRight size={14} />

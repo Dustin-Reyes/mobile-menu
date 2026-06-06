@@ -5,8 +5,10 @@ import {
   Newspaper,
   Image,
   User,
+  Users,
 } from 'lucide-react';
 import PROJECT_CONFIG from 'config/project';
+import { isTabVisible } from 'utils/roleHelpers';
 
 const { posts: postsEnabled } = PROJECT_CONFIG.features;
 
@@ -17,6 +19,14 @@ export const ADMIN_TABS = [
     shortLabel: 'Dash',
     icon: BarChart3,
     enabled: true,
+  },
+  {
+    id: 'users',
+    label: 'Users',
+    shortLabel: 'Users',
+    icon: Users,
+    enabled: true,
+    requiredRoles: ['admin', 'site_manager'],
   },
   {
     id: 'settings',
@@ -57,11 +67,24 @@ export const ADMIN_TABS = [
 
 // Visual groupings for the desktop sidebar (dividers rendered between groups).
 export const ADMIN_TAB_GROUPS = [
-  ['dashboard', 'settings', 'profile'],
+  ['dashboard', 'users', 'settings', 'profile'],
   ['pages', 'posts', 'media'],
 ];
 
-// Tabs surfaced in the mobile bottom bar (space constrained).
+// Tabs surfaced in the mobile bottom bar (space constrained — Users omitted).
 export const BOTTOM_TAB_IDS = ['dashboard', 'pages', 'posts', 'settings'];
 
 export const getAdminTab = (id) => ADMIN_TABS.find((tab) => tab.id === id);
+
+// Returns only the tabs visible to the given role
+export const getVisibleTabs = (role) =>
+  ADMIN_TABS.filter((tab) => isTabVisible(tab, role));
+
+// Returns tab groups with invisible tabs filtered out (empty groups omitted)
+export const getVisibleTabGroups = (role) =>
+  ADMIN_TAB_GROUPS.map((group) =>
+    group.filter((id) => {
+      const tab = getAdminTab(id);
+      return tab && isTabVisible(tab, role);
+    }),
+  ).filter((group) => group.length > 0);

@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useCMS, useSettings, usePosts } from 'hooks/useContent';
 import PROJECT_CONFIG from 'config/project';
 import { toast } from '@/utils/toast';
+import { useAuth } from 'context/AuthContext';
 import { pageSchema } from '../../content/schema';
 import AdminSidebar from './AdminSidebar';
 import AdminBottomTabBar from './AdminBottomTabBar';
@@ -13,6 +14,7 @@ import AdminPagesTab from './AdminPagesTab';
 import AdminPostsTab from './AdminPostsTab';
 import AdminMediaTab from './AdminMediaTab';
 import AdminProfileTab from './AdminProfileTab';
+import AdminUsersTab from './AdminUsersTab';
 import {
   AdminContainer,
   MainContent,
@@ -21,6 +23,7 @@ import {
 
 export default function AdminDashboard() {
   const location = useLocation();
+  const { userRole } = useAuth();
   const [activeTab, setActiveTab] = useState(
     location.state?.tab || 'dashboard',
   );
@@ -89,6 +92,7 @@ export default function AdminDashboard() {
         onTabChange={setActiveTab}
         selectedPage={selectedPage}
         onPageChange={setSelectedPage}
+        userRole={userRole}
       />
 
       <MainContent>
@@ -122,6 +126,7 @@ export default function AdminDashboard() {
                 onPageChange={setSelectedPage}
               />
             )}
+            {activeTab === 'users' && <AdminUsersTab />}
             {activeTab === 'posts' && <AdminPostsTab />}
             {activeTab === 'media' && <AdminMediaTab />}
             {activeTab === 'profile' && <AdminProfileTab />}
@@ -129,7 +134,11 @@ export default function AdminDashboard() {
         </TabContent>
       </MainContent>
 
-      <AdminBottomTabBar activeTab={activeTab} onTabChange={setActiveTab} />
+      <AdminBottomTabBar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        userRole={userRole}
+      />
     </AdminContainer>
   );
 }
