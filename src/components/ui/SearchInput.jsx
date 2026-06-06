@@ -34,10 +34,21 @@ const StyledInput = styled.input`
       : p.theme.typography.fontSizes.s3};
   font-family: inherit;
   outline: none;
+  /* Prevent iOS auto-zoom on focus (requires font-size >= 16px on mobile) */
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
   transition:
     border-color ${(p) => p.theme.transitions.fast},
     background ${(p) => p.theme.transitions.fast},
     box-shadow ${(p) => p.theme.transitions.fast};
+
+  /* Remove native browser clear button */
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
 
   &::placeholder {
     color: rgba(255, 255, 255, 0.22);
@@ -128,7 +139,8 @@ const SearchInput = React.forwardRef(
           ref={ref}
           id={inputId}
           role="searchbox"
-          type="search"
+          type="text"
+          inputMode="search"
           $size={size}
           $hasClear={hasClear}
           value={value}
