@@ -488,6 +488,7 @@ class ContentService {
       pages: Object.keys(pageSchema).length,
       posts: posts.length,
       navItems: navItems.length,
+      users: 0,
       cacheSize: this.getCacheSize(),
     };
   }

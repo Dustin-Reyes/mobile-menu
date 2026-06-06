@@ -226,6 +226,12 @@ export default function DashboardTab({
           <ContentCardHint>Browse →</ContentCardHint>
         </ContentCard>
 
+        <ContentCard onClick={() => onTabChange('users')}>
+          <ContentCardCount>{stats.users || 0}</ContentCardCount>
+          <ContentCardLabel>Users</ContentCardLabel>
+          <ContentCardHint>Manage →</ContentCardHint>
+        </ContentCard>
+
         <ContentCard onClick={() => onTabChange('settings')}>
           <ContentCardIcon>
             <Settings size={22} />
