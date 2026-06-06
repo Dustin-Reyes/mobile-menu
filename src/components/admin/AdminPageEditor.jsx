@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import {
   Type,
   AlignLeft,
@@ -54,6 +55,13 @@ function getFieldIcon(key, type) {
   if (k.includes('subtitle') || k.includes('description')) return Heading3;
   return type === 'textarea' ? AlignLeft : Type;
 }
+
+// ─── Animations ──────────────────────────────────────────────────────────────
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
 
 // ─── Styled Components ────────────────────────────────────────────────────────
 
@@ -384,6 +392,17 @@ const DirtyDot = styled.div`
   flex-shrink: 0;
 `;
 
+const Spinner = styled.span`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: ${spin} 0.6s linear infinite;
+  flex-shrink: 0;
+`;
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AdminPageEditor({ pageId }) {
@@ -476,12 +495,29 @@ export default function AdminPageEditor({ pageId }) {
             <TranslateBtn
               onClick={() => setConfirmTranslateOpen(true)}
               disabled={busy}
+              style={{ gap: 6 }}
             >
-              ✨ Translate all
+              {isTranslating ? (
+                <>
+                  <Spinner /> Translating…
+                </>
+              ) : (
+                '✨ Translate all'
+              )}
             </TranslateBtn>
           ) : (
-            <TranslateBtn onClick={handleTranslateLocale} disabled={busy}>
-              ↺ Translate from EN
+            <TranslateBtn
+              onClick={handleTranslateLocale}
+              disabled={busy}
+              style={{ gap: 6 }}
+            >
+              {isTranslating ? (
+                <>
+                  <Spinner /> Translating…
+                </>
+              ) : (
+                '↺ Translate from EN'
+              )}
             </TranslateBtn>
           )}
         </LocaleBar>
