@@ -117,6 +117,10 @@ const StatusLine = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: rgba(255, 255, 255, 0.3);
   flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const StatusDot = styled.div`
