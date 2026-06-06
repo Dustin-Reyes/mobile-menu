@@ -6,7 +6,6 @@ import SearchInput from 'components/ui/SearchInput';
 import { useAuth } from 'context/AuthContext';
 import { ROLE_LABELS, canManageUsers } from 'utils/roleHelpers';
 import { getUserInitials } from 'utils/userHelpers';
-import { formatDate } from 'utils/formatDate';
 import {
   getUserStatus,
   getProviderLabel,
@@ -83,15 +82,6 @@ const UserInfo = styled.div`
 const UserPrimary = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   color: ${(p) => p.theme.colors.text};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const UserSecondary = styled.div`
-  font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.3);
-  margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -374,11 +364,6 @@ export default function UsersTab() {
                     <UserPrimary title={u.displayName ?? u.email}>
                       {u.displayName ?? u.email}
                     </UserPrimary>
-                    <UserSecondary>
-                      {u.displayName
-                        ? u.email
-                        : `Joined ${formatDate(u.createdAt)}`}
-                    </UserSecondary>
                     <MobileRole>
                       {u.role ? (ROLE_LABELS[u.role] ?? u.role) : null}
                     </MobileRole>
