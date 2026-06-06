@@ -94,6 +94,10 @@ const UserSecondary = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const BadgesRow = styled.div`
