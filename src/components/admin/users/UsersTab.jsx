@@ -1,7 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
-import { UserPlus, Users, ShieldCheck } from 'lucide-react';
+import {
+  UserPlus,
+  Users,
+  ShieldCheck,
+  ChevronRight,
+  Search,
+} from 'lucide-react';
 import { useAuth } from 'context/AuthContext';
 import { ROLE_LABELS, canManageUsers } from 'utils/roleHelpers';
 import { getUserInitials } from 'utils/userHelpers';
@@ -103,9 +109,67 @@ const BadgesRow = styled.div`
   flex-shrink: 0;
 
   @media (max-width: 768px) {
-    order: 3;
-    margin-left: 46px;
+    display: none;
   }
+`;
+
+const MobileRole = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    font-size: ${(p) => p.theme.typography.fontSizes.s2};
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 2px;
+  }
+`;
+
+const MobileChevron = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+  }
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 9px 12px 9px 36px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  color: ${(p) => p.theme.colors.text};
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-family: inherit;
+  outline: none;
+  margin-bottom: 12px;
+  transition: border-color ${(p) => p.theme.transitions.fast};
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  &:focus {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+`;
+
+const SearchWrapper = styled.div`
+  position: relative;
+`;
+
+const SearchIcon = styled.div`
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
 `;
 
 const RoleBadge = styled.span`
@@ -198,6 +262,7 @@ export default function UsersTab() {
   const [view, setView] = useState('list');
   const [detailUser, setDetailUser] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [search, setSearch] = useState('');
 
   const loadUsers = useCallback(async () => {
     try {
@@ -221,6 +286,16 @@ export default function UsersTab() {
     setDetailUser(u);
     setView('detail');
   };
+
+  const filteredUsers = useMemo(() => {
+    if (!search.trim()) return users;
+    const q = search.toLowerCase();
+    return users.filter(
+      (u) =>
+        (u.displayName ?? '').toLowerCase().includes(q) ||
+        (u.email ?? '').toLowerCase().includes(q),
+    );
+  }, [users, search]);
 
   const handleBack = () => {
     setView('list');
@@ -276,6 +351,18 @@ export default function UsersTab() {
         )}
       </PageHeader>
 
+      <SearchWrapper>
+        <SearchIcon>
+          <Search size={14} />
+        </SearchIcon>
+        <SearchInput
+          type="text"
+          placeholder="Search users..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </SearchWrapper>
+
       <SectionCard>
         {loading && <LoadingSpinner />}
 
@@ -295,9 +382,16 @@ export default function UsersTab() {
           </EmptyState>
         )}
 
-        {!loading && !fetchError && users.length > 0 && (
+        {!loading &&
+          !fetchError &&
+          filteredUsers.length === 0 &&
+          users.length > 0 && (
+            <EmptyState>No users match your search</EmptyState>
+          )}
+
+        {!loading && !fetchError && filteredUsers.length > 0 && (
           <UserList>
-            {users.map((u) => {
+            {filteredUsers.map((u) => {
               const status = getUserStatus(u);
               return (
                 <UserRow key={u.uid} onClick={() => handleRowClick(u)}>
@@ -322,6 +416,9 @@ export default function UsersTab() {
                         ? u.email
                         : `Joined ${formatDate(u.createdAt)}`}
                     </UserSecondary>
+                    <MobileRole>
+                      {u.role ? (ROLE_LABELS[u.role] ?? u.role) : null}
+                    </MobileRole>
                   </UserInfo>
 
                   <BadgesRow>
@@ -338,6 +435,10 @@ export default function UsersTab() {
                       {status === 'disabled' ? 'Disabled' : 'Active'}
                     </StatusBadge>
                   </BadgesRow>
+
+                  <MobileChevron>
+                    <ChevronRight size={16} />
+                  </MobileChevron>
                 </UserRow>
               );
             })}

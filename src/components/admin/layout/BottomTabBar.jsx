@@ -64,6 +64,7 @@ export default function BottomTabBar({ activeTab, onTabChange, userRole }) {
             onClick={() => onTabChange(tab.id)}
           >
             <Icon size={16} />
+            {tab.shortLabel}
           </BottomTab>
         );
       })}
