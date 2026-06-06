@@ -115,32 +115,7 @@ export default function FAQ() {
   const subtitle =
     content?.faq?.subtitle ??
     (loading ? null : 'Find answers to common questions');
-  const faqs =
-    content?.faq?.items ??
-    (loading
-      ? null
-      : [
-          {
-            question: 'What services do you offer?',
-            answer:
-              'We offer a comprehensive range of services including web development, design, consulting, and ongoing support to help your business succeed.',
-          },
-          {
-            question: 'How long does a project take?',
-            answer:
-              'Project timelines vary based on scope and complexity. Typically, projects range from 4-12 weeks. We provide detailed timelines during our initial consultation.',
-          },
-          {
-            question: 'What is your pricing structure?',
-            answer:
-              'We offer flexible pricing options including fixed-price projects and hourly rates. Contact us for a custom quote based on your specific needs.',
-          },
-          {
-            question: 'Do you provide ongoing support?',
-            answer:
-              'Yes, we offer various maintenance and support packages to ensure your project continues to perform optimally after launch.',
-          },
-        ]);
+  const faqs = content?.faq?.items ?? (loading ? null : []);
 
   if (!faqs) return null;
 

@@ -63,6 +63,160 @@ const Spinner = styled.span`
   flex-shrink: 0;
 `;
 
+// ─── FAQ Items Editor ────────────────────────────────────────────────────────
+
+const FaqItemCard = styled.div`
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+`;
+
+const FaqItemRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+`;
+
+const FaqItemFields = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+const FaqItemLabel = styled.span`
+  font-size: ${(p) => p.theme.typography.fontSizes.s0};
+  font-weight: ${(p) => p.theme.typography.fontWeights.bold};
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.25);
+  display: block;
+  margin-bottom: 3px;
+`;
+
+const RemoveItemBtn = styled.button`
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  margin-top: 2px;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(239, 68, 68, 0.5);
+    color: rgb(239, 68, 68);
+    background: rgba(239, 68, 68, 0.08);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+`;
+
+const AddItemBtn = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  font-family: inherit;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: ${(p) => p.theme.colors.primary}60;
+    color: ${(p) => p.theme.colors.primary};
+    background: ${(p) => p.theme.colors.primary}0d;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+`;
+
+export function FaqItemsEditor({ value, onChange, disabled }) {
+  const items = Array.isArray(value) ? value : [];
+
+  const updateItem = (index, field, text) => {
+    const updated = items.map((item, i) =>
+      i === index ? { ...item, [field]: text } : item,
+    );
+    onChange(updated);
+  };
+
+  const addItem = () => {
+    onChange([...items, { question: '', answer: '' }]);
+  };
+
+  const removeItem = (index) => {
+    onChange(items.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div>
+      {items.map((item, index) => (
+        <FaqItemCard key={index}>
+          <FaqItemRow>
+            <FaqItemFields>
+              <div>
+                <FaqItemLabel>Question</FaqItemLabel>
+                <Input
+                  value={item.question ?? ''}
+                  onChange={(e) =>
+                    updateItem(index, 'question', e.target.value)
+                  }
+                  disabled={disabled}
+                  placeholder="Enter question…"
+                />
+              </div>
+              <div>
+                <FaqItemLabel>Answer</FaqItemLabel>
+                <StyledTextarea
+                  value={item.answer ?? ''}
+                  onChange={(e) => updateItem(index, 'answer', e.target.value)}
+                  disabled={disabled}
+                  placeholder="Enter answer…"
+                  style={{ minHeight: 60 }}
+                />
+              </div>
+            </FaqItemFields>
+            <RemoveItemBtn
+              onClick={() => removeItem(index)}
+              disabled={disabled}
+              title="Remove item"
+              aria-label="Remove FAQ item"
+            >
+              ×
+            </RemoveItemBtn>
+          </FaqItemRow>
+        </FaqItemCard>
+      ))}
+      <AddItemBtn onClick={addItem} disabled={disabled}>
+        ＋ Add FAQ Item
+      </AddItemBtn>
+    </div>
+  );
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function groupFields(fields) {
@@ -288,7 +442,13 @@ function DesktopEditor({
                 <FieldLabel htmlFor={`field-${field.key}`}>
                   {field.label}
                 </FieldLabel>
-                {field.type === 'textarea' ? (
+                {field.type === 'faq-items' ? (
+                  <FaqItemsEditor
+                    value={formValues[field.key] ?? []}
+                    onChange={(arr) => onFieldChange(field.key, arr)}
+                    disabled={isLoading}
+                  />
+                ) : field.type === 'textarea' ? (
                   <StyledTextarea
                     id={`field-${field.key}`}
                     aria-label={field.label}
@@ -478,7 +638,11 @@ function MobileFieldList({
         <FieldRow key={field.key} onClick={() => onSelectField(field.key)}>
           <FieldRowLeft>
             <FieldRowName>{field.label}</FieldRowName>
-            <FieldRowPreview>{values[field.key] ?? '—'}</FieldRowPreview>
+            <FieldRowPreview>
+              {field.type === 'faq-items'
+                ? `${(values[field.key] ?? []).length} item${(values[field.key] ?? []).length !== 1 ? 's' : ''}`
+                : (values[field.key] ?? '—')}
+            </FieldRowPreview>
           </FieldRowLeft>
           <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '1rem' }}>
             ›
@@ -557,12 +721,15 @@ function MobileFieldEdit({
   onFieldSave,
 }) {
   const fieldDef = schema.fields.find((f) => f.key === selectedField);
-  const currentSaved = allLocaleContent[selectedLocale]?.[selectedField] ?? '';
+  const isFaqItems = fieldDef?.type === 'faq-items';
+  const currentSaved =
+    allLocaleContent[selectedLocale]?.[selectedField] ?? (isFaqItems ? [] : '');
   const [inputValue, setInputValue] = useState(currentSaved);
 
   useEffect(() => {
     setInputValue(currentSaved);
-  }, [selectedField, selectedLocale, currentSaved]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedField, selectedLocale]);
 
   if (!fieldDef) return null;
 
@@ -576,11 +743,21 @@ function MobileFieldEdit({
       </MobileHeader>
 
       <FieldEditContent>
-        <SectionTitle>Current saved value</SectionTitle>
-        <SavedPreview>{currentSaved || '—'}</SavedPreview>
+        {!isFaqItems && (
+          <>
+            <SectionTitle>Current saved value</SectionTitle>
+            <SavedPreview>{currentSaved || '—'}</SavedPreview>
+          </>
+        )}
 
         <SectionTitle>Edit</SectionTitle>
-        {fieldDef.type === 'textarea' ? (
+        {isFaqItems ? (
+          <FaqItemsEditor
+            value={inputValue}
+            onChange={setInputValue}
+            disabled={false}
+          />
+        ) : fieldDef.type === 'textarea' ? (
           <StyledTextarea
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
@@ -594,7 +771,7 @@ function MobileFieldEdit({
           />
         )}
 
-        {otherLocales.length > 0 && (
+        {!isFaqItems && otherLocales.length > 0 && (
           <>
             <SectionTitle>Other locales</SectionTitle>
             {otherLocales.map((locale) => (

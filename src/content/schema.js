@@ -98,6 +98,12 @@ export const pageSchema = {
         type: 'textarea',
         group: 'FAQ',
       },
+      {
+        key: 'faqItems',
+        label: 'FAQ Items',
+        type: 'faq-items',
+        group: 'FAQ',
+      },
       // Contact section
       {
         key: 'contactTitle',

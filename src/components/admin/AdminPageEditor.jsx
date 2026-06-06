@@ -24,6 +24,7 @@ import {
 import Button from 'components/ui/Button';
 import ConfirmDialog from './ConfirmDialog';
 import { usePageEditor } from 'hooks/usePageEditor';
+import { FaqItemsEditor } from './AdminContentFieldEditor';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -546,7 +547,13 @@ export default function AdminPageEditor({ pageId }) {
                   <FieldLabel htmlFor={`pf-${field.key}`}>
                     {field.label}
                   </FieldLabel>
-                  {field.type === 'textarea' ? (
+                  {field.type === 'faq-items' ? (
+                    <FaqItemsEditor
+                      value={formValues[field.key] ?? []}
+                      onChange={(arr) => handleFieldChange(field.key, arr)}
+                      disabled={busy}
+                    />
+                  ) : field.type === 'textarea' ? (
                     <FieldTextarea
                       id={`pf-${field.key}`}
                       value={formValues[field.key] ?? ''}

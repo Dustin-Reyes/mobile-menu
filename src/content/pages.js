@@ -43,6 +43,28 @@ export const pages = {
       faq: {
         title: 'Frequently Asked Questions',
         subtitle: 'Find answers to common questions about our services',
+        items: [
+          {
+            question: 'What services do you offer?',
+            answer:
+              'We offer a comprehensive range of services including web development, design, consulting, and ongoing support to help your business succeed.',
+          },
+          {
+            question: 'How long does a project take?',
+            answer:
+              'Project timelines vary based on scope and complexity. Typically, projects range from 4-12 weeks. We provide detailed timelines during our initial consultation.',
+          },
+          {
+            question: 'What is your pricing structure?',
+            answer:
+              'We offer flexible pricing options including fixed-price projects and hourly rates. Contact us for a custom quote based on your specific needs.',
+          },
+          {
+            question: 'Do you provide ongoing support?',
+            answer:
+              'Yes, we offer various maintenance and support packages to ensure your project continues to perform optimally after launch.',
+          },
+        ],
       },
       contact: {
         title: 'Contact Us',
@@ -86,6 +108,28 @@ export const pages = {
         title: 'Preguntas Frecuentes',
         subtitle:
           'Encuentra respuestas a preguntas comunes sobre nuestros servicios',
+        items: [
+          {
+            question: '¿Qué servicios ofrecen?',
+            answer:
+              'Ofrecemos una amplia gama de servicios que incluyen desarrollo web, diseño, consultoría y soporte continuo para ayudar a tu negocio a tener éxito.',
+          },
+          {
+            question: '¿Cuánto tiempo toma un proyecto?',
+            answer:
+              'Los plazos varían según el alcance y la complejidad. Por lo general, los proyectos duran entre 4 y 12 semanas. Proporcionamos cronogramas detallados durante la consulta inicial.',
+          },
+          {
+            question: '¿Cuál es su estructura de precios?',
+            answer:
+              'Ofrecemos opciones de precios flexibles, incluyendo proyectos de precio fijo y tarifas por hora. Contáctenos para obtener una cotización personalizada según sus necesidades.',
+          },
+          {
+            question: '¿Ofrecen soporte continuo?',
+            answer:
+              'Sí, ofrecemos varios paquetes de mantenimiento y soporte para garantizar que su proyecto continúe funcionando de manera óptima después del lanzamiento.',
+          },
+        ],
       },
       contact: {
         title: 'Contáctenos',
