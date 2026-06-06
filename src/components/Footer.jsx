@@ -340,10 +340,12 @@ function Footer() {
               src={isDark ? '/Transpiled-W.webp' : '/Transpiled-B.webp'}
               alt={name}
             />
-            {/* Replace with your company name in src/config/project.js → organization.name */}
             <CompanyName>{name}</CompanyName>
-            {/* Replace with your tagline in src/i18n/locales/en.json → footer.tagline */}
-            <Tagline>{t('footer.tagline') || description}</Tagline>
+            <Tagline>
+              {footerContent?.footer?.tagline ||
+                t('footer.tagline') ||
+                description}
+            </Tagline>
 
             {activeSocial.length > 0 && (
               <SocialRow>

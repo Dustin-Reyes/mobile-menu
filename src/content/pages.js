@@ -149,10 +149,9 @@ export const pages = {
 
   site: {
     en: {
-      header: {
-        linkUrl: '/',
-      },
+      header: {},
       footer: {
+        tagline: 'Change your tagline here',
         address: '123 Main Street\nSan Francisco, CA 94102',
         contactEmail: 'info@yourproject.com',
         contactPhone: '+1 (555) 123-4567',
@@ -165,13 +164,11 @@ export const pages = {
       },
     },
     es: {
-      header: {
-        linkUrl: '/',
-      },
+      header: {},
       footer: {
-        address: 'Calle Principal 123\nSan Francisco, CA 94102',
-        contactEmail: 'info@yourproject.com',
-        contactPhone: '+1 (555) 123-4567',
+        address: '',
+        contactEmail: '',
+        contactPhone: '',
         facebook: '',
         instagram: '',
         twitter: '',

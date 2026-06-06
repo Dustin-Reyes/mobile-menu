@@ -151,6 +151,12 @@ export const pageSchema = {
     fields: [
       // Footer section (global footer content)
       {
+        key: 'footerTagline',
+        label: 'Footer Tagline',
+        type: 'text',
+        group: 'Footer',
+      },
+      {
         key: 'footerAddress',
         label: 'Footer Address',
         type: 'textarea',
