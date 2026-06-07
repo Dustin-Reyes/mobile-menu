@@ -8,7 +8,6 @@ import { useAuth } from 'context/AuthContext';
 import { callUserManagement } from 'utils/admin/userHelpers';
 import { pageSchema } from '../../../content/schema';
 import Sidebar from './Sidebar';
-import BottomTabBar from './BottomTabBar';
 import DashboardTab from '../tabs/DashboardTab';
 import SettingsTab from '../tabs/SettingsTab';
 import PagesTab from '../tabs/PagesTab';
@@ -22,10 +21,6 @@ const AdminContainer = styled.div`
   overflow: hidden;
   background: ${(p) => p.theme.colors.background};
   display: flex;
-
-  @media (max-width: 768px) {
-    padding-bottom: 60px;
-  }
 `;
 
 const MainContent = styled.div`
@@ -146,12 +141,6 @@ export default function Dashboard() {
           </AnimatePresence>
         </TabContent>
       </MainContent>
-
-      <BottomTabBar
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        userRole={userRole}
-      />
     </AdminContainer>
   );
 }
