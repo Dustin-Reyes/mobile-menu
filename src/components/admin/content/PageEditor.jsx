@@ -4,8 +4,6 @@ import { keyframes } from '@emotion/react';
 import {
   Type,
   AlignLeft,
-  Eye,
-  MoreVertical,
   Tag,
   Heading2,
   Heading3,
@@ -126,28 +124,6 @@ const PageMeta = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: rgba(255, 255, 255, 0.3);
   white-space: nowrap;
-`;
-
-const HeaderActions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-`;
-
-const IconBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: ${(p) => p.theme.borderRadius.s1};
-  color: rgba(255, 255, 255, 0.35);
-  cursor: default;
-  font-family: inherit;
-  opacity: 0.6;
 `;
 
 const LocaleBar = styled.div`
@@ -473,14 +449,6 @@ export default function PageEditor({ pageId }) {
               {localeCount} locale{localeCount !== 1 ? 's' : ''}
             </PageMeta>
           </TitleGroup>
-          <HeaderActions>
-            <IconBtn title="Preview (coming soon)" aria-label="Preview">
-              <Eye size={14} />
-            </IconBtn>
-            <IconBtn title="More options" aria-label="More options">
-              <MoreVertical size={14} />
-            </IconBtn>
-          </HeaderActions>
         </Header>
 
         <LocaleBar>
