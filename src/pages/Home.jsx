@@ -1,95 +1,47 @@
-import { useTranslation } from 'react-i18next';
-import styled from '@emotion/styled';
+import Hero from 'components/sections/Hero';
+import Services from 'components/sections/Services';
+import About from 'components/sections/About';
+import Gallery from 'components/sections/Gallery';
+import FAQ from 'components/sections/FAQ';
+import Contact from 'components/sections/Contact';
+import CTA from 'components/sections/CTA';
+import AnimatedSection from 'components/AnimatedSection';
+import { SECTIONS_CONFIG } from 'config/sections';
 
-const Wrapper = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-`;
-
-const Badge = styled.div`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
-  font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.primary};
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  padding: 0.3rem 0.9rem;
-  border-radius: 999px;
-  margin-bottom: 2rem;
-`;
-
-const Title = styled.h1`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s8};
-  font-weight: ${({ theme }) => theme.typography.fontWeights.extrabold};
-  text-align: center;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.75rem;
-  line-height: 1.1;
-`;
-
-const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s5};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  text-align: center;
-  margin-bottom: 2.5rem;
-  max-width: 480px;
-`;
-
-const StackGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  max-width: 560px;
-  margin-bottom: 3rem;
-`;
-
-const StackPill = styled.span`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  letter-spacing: 0.02em;
-`;
-
-const STACK = [
-  'Vite 6',
-  'React 18',
-  'Emotion',
-  'Radix UI',
-  'Framer Motion',
-  'Firebase',
-  'i18next',
-  'Sentry',
-  'Jest',
-  'Playwright',
-  'Netlify',
+const SECTIONS = [
+  { id: 'hero', component: Hero },
+  { id: 'services', component: Services },
+  { id: 'about', component: About },
+  { id: 'gallery', component: Gallery },
+  { id: 'faq', component: FAQ },
+  { id: 'contact', component: Contact },
+  { id: 'cta', component: CTA },
 ];
 
-function Home() {
-  const { t } = useTranslation();
+export default function Home() {
+  // Use custom order if provided, otherwise use default order
+  const sectionOrder = SECTIONS_CONFIG.order || SECTIONS.map((s) => s.id);
 
   return (
-    <Wrapper>
-      <Badge>{t('home.badge')}</Badge>
-      <Title>transpiled-web-template</Title>
-      <Subtitle>{t('home.subtitle')}</Subtitle>
-      <StackGrid>
-        {STACK.map((tech) => (
-          <StackPill key={tech}>{tech}</StackPill>
-        ))}
-      </StackGrid>
-    </Wrapper>
+    <>
+      {sectionOrder.map((sectionId, index) => {
+        const section = SECTIONS.find((s) => s.id === sectionId);
+        if (!section || !SECTIONS_CONFIG[sectionId]) return null;
+
+        const SectionComponent = section.component;
+        const delay = index * 0.1; // Stagger animations
+
+        // Hero doesn't need AnimatedSection wrapper since it's full viewport
+        if (sectionId === 'hero') {
+          return <SectionComponent key={sectionId} />;
+        }
+
+        return (
+          <AnimatedSection key={sectionId} delay={delay}>
+            <SectionComponent />
+          </AnimatedSection>
+        );
+      })}
+    </>
   );
 }
-
-export default Home;

@@ -7,11 +7,62 @@
   },
   "home": {
     "badge": "Plantilla TranspiledCode",
-    "subtitle": "Starter Vite + React con el conjunto completo de herramientas de TranspiledCode.",
+    "title": "Tu Título Aquí",
+    "subtitle": "Vite + React starter con la cadena de herramientas completa de TranspiledCode.",
+    "ctaText": "Comenzar",
     "hint": "Ejecuta yarn cleanup cuando estés listo para eliminar el andamiaje de la plantilla."
   },
+  "contactForm": {
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "email": "Correo",
+    "emailPlaceholder": "tu@correo.com",
+    "subject": "Asunto",
+    "subjectPlaceholder": "¿Cómo podemos ayudar?",
+    "message": "Mensaje",
+    "messagePlaceholder": "Cuéntanos más sobre tu proyecto...",
+    "send": "Enviar Mensaje",
+    "sending": "Enviando...",
+    "success": "¡Gracias por tu mensaje! Te contactaremos pronto.",
+    "errors": {
+      "nameRequired": "El nombre es requerido",
+      "emailRequired": "El correo es requerido",
+      "emailInvalid": "El correo es inválido",
+      "subjectRequired": "El asunto es requerido",
+      "messageRequired": "El mensaje es requerido"
+    }
+  },
+  "contact": {
+    "getInTouch": "Contáctanos",
+    "getInTouchSubtitle": "¿Tienes alguna pregunta o quieres trabajar juntos? Escríbenos y hagámoslo realidad.",
+    "privacy": "Nunca compartiremos tu información.",
+    "privacyPolicy": "Ver nuestra Política de Privacidad",
+    "emailLabel": "Correo",
+    "phoneLabel": "Teléfono",
+    "addressLabel": "Dirección"
+  },
   "nav": {
-    "getAQuote": "Obtener Cotización"
+    "getAQuote": "Obtener Cotización",
+    "home": "Inicio",
+    "development": "Desarrollo",
+    "adminDashboard": "Panel de Administración",
+    "goToAdminDashboard": "Ir al Panel de Administración",
+    "signOut": "Cerrar Sesión",
+    "signIn": "Iniciar Sesión",
+    "services": "Servicios",
+    "about": "Acerca de",
+    "gallery": "Galería",
+    "faq": "Preguntas",
+    "contact": "Contacto",
+    "navigation": "Navegación",
+    "analytics": "Analítica",
+    "menuTitle": "Navegación",
+    "homeSubtitle": "Ver tu sitio",
+    "developmentSubtitle": "Ver información del sitio",
+    "goToAdminDashboardSubtitle": "Administrar el contenido de tu sitio",
+    "signOutSubtitle": "Cerrar sesión de tu cuenta",
+    "settings": "Configuración",
+    "settingsSubtitle": "Administrar configuración del sitio"
   },
   "footer": {
     "tagline": "Tu eslogan aquí.",
@@ -20,7 +71,7 @@
     "copyright": "© 2026 Your Company. Todos los derechos reservados.",
     "links": {
       "home": "Inicio",
-      "aboutUs": "Nosotros",
+      "development": "Desarrollo",
       "services": "Servicios",
       "why": "Por Qué Nosotros",
       "faq": "Preguntas",
@@ -32,6 +83,22 @@
       "google": "Google"
     }
   },
+  "admin": {
+    "login": {
+      "title": "Iniciar Sesión de Admin",
+      "email": "Correo",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "password": "Contraseña",
+      "passwordPlaceholder": "••••••••",
+      "error": "Correo o contraseña inválidos.",
+      "signingIn": "Iniciando sesión...",
+      "signIn": "Iniciar Sesión"
+    }
+  },
+  "theme": {
+    "light": "Modo claro",
+    "dark": "Modo oscuro"
+  },
   "common": {
     "days": {
       "mon": "Lun",
@@ -41,6 +108,13 @@
       "fri": "Vie",
       "sat": "Sáb",
       "sun": "Dom"
+    }
+  },
+  "error": {
+    "notFound": {
+      "title": "Página No Encontrada",
+      "message": "La página que buscas no existe o ha sido movida.",
+      "goHome": "Ir al Inicio"
     }
   }
 }

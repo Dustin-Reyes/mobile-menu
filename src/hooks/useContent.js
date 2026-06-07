@@ -330,17 +330,8 @@ export function useCMS() {
     if (!isCMSEnabled) return;
 
     try {
-      // Get current stats from content service
-      const cacheSize = contentService.getCacheSize
-        ? contentService.getCacheSize()
-        : 0;
-
-      setStats({
-        pages: 1, // We know we have at least the home page
-        posts: 0, // No posts yet
-        navItems: 2, // We have home and demo navigation
-        cacheSize,
-      });
+      const nextStats = await contentService.getStats();
+      setStats(nextStats);
     } catch (error) {
       console.error('Failed to refresh stats:', error);
     }

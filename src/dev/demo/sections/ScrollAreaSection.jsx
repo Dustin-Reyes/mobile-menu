@@ -8,7 +8,7 @@ import {
   ScrollAreaScrollbar,
   ScrollAreaThumb,
   ScrollAreaCorner,
-} from 'components/ScrollArea';
+} from 'components/ui/ScrollArea';
 
 // ─── Styled components ─────────────────────────────────────────────────────────
 
@@ -74,7 +74,7 @@ const CODE_EXAMPLE = `<ScrollAreaRoot style={{ height: '200px' }}>
   <ScrollAreaCorner />
 </ScrollAreaRoot>`;
 
-const IMPORT_SNIPPET = `import { ScrollAreaRoot, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaCorner } from 'components/ScrollArea';`;
+const IMPORT_SNIPPET = `import { ScrollAreaRoot, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaCorner } from 'components/ui/ScrollArea';`;
 
 // ─── ScrollAreaSection ─────────────────────────────────────────────────────────
 

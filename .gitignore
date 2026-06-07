@@ -62,3 +62,17 @@ certs/
 
 # Superpowers brainstorming sessions
 .superpowers/
+
+# Firebase service account key
+transpiled-sandbox-firebase.json
+
+# Local development files
+local-dev/
+# assets/
+
+# Playwright MCP recordings
+.playwright-mcp/
+
+
+# Devin
+.devin/

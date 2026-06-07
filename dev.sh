@@ -100,6 +100,13 @@ fi
 
 # Start Netlify Functions server AFTER Vite is confirmed up
 echo "⚡ Starting Netlify Functions server on port $FUNCTIONS_PORT..."
+# Load .env so Netlify Functions have access to server-side variables (e.g. FIREBASE_SERVICE_ACCOUNT_BASE64)
+if [ -f .env ]; then
+  set -a
+  # shellcheck disable=SC1091
+  source .env
+  set +a
+fi
 netlify functions:serve --port $FUNCTIONS_PORT > /dev/null 2>&1 &
 FUNCTIONS_PID=$!
 

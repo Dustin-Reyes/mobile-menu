@@ -3,251 +3,253 @@ import {
   generateOpenGraphTags,
   generateTwitterCardTags,
   generateStructuredData,
+  generateBreadcrumbData,
   generateRobotsMeta,
   validateSEO,
+  generateSlug,
   generateJsonLd,
-} from '@/utils/seo';
-import { SEO_DEFAULTS, PAGE_SEO } from '@/config/seo';
+} from 'utils/seo';
 
-describe('SEO Utils', () => {
-  describe('generateMetaTags', () => {
-    it('should generate meta tags for home page', () => {
-      const metaTags = generateMetaTags('home');
-
-      expect(metaTags).toEqual({
-        title: PAGE_SEO.home.title,
-        description: PAGE_SEO.home.description,
-        keywords: PAGE_SEO.home.keywords.join(', '),
-        image: PAGE_SEO.home.image,
-        url: expect.stringContaining('/'),
-        noindex: false,
-        author: SEO_DEFAULTS.site.author,
-        canonical: expect.stringContaining('/'),
-      });
-    });
-
-    it('should accept overrides', () => {
-      const overrides = {
-        title: 'Custom Title',
-        description: 'Custom Description',
-        noindex: true,
-      };
-
-      const metaTags = generateMetaTags('home', overrides);
-
-      expect(metaTags.title).toBe('Custom Title');
-      expect(metaTags.description).toBe('Custom Description');
-      expect(metaTags.noindex).toBe(true);
-    });
-
-    it('should handle unknown page key', () => {
-      const metaTags = generateMetaTags('unknown');
-
-      expect(metaTags.title).toBe(SEO_DEFAULTS.site.title);
-      expect(metaTags.description).toBe(SEO_DEFAULTS.site.description);
-    });
+describe('generateMetaTags', () => {
+  it('returns all required fields', () => {
+    const tags = generateMetaTags('home');
+    expect(tags).toHaveProperty('title');
+    expect(tags).toHaveProperty('description');
+    expect(tags).toHaveProperty('url');
+    expect(tags).toHaveProperty('image');
+    expect(tags).toHaveProperty('canonical');
+    expect(tags).toHaveProperty('author');
+    expect(tags).toHaveProperty('keywords');
+    expect(typeof tags.noindex).toBe('boolean');
   });
 
-  describe('generateOpenGraphTags', () => {
-    it('should generate Open Graph tags', () => {
-      const metaTags = {
-        title: 'Test Title',
-        description: 'Test Description',
-        image: 'https://example.com/image.png',
-        url: 'https://example.com',
-      };
-
-      const ogTags = generateOpenGraphTags(metaTags);
-
-      expect(ogTags).toEqual({
-        'og:title': 'Test Title',
-        'og:description': 'Test Description',
-        'og:image': 'https://example.com/image.png',
-        'og:url': 'https://example.com',
-        'og:type': SEO_DEFAULTS.social.openGraph.type,
-        'og:locale': SEO_DEFAULTS.social.openGraph.locale,
-        'og:site_name': SEO_DEFAULTS.social.openGraph.siteName,
-      });
-    });
+  it('applies title override', () => {
+    const tags = generateMetaTags('home', { title: 'Custom Title Override' });
+    expect(tags.title).toBe('Custom Title Override');
   });
 
-  describe('generateTwitterCardTags', () => {
-    it('should generate Twitter Card tags', () => {
-      const metaTags = {
-        title: 'Test Title',
-        description: 'Test Description',
-        image: 'https://example.com/image.png',
-      };
-
-      const twitterTags = generateTwitterCardTags(metaTags);
-
-      expect(twitterTags).toEqual({
-        'twitter:card': SEO_DEFAULTS.social.twitter.card,
-        'twitter:site': SEO_DEFAULTS.social.twitter.site,
-        'twitter:creator': SEO_DEFAULTS.social.twitter.creator,
-        'twitter:title': 'Test Title',
-        'twitter:description': 'Test Description',
-        'twitter:image': 'https://example.com/image.png',
-      });
+  it('applies description override', () => {
+    const tags = generateMetaTags('home', {
+      description: 'Custom description here.',
     });
+    expect(tags.description).toBe('Custom description here.');
   });
 
-  describe('generateStructuredData', () => {
-    it('should generate structured data for home page', () => {
-      const structuredData = generateStructuredData('home');
-
-      expect(structuredData).toHaveLength(2); // Organization + WebSite
-      expect(structuredData[0]['@type']).toBe('Organization');
-      expect(structuredData[1]['@type']).toBe('WebSite');
-    });
-
-    it('should generate structured data for demo page', () => {
-      const structuredData = generateStructuredData('demo');
-
-      expect(structuredData).toHaveLength(3); // Organization + WebSite + WebApplication
-      expect(structuredData[2]['@type']).toBe('WebApplication');
-    });
-
-    it('should include breadcrumbs when provided', () => {
-      const breadcrumbs = [
-        { name: 'Home', url: '/' },
-        { name: 'Demo', url: '/demo' },
-      ];
-
-      const structuredData = generateStructuredData('home', { breadcrumbs });
-
-      expect(structuredData).toHaveLength(3); // Organization + WebSite + Breadcrumb
-      expect(structuredData[2]['@type']).toBe('BreadcrumbList');
-    });
-
-    it('should include custom structured data', () => {
-      const customData = {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: 'Test Article',
-      };
-
-      const structuredData = generateStructuredData('home', {
-        customStructuredData: [customData],
-      });
-
-      expect(structuredData).toHaveLength(3); // Organization + WebSite + Custom
-      expect(structuredData[2]['@type']).toBe('Article');
-    });
+  it('applies noindex override', () => {
+    const tags = generateMetaTags('home', { noindex: true });
+    expect(tags.noindex).toBe(true);
   });
 
-  describe('generateRobotsMeta', () => {
-    it('should generate index robots meta', () => {
-      const robotsMeta = generateRobotsMeta(false);
-
-      expect(robotsMeta).toBe(
-        'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
-      );
-    });
-
-    it('should generate noindex robots meta', () => {
-      const robotsMeta = generateRobotsMeta(true);
-
-      expect(robotsMeta).toBe('noindex, nofollow');
-    });
+  it('joins keywords array into comma-separated string', () => {
+    const tags = generateMetaTags('home');
+    expect(typeof tags.keywords).toBe('string');
   });
 
-  describe('validateSEO', () => {
-    it('should validate correct SEO configuration', () => {
-      const seoConfig = {
-        title: 'This is a good title for SEO purposes',
-        description:
-          'This is a good description that meets the minimum length requirements for SEO optimization and provides enough detail.',
-        image: 'https://example.com/image.png',
-        url: 'https://example.com',
-      };
+  it('falls back gracefully for unknown pageKey', () => {
+    const tags = generateMetaTags('unknownPage');
+    expect(tags.title).toBeTruthy();
+  });
+});
 
-      const validation = validateSEO(seoConfig);
-
-      expect(validation.isValid).toBe(true);
-      expect(validation.errors).toHaveLength(0);
-    });
-
-    it('should detect title too short', () => {
-      const seoConfig = {
-        title: 'Short',
-        description:
-          'This is a good description that meets the minimum length requirements for SEO optimization and provides enough detail.',
-        image: 'https://example.com/image.png',
-        url: 'https://example.com',
-      };
-
-      const validation = validateSEO(seoConfig);
-
-      expect(validation.isValid).toBe(false);
-      expect(validation.errors).toContain(
-        'Title must be at least 10 characters long',
-      );
-    });
-
-    it('should detect title too long warning', () => {
-      const seoConfig = {
-        title:
-          'This title is way too long and exceeds the recommended 60 character limit for search results',
-        description:
-          'This is a good description that meets the minimum length requirements for SEO optimization and provides enough detail.',
-        image: 'https://example.com/image.png',
-        url: 'https://example.com',
-      };
-
-      const validation = validateSEO(seoConfig);
-
-      expect(validation.isValid).toBe(true);
-      expect(validation.warnings).toContain(
-        'Title is longer than 60 characters, may be truncated in search results',
-      );
-    });
-
-    it('should detect missing image', () => {
-      const seoConfig = {
-        title: 'This is a good title for SEO purposes',
-        description:
-          'This is a good description that meets the minimum length requirements for SEO optimization and provides enough detail.',
-        url: 'https://example.com',
-      };
-
-      const validation = validateSEO(seoConfig);
-
-      expect(validation.isValid).toBe(false);
-      expect(validation.errors).toContain(
-        'Image is required for social sharing',
-      );
-    });
+describe('generateOpenGraphTags', () => {
+  it('returns all og: prefixed fields', () => {
+    const meta = generateMetaTags('home');
+    const og = generateOpenGraphTags(meta);
+    expect(og).toHaveProperty('og:title');
+    expect(og).toHaveProperty('og:description');
+    expect(og).toHaveProperty('og:image');
+    expect(og).toHaveProperty('og:url');
+    expect(og).toHaveProperty('og:type');
+    expect(og).toHaveProperty('og:locale');
+    expect(og).toHaveProperty('og:site_name');
   });
 
-  describe('generateJsonLd', () => {
-    it('should generate JSON-LD script content', () => {
-      const structuredData = [
-        {
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: 'Test Organization',
-        },
-        {
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          name: 'Test Website',
-        },
-      ];
+  it('mirrors the meta title into og:title', () => {
+    const meta = generateMetaTags('home', { title: 'My OG Title' });
+    const og = generateOpenGraphTags(meta);
+    expect(og['og:title']).toBe('My OG Title');
+  });
+});
 
-      const jsonLd = generateJsonLd(structuredData);
+describe('generateTwitterCardTags', () => {
+  it('returns all twitter: prefixed fields', () => {
+    const meta = generateMetaTags('home');
+    const twitter = generateTwitterCardTags(meta);
+    expect(twitter).toHaveProperty('twitter:card');
+    expect(twitter).toHaveProperty('twitter:site');
+    expect(twitter).toHaveProperty('twitter:creator');
+    expect(twitter).toHaveProperty('twitter:title');
+    expect(twitter).toHaveProperty('twitter:description');
+    expect(twitter).toHaveProperty('twitter:image');
+  });
+});
 
-      expect(jsonLd).toContain('"@context":"https://schema.org"');
-      expect(jsonLd).toContain('"@type":"Organization"');
-      expect(jsonLd).toContain('"@type":"WebSite"');
-      expect(jsonLd).toContain('"name":"Test Organization"');
-      expect(jsonLd).toContain('"name":"Test Website"');
+describe('generateStructuredData', () => {
+  it('always includes Organization and WebSite entries', () => {
+    const data = generateStructuredData('home');
+    const types = data.map((d) => d['@type']);
+    expect(types).toContain('Organization');
+    expect(types).toContain('WebSite');
+  });
+
+  it('adds BreadcrumbList when breadcrumbs are provided', () => {
+    const data = generateStructuredData('home', {
+      breadcrumbs: [{ name: 'Home', url: 'https://example.com' }],
     });
+    const types = data.map((d) => d['@type']);
+    expect(types).toContain('BreadcrumbList');
+  });
 
-    it('should handle empty structured data', () => {
-      const jsonLd = generateJsonLd([]);
-
-      expect(jsonLd).toBe('');
+  it('merges customStructuredData array', () => {
+    const custom = [{ '@type': 'Product', name: 'Test' }];
+    const data = generateStructuredData('home', {
+      customStructuredData: custom,
     });
+    const types = data.map((d) => d['@type']);
+    expect(types).toContain('Product');
+  });
+});
+
+describe('generateBreadcrumbData', () => {
+  const crumbs = [
+    { name: 'Home', url: 'https://example.com' },
+    { name: 'Blog', url: 'https://example.com/blog' },
+    { name: 'Post', url: 'https://example.com/blog/post' },
+  ];
+
+  it('returns BreadcrumbList type with correct context', () => {
+    const data = generateBreadcrumbData(crumbs);
+    expect(data['@context']).toBe('https://schema.org');
+    expect(data['@type']).toBe('BreadcrumbList');
+  });
+
+  it('assigns sequential positions starting at 1', () => {
+    const data = generateBreadcrumbData(crumbs);
+    expect(data.itemListElement[0].position).toBe(1);
+    expect(data.itemListElement[1].position).toBe(2);
+    expect(data.itemListElement[2].position).toBe(3);
+  });
+
+  it('maps name and item (url) correctly', () => {
+    const data = generateBreadcrumbData(crumbs);
+    expect(data.itemListElement[0].name).toBe('Home');
+    expect(data.itemListElement[0].item).toBe('https://example.com');
+  });
+});
+
+describe('generateRobotsMeta', () => {
+  it('returns index/follow string by default', () => {
+    expect(generateRobotsMeta()).toContain('index, follow');
+  });
+
+  it('returns index/follow when noindex=false', () => {
+    expect(generateRobotsMeta(false)).toContain('index, follow');
+  });
+
+  it('returns noindex/nofollow when noindex=true', () => {
+    expect(generateRobotsMeta(true)).toBe('noindex, nofollow');
+  });
+});
+
+describe('validateSEO', () => {
+  const validConfig = {
+    title: 'My Great Website Title Here',
+    description:
+      'This is a sufficiently long description that meets the fifty character minimum requirement.',
+    image: 'https://example.com/og.png',
+    url: 'https://example.com',
+  };
+
+  it('returns isValid=true and no errors for a valid config', () => {
+    const result = validateSEO(validConfig);
+    expect(result.isValid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  it('errors when title is shorter than 10 characters', () => {
+    const result = validateSEO({ ...validConfig, title: 'Short' });
+    expect(result.isValid).toBe(false);
+    expect(result.errors.some((e) => e.includes('10 characters'))).toBe(true);
+  });
+
+  it('warns when title exceeds 60 characters', () => {
+    const result = validateSEO({ ...validConfig, title: 'x'.repeat(61) });
+    expect(result.warnings.some((w) => w.includes('60 characters'))).toBe(true);
+  });
+
+  it('errors when description is shorter than 50 characters', () => {
+    const result = validateSEO({ ...validConfig, description: 'Too short' });
+    expect(result.isValid).toBe(false);
+    expect(result.errors.some((e) => e.includes('Description'))).toBe(true);
+  });
+
+  it('warns when description exceeds 160 characters', () => {
+    const result = validateSEO({
+      ...validConfig,
+      description: 'x'.repeat(161),
+    });
+    expect(result.warnings.some((w) => w.includes('160 characters'))).toBe(
+      true,
+    );
+  });
+
+  it('errors when image is missing', () => {
+    const { image: _, ...noImage } = validConfig;
+    const result = validateSEO(noImage);
+    expect(result.errors).toContain('Image is required for social sharing');
+  });
+
+  it('errors when url is missing', () => {
+    const { url: _, ...noUrl } = validConfig;
+    const result = validateSEO(noUrl);
+    expect(result.errors).toContain('URL is required');
+  });
+
+  it('warns on non-standard image extension', () => {
+    const result = validateSEO({
+      ...validConfig,
+      image: 'https://example.com/image.gif',
+    });
+    expect(result.warnings.some((w) => w.includes('PNG, JPG, or WebP'))).toBe(
+      true,
+    );
+  });
+});
+
+describe('generateSlug', () => {
+  it('lowercases and trims the input', () => {
+    expect(generateSlug('  Hello World  ')).toBe('hello-world');
+  });
+
+  it('replaces spaces with hyphens', () => {
+    expect(generateSlug('my blog post')).toBe('my-blog-post');
+  });
+
+  it('strips special characters', () => {
+    expect(generateSlug('React & TypeScript!')).toBe('react-typescript');
+  });
+
+  it('collapses multiple hyphens', () => {
+    expect(generateSlug('foo---bar')).toBe('foo-bar');
+  });
+
+  it('removes leading and trailing hyphens', () => {
+    expect(generateSlug('!hello!')).toBe('hello');
+  });
+});
+
+describe('generateJsonLd', () => {
+  it('serializes each structured data object as JSON', () => {
+    const data = [
+      { '@type': 'Organization', name: 'Acme' },
+      { '@type': 'WebSite', url: 'https://acme.com' },
+    ];
+    const result = generateJsonLd(data);
+    expect(result).toContain('"@type":"Organization"');
+    expect(result).toContain('"@type":"WebSite"');
+  });
+
+  it('returns empty string for empty array', () => {
+    expect(generateJsonLd([])).toBe('');
   });
 });

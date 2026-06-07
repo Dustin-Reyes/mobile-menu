@@ -1,8 +1,14 @@
 import styled from '@emotion/styled';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
+import { useAuth } from 'context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import HeaderLogo from './HeaderLogo';
+import UserMenu from './UserMenu';
+import MobileMenu from './MobileMenu';
+import { SECTIONS_CONFIG } from 'config/sections';
 
 const Wrapper = styled.header`
   position: sticky;
@@ -33,6 +39,47 @@ const Controls = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.s2};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const Nav = styled.nav`
+  display: none;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.s4};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: flex;
+  }
+`;
+
+const MobileTrigger = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const AnchorLink = styled.a`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  color: ${({ theme }) => theme.colors.text};
+  text-decoration: none;
+  font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
+  transition: color ${({ theme }) => theme.transitions.fast};
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &[data-active='true'] {
+    color: ${({ theme }) => theme.colors.primary};
+    font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
+  }
 `;
 
 const ThemeBtn = styled.button`
@@ -57,12 +104,55 @@ const ThemeBtn = styled.button`
 `;
 
 function Header() {
+  const { t } = useTranslation();
   const { isDark, toggleMode } = useTheme();
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleAnchorClick = (e, sectionId) => {
+    e.preventDefault();
+    const isHomePage = location.pathname === '/';
+
+    if (isHomePage) {
+      // If already on home page, just scroll to section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      // Navigate to home and let App.jsx's scroll effect handle the section scroll
+      navigate('/', { state: { scrollTo: sectionId } });
+    }
+  };
+
+  // Get enabled navigation links from config
+  const navLinks = SECTIONS_CONFIG.navigation.filter((nav) => nav.enabled);
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <Wrapper>
       <Inner>
         <HeaderLogo />
+        {!isAdminRoute && (
+          <Nav>
+            {navLinks.map((nav) => (
+              <AnchorLink
+                key={nav.id}
+                href={`#${nav.id}`}
+                onClick={(e) => handleAnchorClick(e, nav.id)}
+                data-active={
+                  location.pathname === '/' && location.hash === `#${nav.id}`
+                }
+              >
+                {t(`nav.${nav.id}`)}
+              </AnchorLink>
+            ))}
+          </Nav>
+        )}
+        <MobileTrigger>
+          <MobileMenu />
+        </MobileTrigger>
         <Controls>
           <LanguageSwitcher compact />
           <ThemeBtn
@@ -72,6 +162,7 @@ function Header() {
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </ThemeBtn>
+          {isAuthenticated && <UserMenu />}
         </Controls>
       </Inner>
     </Wrapper>

@@ -5,238 +5,317 @@ import {
   Phone,
   Mail,
   MapPin,
-  Clock,
   Facebook,
   Instagram,
-  Search,
+  Twitter,
+  Linkedin,
+  Github,
+  Youtube,
 } from 'lucide-react';
-import { PROJECT_CONFIG } from '../config/project';
+import { useTheme } from './ThemeProvider';
+import PROJECT_CONFIG from 'config/project';
+import SECTIONS_CONFIG from '../config/sections';
+import { usePage } from 'hooks/useContent';
+
+// ─── Social icon registry ─────────────────────────────────────────────────────
+// Add new platforms here — only entries with a URL in the CMS will render.
+const SOCIAL_REGISTRY = {
+  facebook: { Icon: Facebook, label: 'Facebook' },
+  instagram: { Icon: Instagram, label: 'Instagram' },
+  twitter: { Icon: Twitter, label: 'Twitter / X' },
+  linkedin: { Icon: Linkedin, label: 'LinkedIn' },
+  github: { Icon: Github, label: 'GitHub' },
+  youtube: { Icon: Youtube, label: 'YouTube' },
+};
+
+// ─── Styled components ────────────────────────────────────────────────────────
 
 const FooterContainer = styled.footer`
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? theme.colors.surface : theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
-  padding: ${({ theme }) => theme.spacing.s5} ${({ theme }) => theme.spacing.s4};
   border-top: 3px solid ${({ theme }) => theme.colors.primary};
+`;
+
+const Inner = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: ${({ theme }) => theme.spacing.s7} ${({ theme }) => theme.spacing.s5};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: ${({ theme }) => theme.spacing.s6}
-      ${({ theme }) => theme.spacing.s4};
+    padding: ${({ theme }) => theme.spacing.s8}
+      ${({ theme }) => theme.spacing.s6};
   }
 `;
 
-const FooterContent = styled.div`
-  max-width: 2000px;
-  margin: 0 auto;
+const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: ${({ theme }) => theme.spacing.s5};
-  align-items: start;
+  gap: ${({ theme }) => theme.spacing.s7};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr 1fr 1fr;
-    gap: ${({ theme }) => theme.spacing.s6};
+    gap: ${({ theme }) => theme.spacing.s8};
+    align-items: start;
   }
 `;
 
-const FooterColumn = styled.div`
+// ─── Brand column ─────────────────────────────────────────────────────────────
+
+const BrandCol = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.s3};
   align-items: center;
-  justify-content: center;
+  gap: ${({ theme }) => theme.spacing.s3};
+  text-align: center;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     align-items: flex-start;
-    justify-content: flex-start;
-  }
-`;
-
-const ColumnWithDivider = styled(FooterColumn)`
-  padding-left: 0;
-  border-left: none;
-  padding-top: ${({ theme }) => theme.spacing.s4};
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding-left: ${({ theme }) => theme.spacing.s4};
-    padding-top: 0;
-    border-top: none;
+    text-align: left;
   }
 `;
 
 const LogoImage = styled.img`
-  height: clamp(40px, 8vw, 100px);
+  height: 36px;
   width: auto;
-  object-fit: contain;
-  margin-bottom: ${({ theme }) => theme.spacing.s2};
-  filter: ${({ theme }) => (theme.mode === 'light' ? 'brightness(0)' : 'none')};
+  display: block;
+`;
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    justify-self: center;
-    align-self: center;
-  }
+const CompanyName = styled.span`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s5};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.extrabold};
+  color: ${({ theme }) => theme.colors.text};
+  letter-spacing: -0.01em;
 `;
 
 const Tagline = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.s2};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  color: ${({ theme }) => theme.colors.textSecondary};
   line-height: 1.6;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    text-align: left;
-    justify-self: center;
-    align-self: center;
-  }
+  max-width: 360px;
 `;
 
-const SectionHeading = styled.h3`
-  font-size: ${({ theme }) => theme.fontSizes.s3};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  margin-bottom: ${({ theme }) => theme.spacing.s3};
-  color: ${({ theme }) => theme.colors.primary};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  text-align: center;
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    text-align: left;
-  }
-`;
-
-const QuickLinksGrid = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: ${({ theme }) => theme.spacing.s2} ${({ theme }) => theme.spacing.s8};
-  justify-content: center;
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr 1fr;
-    justify-content: start;
-    width: 100%;
-  }
-`;
-
-const QuickLink = styled(Link)`
+const SocialRow = styled.div`
   display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.s1};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  text-decoration: none;
-  font-size: ${({ theme }) => theme.fontSizes.s2};
-  transition: color ${({ theme }) => theme.transitions.fast};
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-    }
-  }
-`;
-
-const ContactInfo = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: ${({ theme }) => theme.spacing.s4};
-  width: 100%;
-`;
-
-const ContactItem = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: ${({ theme }) => theme.spacing.s2};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  text-decoration: none;
-  font-size: ${({ theme }) => theme.fontSizes.s2};
-  line-height: 1.5;
-  transition: color ${({ theme }) => theme.transitions.fast};
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: ${({ theme }) => theme.spacing.s2};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     justify-content: flex-start;
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-    }
   }
 `;
 
-const IconBadge = styled.div`
+const SocialBtn = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.colors.primary};
-  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid ${({ theme }) => theme.colors.border};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-decoration: none;
+  transition:
+    border-color ${({ theme }) => theme.transitions.fast},
+    color ${({ theme }) => theme.transitions.fast},
+    background ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary}14;
+  }
 `;
 
-const Divider = styled.div`
+// ─── Links / Contact columns ──────────────────────────────────────────────────
+
+const Col = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.s3};
+  align-items: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    align-items: flex-start;
+  }
+`;
+
+const ColHeading = styled.h3`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: ${({ theme }) => theme.spacing.s1};
+`;
+
+const NavList = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.s2};
+  align-items: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    align-items: flex-start;
+    row-gap: ${({ theme }) => theme.spacing.s2};
+    column-gap: ${({ theme }) => theme.spacing.s6};
+  }
+`;
+
+const NavItem = styled.li``;
+
+const FooterLink = styled(Link)`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-decoration: none;
+  transition: color ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const FooterAnchor = styled.a`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-decoration: none;
+  transition: color ${({ theme }) => theme.transitions.fast};
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const ContactList = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.s3};
+  width: 100%;
+`;
+
+const ContactItem = styled.li`
+  display: flex;
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing.s2};
+`;
+
+const ContactIcon = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  flex-shrink: 0;
+  margin-top: 2px;
+`;
+
+const ContactText = styled.a`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-decoration: none;
+  line-height: 1.5;
+  transition: color ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+// ─── Bottom bar ───────────────────────────────────────────────────────────────
+
+const Divider = styled.hr`
+  border: none;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
-  margin: ${({ theme }) => theme.spacing.s6} 0
-    ${({ theme }) => theme.spacing.s4};
+  margin: 0;
 `;
 
 const BottomBar = styled.div`
   max-width: 1400px;
   margin: 0 auto;
+  padding: ${({ theme }) => theme.spacing.s4} ${({ theme }) => theme.spacing.s5};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.s3};
+  gap: ${({ theme }) => theme.spacing.s2};
+  align-items: center;
   text-align: center;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     text-align: left;
+    padding: ${({ theme }) => theme.spacing.s4}
+      ${({ theme }) => theme.spacing.s6};
   }
 `;
 
 const Copyright = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.s2};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
+  color: rgba(
+    ${({ theme }) => (theme.mode === 'dark' ? '255,255,255' : '0,0,0')},
+    0.35
+  );
 `;
 
-const SocialIcons = styled.div`
+const LegalLinks = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.s2};
-  justify-content: center;
+  gap: ${({ theme }) => theme.spacing.s4};
+`;
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    justify-content: flex-end;
+const LegalLink = styled(Link)`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
+  color: rgba(
+    ${({ theme }) => (theme.mode === 'dark' ? '255,255,255' : '0,0,0')},
+    0.35
+  );
+  text-decoration: none;
+  transition: color ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
-const SocialIcon = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.primary};
-  transition: all ${({ theme }) => theme.transitions.fast};
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    &:hover {
-      background: ${({ theme }) => theme.colors.primary};
-      color: ${({ theme }) => theme.colors.onPrimary};
-    }
-  }
-`;
+// ─── Component ────────────────────────────────────────────────────────────────
 
 function Footer() {
   const { t } = useTranslation();
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  const { contact, social } = PROJECT_CONFIG.organization;
 
+  const { name, description } = PROJECT_CONFIG.organization;
+  const { content: footerContent } = usePage('site');
+
+  // ── Section nav links driven from sections config ──────────────────────────
+  const sectionLinks = SECTIONS_CONFIG.navigation
+    .filter((nav) => nav.enabled)
+    .map((nav) => ({
+      id: nav.id,
+      label: t(`nav.${nav.id}`),
+    }));
+
+  // ── Social icons — only those with a URL set in CMS ───────────────────────
+  const activeSocial = Object.entries(SOCIAL_REGISTRY).filter(
+    ([key]) => footerContent?.footer?.[key],
+  );
+
+  // ── Contact info — only items with data ────────────────────────────────────
+  const hasContact =
+    footerContent?.footer?.contactPhone ||
+    footerContent?.footer?.contactEmail ||
+    footerContent?.footer?.address;
+
+  // ── Scroll helper ──────────────────────────────────────────────────────────
   const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const handleSectionClick = (e, sectionId) => {
@@ -249,119 +328,124 @@ function Footer() {
     }
   };
 
-  // Build hours string from config with language-aware day names
-  const formatHours = () => {
-    const days = contact.hours?.days || [];
-    if (!days.length || !contact.hours?.open) return null;
-    const dayNames = days.map((day) => t(`common.days.${day}`));
-    const daysRange = `${dayNames[0]}-${dayNames[dayNames.length - 1]}`;
-    return `${daysRange}: ${contact.hours.open} - ${contact.hours.close}`;
-  };
+  const year = new Date().getFullYear();
 
   return (
     <FooterContainer>
-      <FooterContent>
-        <FooterColumn>
-          <LogoImage src="/logo.png" alt={PROJECT_CONFIG.organization.name} />
-          <Tagline>{t('footer.tagline')}</Tagline>
-        </FooterColumn>
+      <Inner>
+        <Grid>
+          {/* ── Brand column ── */}
+          <BrandCol>
+            <LogoImage
+              src={isDark ? '/Transpiled-W.webp' : '/Transpiled-B.webp'}
+              alt={name}
+            />
+            <CompanyName>{name}</CompanyName>
+            <Tagline>
+              {footerContent?.footer?.tagline ||
+                t('footer.tagline') ||
+                description}
+            </Tagline>
 
-        <ColumnWithDivider>
-          <SectionHeading>{t('footer.quickLinks')}</SectionHeading>
-          <QuickLinksGrid>
-            <QuickLink to="/" onClick={(e) => handleSectionClick(e, null)}>
-              {t('footer.links.home')}
-            </QuickLink>
-            <QuickLink to="/" onClick={(e) => handleSectionClick(e, 'about')}>
-              {t('footer.links.aboutUs')}
-            </QuickLink>
-            <QuickLink
-              to="/"
-              onClick={(e) => handleSectionClick(e, 'services')}
-            >
-              {t('footer.links.services')}
-            </QuickLink>
-            <QuickLink
-              to="/"
-              onClick={(e) => handleSectionClick(e, 'why-choose-us')}
-            >
-              {t('footer.links.why')}
-            </QuickLink>
-            <QuickLink to="/" onClick={(e) => handleSectionClick(e, 'faq')}>
-              {t('footer.links.faq')}
-            </QuickLink>
-            <QuickLink
-              to="/"
-              onClick={(e) => handleSectionClick(e, 'contact-form')}
-            >
-              {t('footer.links.contact')}
-            </QuickLink>
-          </QuickLinksGrid>
-        </ColumnWithDivider>
-
-        <ColumnWithDivider>
-          <SectionHeading>{t('footer.contactUs')}</SectionHeading>
-          <ContactInfo>
-            <ContactItem href={`tel:${contact.phone}`}>
-              <IconBadge>
-                <Phone size={16} />
-              </IconBadge>
-              <div>{contact.phone}</div>
-            </ContactItem>
-            <ContactItem href={`mailto:${contact.email}`}>
-              <IconBadge>
-                <Mail size={16} />
-              </IconBadge>
-              <div>{contact.email}</div>
-            </ContactItem>
-            <ContactItem as="div">
-              <IconBadge>
-                <MapPin size={16} />
-              </IconBadge>
-              <div>{contact.address}</div>
-            </ContactItem>
-            {formatHours() && (
-              <ContactItem as="div">
-                <IconBadge>
-                  <Clock size={16} />
-                </IconBadge>
-                <div>{formatHours()}</div>
-              </ContactItem>
+            {activeSocial.length > 0 && (
+              <SocialRow>
+                {activeSocial.map(([key, { Icon, label }]) => (
+                  <SocialBtn
+                    key={key}
+                    href={footerContent?.footer?.[key]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                  >
+                    <Icon size={18} />
+                  </SocialBtn>
+                ))}
+              </SocialRow>
             )}
-          </ContactInfo>
-        </ColumnWithDivider>
-      </FooterContent>
+          </BrandCol>
+
+          {/* ── Quick links column ── */}
+          <Col>
+            <ColHeading>{t('footer.quickLinks')}</ColHeading>
+            <NavList>
+              {/* Home */}
+              <NavItem>
+                <FooterLink to="/">{t('nav.home')}</FooterLink>
+              </NavItem>
+
+              {/* Section anchors — driven from SECTIONS_CONFIG in src/config/sections.js */}
+              {sectionLinks.map(({ id, label }) => {
+                return (
+                  <NavItem key={id}>
+                    <FooterAnchor
+                      href={`/#${id}`}
+                      onClick={(e) => handleSectionClick(e, id)}
+                    >
+                      {label}
+                    </FooterAnchor>
+                  </NavItem>
+                );
+              })}
+            </NavList>
+          </Col>
+
+          {/* ── Contact column ── */}
+          {hasContact && (
+            <Col>
+              <ColHeading>{t('footer.contactUs')}</ColHeading>
+              <ContactList>
+                {footerContent?.footer?.contactPhone && (
+                  <ContactItem>
+                    <ContactIcon>
+                      <Phone size={15} />
+                    </ContactIcon>
+                    <ContactText
+                      href={`tel:${footerContent.footer.contactPhone}`}
+                    >
+                      {footerContent.footer.contactPhone}
+                    </ContactText>
+                  </ContactItem>
+                )}
+                {footerContent?.footer?.contactEmail && (
+                  <ContactItem>
+                    <ContactIcon>
+                      <Mail size={15} />
+                    </ContactIcon>
+                    <ContactText
+                      href={`mailto:${footerContent.footer.contactEmail}`}
+                    >
+                      {footerContent.footer.contactEmail}
+                    </ContactText>
+                  </ContactItem>
+                )}
+                {footerContent?.footer?.address && (
+                  <ContactItem>
+                    <ContactIcon>
+                      <MapPin size={15} />
+                    </ContactIcon>
+                    <ContactText as="span">
+                      {footerContent.footer.address}
+                    </ContactText>
+                  </ContactItem>
+                )}
+              </ContactList>
+            </Col>
+          )}
+        </Grid>
+      </Inner>
 
       <Divider />
 
       <BottomBar>
-        <Copyright>{t('footer.copyright')}</Copyright>
-        <SocialIcons>
-          <SocialIcon
-            href={social.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t('footer.social.facebook')}
-          >
-            <Facebook size={20} />
-          </SocialIcon>
-          <SocialIcon
-            href={social.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t('footer.social.instagram')}
-          >
-            <Instagram size={20} />
-          </SocialIcon>
-          <SocialIcon
-            href={social.google}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t('footer.social.google')}
-          >
-            <Search size={20} />
-          </SocialIcon>
-        </SocialIcons>
+        {/* Update organization.name in src/config/project.js to change the copyright */}
+        <Copyright>
+          &copy; {year} {name}. All rights reserved.
+        </Copyright>
+        <LegalLinks>
+          {/* Add legal pages as the project grows */}
+          <LegalLink to="/privacy">Privacy Policy</LegalLink>
+          <LegalLink to="/terms">Terms of Service</LegalLink>
+        </LegalLinks>
       </BottomBar>
     </FooterContainer>
   );

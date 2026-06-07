@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
-import { TabsRoot, TabsList, TabsTrigger, TabsContent } from 'components/Tabs';
+import {
+  TabsRoot,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from 'components/ui/Tabs';
 import CodeBlock from 'components/CodeBlock';
 import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';
@@ -95,7 +100,7 @@ function TabsSection() {
 
       <SubLabel>Import</SubLabel>
       <CodeBlock language="jsx" description="Import">
-        {`import { TabsRoot, TabsList, TabsTrigger, TabsContent } from 'components/Tabs';`}
+        {`import { TabsRoot, TabsList, TabsTrigger, TabsContent } from 'components/ui/Tabs';`}
       </CodeBlock>
     </ComponentSection>
   );

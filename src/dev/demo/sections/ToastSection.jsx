@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import Button from 'components/Button';
+import Button from 'components/ui/Button';
 import CodeBlock from 'components/CodeBlock';
 import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';

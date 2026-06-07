@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import ErrorTrigger from 'components/ErrorTrigger';
 import { useTheme } from 'components/ThemeProvider';
-import Pill from 'components/Pill';
+import Pill from 'components/ui/Pill';
 import ComponentSection from '../ComponentSection';
 
 // ─── Breakpoints data ─────────────────────────────────────────────────────────

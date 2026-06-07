@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import AnimatedSection from 'components/AnimatedSection';
-import MotionButton from 'components/MotionButton';
+import MotionButton from 'components/ui/MotionButton';
 import CodeBlock from 'components/CodeBlock';
 import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';
@@ -175,7 +175,7 @@ const ANIMATED_SECTION_CODE = `import AnimatedSection from 'components/AnimatedS
   <p>This animates in when scrolled into view.</p>
 </AnimatedSection>`;
 
-const MOTION_BUTTON_CODE = `import MotionButton from 'components/MotionButton';
+const MOTION_BUTTON_CODE = `import MotionButton from 'components/ui/MotionButton';
 
 // Drop-in replacement for Button with hover/tap scale
 <MotionButton variant="primary">Hover me</MotionButton>`;

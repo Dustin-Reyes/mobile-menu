@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Sun, Moon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from './ThemeProvider';
-import { SwitchRoot, SwitchThumb } from './Switch';
+import { SwitchRoot, SwitchThumb } from 'components/ui/Switch';
 
 const IconWrapper = styled.span`
   display: flex;

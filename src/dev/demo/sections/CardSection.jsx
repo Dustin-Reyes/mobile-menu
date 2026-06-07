@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { CardRoot, CardHeader, CardBody, CardFooter } from 'components/Card';
-import Button from 'components/Button';
-import Pill from 'components/Pill';
+import { CardRoot, CardHeader, CardBody, CardFooter } from 'components/ui/Card';
+import Button from 'components/ui/Button';
+import Pill from 'components/ui/Pill';
 import CodeBlock from 'components/CodeBlock';
 import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';
@@ -163,7 +163,7 @@ function CardSection() {
 
       <SubLabel>Import</SubLabel>
       <CodeBlock language="jsx" description="Import">
-        {`import { CardRoot, CardHeader, CardBody, CardFooter } from 'components/Card';`}
+        {`import { CardRoot, CardHeader, CardBody, CardFooter } from 'components/ui/Card';`}
       </CodeBlock>
     </ComponentSection>
   );

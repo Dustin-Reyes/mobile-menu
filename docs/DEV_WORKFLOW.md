@@ -2309,6 +2309,7 @@ Let me do that correctly.
 
 **Changelog:**
 
+- v5.1.0: Added Content Management Guide reference for managing CMS content and adding new content fields
 - v5.0.0: Major reorganization for human developers - Added Quick Start for Humans, Visual Workflow Diagram, Command References, Decision Trees, Troubleshooting Guide, For New Team Members section, Reference Tables (Labels, Commit Types, Version Bump Matrix), section markers (👥/🧑‍💻/🤖), improved navigation and scannability
 - v4.0.0: Added comprehensive issue label system (priority, type, effort), genericized project-specific section as template
 - v3.1.0: Added project-specific details for individual projects

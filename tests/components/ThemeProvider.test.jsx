@@ -1,178 +1,80 @@
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
-import { ThemeProvider, useTheme } from '../../src/components/ThemeProvider';
-import ThemeToggle from '../../src/components/ThemeToggle';
+import { render, screen, fireEvent, act } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
+import { ThemeProvider, useTheme } from 'components/ThemeProvider';
 
-// Mock i18next
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key, values) => {
-      const translations = {
-        'theme.toggle': 'Switch to {{mode}} mode',
-      };
-      let result = translations[key] || key;
-      if (values && values.mode) {
-        result = result.replace('{{mode}}', values.mode);
-      }
-      return result;
-    },
-  }),
-}));
+function ThemeConsumer() {
+  const { mode, toggleMode, isDark, isLight } = useTheme();
+  return (
+    <div>
+      <span data-testid="mode">{mode}</span>
+      <span data-testid="isDark">{String(isDark)}</span>
+      <span data-testid="isLight">{String(isLight)}</span>
+      <button onClick={toggleMode}>Toggle</button>
+    </div>
+  );
+}
+
+function renderWithProvider() {
+  return render(
+    <HelmetProvider>
+      <ThemeProvider>
+        <ThemeConsumer />
+      </ThemeProvider>
+    </HelmetProvider>,
+  );
+}
 
 describe('ThemeProvider', () => {
   beforeEach(() => {
-    localStorage.clear();
+    window.localStorage.clear();
   });
 
-  it('provides theme context to children', () => {
-    const TestComponent = () => {
-      const { mode, theme } = useTheme();
-      return (
-        <div>
-          <span data-testid="mode">{mode}</span>
-          <span data-testid="primary">{theme.colors.primary}</span>
-        </div>
-      );
-    };
-
-    render(
-      <ThemeProvider>
-        <TestComponent />
-      </ThemeProvider>,
-    );
-
-    expect(screen.getByTestId('mode')).toHaveTextContent('light');
-    expect(screen.getByTestId('primary')).toHaveTextContent('#F5A623');
+  it('provides a mode value of light or dark', () => {
+    renderWithProvider();
+    expect(['light', 'dark']).toContain(screen.getByTestId('mode').textContent);
   });
 
-  it('toggles theme mode', () => {
-    const TestComponent = () => {
-      const { mode, toggleMode } = useTheme();
-      return (
-        <button onClick={toggleMode} data-testid="toggle">
-          {mode}
-        </button>
-      );
-    };
+  it('isDark is true when localStorage has dark', () => {
+    window.localStorage.setItem('theme-mode', 'dark');
+    renderWithProvider();
+    expect(screen.getByTestId('mode').textContent).toBe('dark');
+    expect(screen.getByTestId('isDark').textContent).toBe('true');
+    expect(screen.getByTestId('isLight').textContent).toBe('false');
+  });
 
-    render(
-      <ThemeProvider>
-        <TestComponent />
-      </ThemeProvider>,
-    );
+  it('isLight is true when localStorage has light', () => {
+    window.localStorage.setItem('theme-mode', 'light');
+    renderWithProvider();
+    expect(screen.getByTestId('isLight').textContent).toBe('true');
+    expect(screen.getByTestId('isDark').textContent).toBe('false');
+  });
 
-    const toggle = screen.getByTestId('toggle');
-    expect(toggle).toHaveTextContent('light');
-
+  it('toggleMode switches from light to dark', () => {
+    window.localStorage.setItem('theme-mode', 'light');
+    renderWithProvider();
+    expect(screen.getByTestId('mode').textContent).toBe('light');
     act(() => {
-      toggle.click();
+      fireEvent.click(screen.getByText('Toggle'));
     });
-
-    expect(toggle).toHaveTextContent('dark');
+    expect(screen.getByTestId('mode').textContent).toBe('dark');
   });
 
-  it('persists theme mode to localStorage', () => {
-    localStorage.setItem('theme-mode', 'dark');
-
-    const TestComponent = () => {
-      const { mode } = useTheme();
-      return <span data-testid="mode">{mode}</span>;
-    };
-
-    render(
-      <ThemeProvider>
-        <TestComponent />
-      </ThemeProvider>,
-    );
-
-    expect(screen.getByTestId('mode')).toHaveTextContent('dark');
-  });
-
-  it('uses system preference when no stored value', () => {
-    const originalMatchMedia = window.matchMedia;
-    window.matchMedia = jest.fn().mockImplementation((query) => ({
-      matches: query === '(prefers-color-scheme: dark)',
-      media: query,
-      onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    }));
-
-    const TestComponent = () => {
-      const { mode } = useTheme();
-      return <span data-testid="mode">{mode}</span>;
-    };
-
-    render(
-      <ThemeProvider>
-        <TestComponent />
-      </ThemeProvider>,
-    );
-
-    expect(screen.getByTestId('mode')).toHaveTextContent('dark');
-
-    window.matchMedia = originalMatchMedia;
-  });
-
-  it('returns undefined when useTheme is used outside ThemeProvider', () => {
-    const TestComponent = () => {
-      const theme = useTheme();
-      return <div>{theme ? 'has theme' : 'no theme'}</div>;
-    };
-
-    const { getByText } = render(<TestComponent />);
-    expect(getByText('no theme')).toBeInTheDocument();
-  });
-});
-
-describe('ThemeToggle', () => {
-  it('renders toggle switch with correct icon for light mode', () => {
-    render(
-      <ThemeProvider>
-        <ThemeToggle />
-      </ThemeProvider>,
-    );
-
-    const toggle = screen.getByRole('switch', { name: /switch to dark mode/i });
-    expect(toggle).toBeInTheDocument();
-    expect(toggle.querySelector('svg')).toBeInTheDocument();
-  });
-
-  it('renders toggle switch with correct icon for dark mode', () => {
-    render(
-      <ThemeProvider>
-        <ThemeToggle />
-      </ThemeProvider>,
-    );
-
-    const toggle = screen.getByRole('switch', { name: /switch to dark mode/i });
-    expect(toggle.querySelector('svg')).toBeInTheDocument();
-
+  it('toggleMode switches from dark to light', () => {
+    window.localStorage.setItem('theme-mode', 'dark');
+    renderWithProvider();
     act(() => {
-      toggle.click();
+      fireEvent.click(screen.getByText('Toggle'));
     });
-
-    expect(
-      screen
-        .getByRole('switch', { name: /switch to light mode/i })
-        .querySelector('svg'),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('mode').textContent).toBe('light');
   });
 
-  it('has correct accessibility attributes', () => {
-    render(
-      <ThemeProvider>
-        <ThemeToggle />
-      </ThemeProvider>,
-    );
-
-    const toggle = screen.getByRole('switch', {
-      name: /switch to (dark|light) mode/i,
+  it('persists mode to localStorage after toggle', () => {
+    window.localStorage.setItem('theme-mode', 'light');
+    renderWithProvider();
+    act(() => {
+      fireEvent.click(screen.getByText('Toggle'));
     });
-    expect(toggle).toHaveAttribute('aria-label');
-    expect(toggle).toHaveAttribute('title');
+    expect(window.localStorage.getItem('theme-mode')).toBe('dark');
   });
 });

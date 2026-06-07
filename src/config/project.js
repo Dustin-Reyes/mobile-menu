@@ -27,11 +27,12 @@ export const PROJECT_CONFIG = {
       },
     },
     social: {
-      twitter: '',
-      github: '',
-      linkedin: '',
       facebook: '',
       instagram: '',
+      twitter: '',
+      linkedin: '',
+      github: '',
+      youtube: '',
     },
   },
 
@@ -49,6 +50,13 @@ export const PROJECT_CONFIG = {
       title: 'Your Company',
       description: 'Your project description.',
       keywords: [],
+      image: 'https://yourproject.com/og-image.png',
+    },
+    development: {
+      title: 'Development | your-project-name',
+      description:
+        'Development information and tech stack for your-project-name.',
+      keywords: ['development', 'tech stack', 'technologies'],
       image: 'https://yourproject.com/og-image.png',
     },
     demo: {
@@ -79,6 +87,7 @@ export const PROJECT_CONFIG = {
     darkMode: true,
     errorReporting: process.env.NODE_ENV === 'production',
     performanceMonitoring: process.env.NODE_ENV === 'production',
+    posts: false,
   },
 
   security: {
@@ -117,6 +126,7 @@ function getEnvOverrides() {
           darkMode: true,
           errorReporting: true,
           performanceMonitoring: true,
+          posts: false,
         },
         security: {
           contentSecurityPolicy: true,
@@ -133,6 +143,7 @@ function getEnvOverrides() {
           darkMode: true,
           errorReporting: false,
           performanceMonitoring: false,
+          posts: false,
         },
         security: {
           contentSecurityPolicy: false,
@@ -149,6 +160,7 @@ function getEnvOverrides() {
           darkMode: true,
           errorReporting: false,
           performanceMonitoring: false,
+          posts: false,
         },
         security: {
           contentSecurityPolicy: false,

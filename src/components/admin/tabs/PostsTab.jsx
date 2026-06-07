@@ -1,0 +1,61 @@
+import { motion } from 'framer-motion';
+import styled from '@emotion/styled';
+import { Newspaper } from 'lucide-react';
+import { PageHeader, PageTitle, PageSubtitle } from '../shared/PageHeader';
+import {
+  SectionCard,
+  SectionCardHeader,
+  SectionCardTitle,
+} from '../shared/SectionCard';
+
+const motionProps = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+  transition: { duration: 0.2 },
+};
+
+const CompactEmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+`;
+
+const CompactEmptyIcon = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s7};
+  margin-bottom: 2px;
+`;
+
+export default function PostsTab() {
+  return (
+    <motion.div key="posts" {...motionProps}>
+      <PageHeader>
+        <div>
+          <PageTitle>Blog Posts</PageTitle>
+          <PageSubtitle>Manage blog posts and articles</PageSubtitle>
+        </div>
+      </PageHeader>
+
+      <SectionCard>
+        <SectionCardHeader>
+          <SectionCardTitle>
+            <Newspaper size={12} />
+            Blog Posts
+          </SectionCardTitle>
+        </SectionCardHeader>
+        <CompactEmptyState>
+          <CompactEmptyIcon>📝</CompactEmptyIcon>
+          Blog post management is coming soon
+        </CompactEmptyState>
+      </SectionCard>
+    </motion.div>
+  );
+}

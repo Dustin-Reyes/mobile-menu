@@ -3,7 +3,7 @@ import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';
 import ElementBuilder from 'components/ElementBuilder';
 import CodeBlock from 'components/CodeBlock';
-import { SwitchRoot, SwitchThumb } from 'components/Switch';
+import { SwitchRoot, SwitchThumb } from 'components/ui/Switch';
 
 // ─── Styled components ─────────────────────────────────────────────────────────
 
@@ -105,7 +105,7 @@ const PROPS_ROWS = [
   },
 ];
 
-const IMPORT_SNIPPET = `import { SwitchRoot, SwitchThumb } from 'components/Switch';`;
+const IMPORT_SNIPPET = `import { SwitchRoot, SwitchThumb } from 'components/ui/Switch';`;
 
 // ─── SwitchSection ─────────────────────────────────────────────────────────────
 

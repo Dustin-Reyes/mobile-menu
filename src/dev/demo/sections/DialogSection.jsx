@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import ComponentSection from '../ComponentSection';
 import PropsTable from '../PropsTable';
-import Button from 'components/Button';
+import Button from 'components/ui/Button';
 import CodeBlock from 'components/CodeBlock';
 import {
   DialogRoot,
@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from 'components/Dialog';
+} from 'components/ui/Dialog';
 
 // ─── Styled components ─────────────────────────────────────────────────────────
 
@@ -101,7 +101,7 @@ const CODE_EXAMPLE = `<DialogRoot>
   </DialogPortal>
 </DialogRoot>`;
 
-const IMPORT_SNIPPET = `import { DialogRoot, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose } from 'components/Dialog';`;
+const IMPORT_SNIPPET = `import { DialogRoot, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose } from 'components/ui/Dialog';`;
 
 // ─── DialogSection ─────────────────────────────────────────────────────────────
 

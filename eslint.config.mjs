@@ -161,6 +161,10 @@ export default [
         module: 'readonly',
         browser: true,
         Buffer: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        Blob: 'readonly',
+        getComputedStyle: 'readonly',
       },
     },
     rules: {
@@ -186,6 +190,7 @@ export default [
         require: 'readonly',
         module: 'readonly',
         exports: 'readonly',
+        URL: 'readonly',
       },
     },
     rules: {

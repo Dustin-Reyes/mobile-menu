@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Button from 'components/Button';
+import Button from 'components/ui/Button';
 import CodeBlock from 'components/CodeBlock';
 import ElementBuilder from 'components/ElementBuilder';
 import ComponentSection from '../ComponentSection';
@@ -161,7 +161,7 @@ function ButtonSection() {
 
       <SubLabel>Import</SubLabel>
       <CodeBlock language="jsx" description="Import">
-        {`import Button from 'components/Button';`}
+        {`import Button from 'components/ui/Button';`}
       </CodeBlock>
     </ComponentSection>
   );

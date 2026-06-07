@@ -66,6 +66,11 @@ function GlobalStylesWithTheme() {
     }
 
     /* Set core root defaults */
+    html {
+      /* Offset anchor scroll targets so the sticky header doesn't overlap them */
+      scroll-padding-top: 64px;
+    }
+
     html:focus-within {
       scroll-behavior: smooth;
     }
@@ -147,6 +152,15 @@ function GlobalStylesWithTheme() {
     textarea {
       -webkit-user-select: none;
       user-select: none;
+    }
+
+    /* Prevent iOS auto-zoom on input focus (requires font-size >= 16px) */
+    @media (max-width: 768px) {
+      input,
+      textarea,
+      select {
+        font-size: max(16px, 1em) !important;
+      }
     }
 
     /* Allow text selection for text inputs */

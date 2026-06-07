@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from './Dialog';
+} from 'components/ui/Dialog';
 
 // ─── Styled components ────────────────────────────────────────────────────────
 

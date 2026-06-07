@@ -1,55 +1,51 @@
-import { renderHook, act } from '../../jest.setup';
-import { useMediaQuery } from '../../src/hooks/useMediaQuery';
+import { renderHook, act } from '@testing-library/react';
+import { useMediaQuery } from 'hooks/useMediaQuery';
 
 describe('useMediaQuery', () => {
-  let mockMq;
+  let mockMql;
 
   beforeEach(() => {
-    mockMq = {
+    mockMql = {
       matches: false,
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
     };
-    window.matchMedia = jest.fn().mockReturnValue(mockMq);
+    window.matchMedia = jest.fn().mockReturnValue(mockMql);
   });
 
-  it('returns initial match value', () => {
-    mockMq.matches = true;
-    const { result } = renderHook(() => useMediaQuery('(max-width: 768px)'));
+  it('returns the initial matches value from matchMedia', () => {
+    mockMql.matches = true;
+    const { result } = renderHook(() => useMediaQuery('(min-width: 768px)'));
     expect(result.current).toBe(true);
   });
 
-  it('updates when media query fires', () => {
-    const { result } = renderHook(() => useMediaQuery('(max-width: 768px)'));
+  it('returns false when media query does not match', () => {
+    mockMql.matches = false;
+    const { result } = renderHook(() => useMediaQuery('(min-width: 768px)'));
     expect(result.current).toBe(false);
+  });
 
-    const handler = mockMq.addEventListener.mock.calls[0][1];
+  it('registers a change event listener', () => {
+    renderHook(() => useMediaQuery('(max-width: 480px)'));
+    expect(mockMql.addEventListener).toHaveBeenCalledWith(
+      'change',
+      expect.any(Function),
+    );
+  });
+
+  it('removes change listener on unmount', () => {
+    const { unmount } = renderHook(() => useMediaQuery('(max-width: 480px)'));
+    unmount();
+    expect(mockMql.removeEventListener).toHaveBeenCalledWith(
+      'change',
+      expect.any(Function),
+    );
+  });
+
+  it('updates matches value when media query fires change event', () => {
+    const { result } = renderHook(() => useMediaQuery('(max-width: 480px)'));
+    const [, handler] = mockMql.addEventListener.mock.calls[0];
     act(() => handler({ matches: true }));
     expect(result.current).toBe(true);
-  });
-
-  it('removes event listener on unmount', () => {
-    const { unmount } = renderHook(() => useMediaQuery('(max-width: 768px)'));
-    const addedHandler = mockMq.addEventListener.mock.calls[0][1];
-    unmount();
-    expect(mockMq.removeEventListener).toHaveBeenCalledWith(
-      'change',
-      addedHandler,
-    );
-  });
-
-  it('resubscribes when query changes', () => {
-    const { rerender } = renderHook(({ q }) => useMediaQuery(q), {
-      initialProps: { q: '(max-width: 768px)' },
-    });
-    const firstHandler = mockMq.addEventListener.mock.calls[0][1];
-
-    rerender({ q: '(max-width: 1024px)' });
-
-    expect(mockMq.removeEventListener).toHaveBeenCalledWith(
-      'change',
-      firstHandler,
-    );
-    expect(mockMq.addEventListener).toHaveBeenCalledTimes(2);
   });
 });

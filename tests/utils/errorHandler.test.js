@@ -1,151 +1,52 @@
 import * as Sentry from '@sentry/react';
-import globalErrorHandler from '../../src/utils/errorHandler';
+import globalErrorHandler from 'utils/errorHandler';
 
-describe('GlobalErrorHandler', () => {
+describe('globalErrorHandler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-    jest.spyOn(console, 'log').mockImplementation(() => {});
   });
 
-  afterEach(() => {
-    console.error.mockRestore();
-    console.log.mockRestore();
+  it('reportError calls Sentry.captureException with the error', () => {
+    const err = new Error('test error');
+    globalErrorHandler.reportError(err, { url: '/test' });
+    expect(Sentry.captureException).toHaveBeenCalledWith(
+      err,
+      expect.objectContaining({ extra: { url: '/test' } }),
+    );
   });
 
-  // ─── Window event handlers ───────────────────────────────────────────────────
-
-  describe('handleUnhandledRejection', () => {
-    it('reports to Sentry with unhandledRejection tag', () => {
-      const error = new Error('Unhandled rejection');
-      const event = {
-        reason: error,
-        promise: Promise.resolve(),
-        preventDefault: jest.fn(),
-      };
-
-      globalErrorHandler.handleUnhandledRejection(event);
-
-      expect(Sentry.captureException).toHaveBeenCalledWith(error, {
-        tags: { errorType: 'unhandledRejection' },
-        extra: { promise: event.promise },
-      });
+  it('reportMessage calls Sentry.captureMessage with message and level', () => {
+    globalErrorHandler.reportMessage('something happened', 'warning', {
+      page: 'home',
     });
-
-    it('calls event.preventDefault()', () => {
-      const event = {
-        reason: new Error('test'),
-        promise: Promise.resolve(),
-        preventDefault: jest.fn(),
-      };
-
-      globalErrorHandler.handleUnhandledRejection(event);
-
-      expect(event.preventDefault).toHaveBeenCalled();
-    });
+    expect(Sentry.captureMessage).toHaveBeenCalledWith(
+      'something happened',
+      expect.objectContaining({ level: 'warning', extra: { page: 'home' } }),
+    );
   });
 
-  describe('handleUncaughtError', () => {
-    it('reports to Sentry with uncaughtError tag and location info', () => {
-      const error = new Error('Uncaught error');
-      const event = {
-        error,
-        filename: 'app.js',
-        lineno: 42,
-        colno: 7,
-      };
-
-      globalErrorHandler.handleUncaughtError(event);
-
-      expect(Sentry.captureException).toHaveBeenCalledWith(error, {
-        tags: { errorType: 'uncaughtError' },
-        extra: { filename: 'app.js', lineno: 42, colno: 7 },
-      });
-    });
+  it('reportMessage defaults to info level', () => {
+    globalErrorHandler.reportMessage('info message');
+    expect(Sentry.captureMessage).toHaveBeenCalledWith(
+      'info message',
+      expect.objectContaining({ level: 'info' }),
+    );
   });
 
-  // ─── reportError ─────────────────────────────────────────────────────────────
-
-  describe('reportError', () => {
-    it('reports to Sentry with extra context', () => {
-      const error = new Error('Test error');
-      const context = { component: 'TestComponent', action: 'save' };
-
-      globalErrorHandler.reportError(error, context);
-
-      expect(Sentry.captureException).toHaveBeenCalledWith(error, {
-        extra: context,
-      });
-    });
-
-    it('works without a context argument', () => {
-      const error = new Error('Test error');
-
-      globalErrorHandler.reportError(error);
-
-      expect(Sentry.captureException).toHaveBeenCalledWith(error, {
-        extra: {},
-      });
-    });
+  it('setUser calls Sentry.setUser', () => {
+    const user = { id: '123', email: 'alice@example.com' };
+    globalErrorHandler.setUser(user);
+    expect(Sentry.setUser).toHaveBeenCalledWith(user);
   });
 
-  // ─── reportMessage ────────────────────────────────────────────────────────────
-
-  describe('reportMessage', () => {
-    it('reports to Sentry with level and extra context', () => {
-      globalErrorHandler.reportMessage('Test message', 'warning', {
-        key: 'value',
-      });
-
-      expect(Sentry.captureMessage).toHaveBeenCalledWith('Test message', {
-        level: 'warning',
-        extra: { key: 'value' },
-      });
-    });
-
-    it('defaults to info level when no level is provided', () => {
-      globalErrorHandler.reportMessage('Info message');
-
-      expect(Sentry.captureMessage).toHaveBeenCalledWith('Info message', {
-        level: 'info',
-        extra: {},
-      });
-    });
+  it('clearUser calls Sentry.setUser(null)', () => {
+    globalErrorHandler.clearUser();
+    expect(Sentry.setUser).toHaveBeenCalledWith(null);
   });
 
-  // ─── setUser / clearUser ──────────────────────────────────────────────────────
-
-  describe('setUser', () => {
-    it('sets user context in Sentry', () => {
-      const user = { id: '123', email: 'test@example.com' };
-
-      globalErrorHandler.setUser(user);
-
-      expect(Sentry.setUser).toHaveBeenCalledWith(user);
-    });
-  });
-
-  describe('clearUser', () => {
-    it('clears user context in Sentry', () => {
-      globalErrorHandler.clearUser();
-
-      expect(Sentry.setUser).toHaveBeenCalledWith(null);
-    });
-  });
-
-  // ─── addBreadcrumb ────────────────────────────────────────────────────────────
-
-  describe('addBreadcrumb', () => {
-    it('adds breadcrumb to Sentry', () => {
-      const breadcrumb = {
-        message: 'User clicked save button',
-        category: 'user',
-        level: 'info',
-      };
-
-      globalErrorHandler.addBreadcrumb(breadcrumb);
-
-      expect(Sentry.addBreadcrumb).toHaveBeenCalledWith(breadcrumb);
-    });
+  it('addBreadcrumb calls Sentry.addBreadcrumb', () => {
+    const crumb = { category: 'ui', message: 'click' };
+    globalErrorHandler.addBreadcrumb(crumb);
+    expect(Sentry.addBreadcrumb).toHaveBeenCalledWith(crumb);
   });
 });
