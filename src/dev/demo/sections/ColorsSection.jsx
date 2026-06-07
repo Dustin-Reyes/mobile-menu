@@ -7,10 +7,10 @@ const SWATCH_GROUPS = [
   {
     label: 'Brand',
     swatches: [
-      { name: 'primary', lightHex: '#F5A623' },
-      { name: 'secondary', lightHex: '#E8A000' },
+      { name: 'primary', lightHex: '#6366F1' },
+      { name: 'secondary', lightHex: '#4F46E5' },
       { name: 'tertiary', lightHex: '#666666' },
-      { name: 'onPrimary', lightHex: '#111111' },
+      { name: 'onPrimary', lightHex: '#FFFFFF' },
     ],
   },
   {

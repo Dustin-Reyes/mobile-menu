@@ -91,7 +91,7 @@ export function SEOProvider({
       ))}
 
       {/* Additional meta tags */}
-      <meta name="theme-color" content="#ffffff" />
+      <meta name="theme-color" content="#6366F1" />
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="application-name" content="Transpiled Web Template" />
       <meta

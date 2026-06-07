@@ -1,7 +1,7 @@
 export const lightColors = {
   // Brand palette
-  primary: '#F5A623', // golden amber — main CTA + accents
-  secondary: '#E8A000', // darker amber — secondary actions + hover on dark bg
+  primary: '#6366F1', // electric indigo — main CTA + accents
+  secondary: '#4F46E5', // deeper indigo — secondary actions + hover on dark bg
   tertiary: '#666666',
 
   // Fixed-value tokens (always this color regardless of mode)
@@ -17,7 +17,7 @@ export const lightColors = {
   textMuted: '#9CA3AF',
   border: '#E0E0E0',
   secondaryBorder: '#939393',
-  borderHover: '#F5A623',
+  borderHover: '#6366F1',
 
   // Functional colors
   success: '#16A34A',
@@ -26,7 +26,7 @@ export const lightColors = {
   info: '#4282E1',
 
   // On-color tokens (foreground for colored backgrounds)
-  onPrimary: '#111111', // dark text on golden background
+  onPrimary: '#FFFFFF', // white text on indigo background
   onDark: '#FFFFFF',
 
   // Visual effects
@@ -36,8 +36,8 @@ export const lightColors = {
 
 export const darkColors = {
   // Brand palette
-  primary: '#F7B733', // brighter amber for dark backgrounds
-  secondary: '#F5A623', // golden amber as secondary on dark
+  primary: '#818CF8', // soft indigo for dark backgrounds
+  secondary: '#6366F1', // electric indigo as secondary on dark
   tertiary: '#888888',
 
   // Fixed-value tokens (always this color regardless of mode)
@@ -53,7 +53,7 @@ export const darkColors = {
   textMuted: '#94A3B8',
   border: '#2D2D2D',
   secondaryBorder: '#606060',
-  borderHover: '#F7B733',
+  borderHover: '#818CF8',
 
   // Functional colors
   success: '#22C55E',
@@ -62,7 +62,7 @@ export const darkColors = {
   info: '#5B9AEE',
 
   // On-color tokens (foreground for colored backgrounds)
-  onPrimary: '#111111', // dark text on golden background
+  onPrimary: '#FFFFFF', // white text on indigo background
   onDark: '#FFFFFF',
 
   // Visual effects
