@@ -12,6 +12,10 @@ import { formatDate } from 'utils/formatDate';
 
 const DetailSection = styled.div`
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const AccordionHeader = styled.button`

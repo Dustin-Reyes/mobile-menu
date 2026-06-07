@@ -58,8 +58,9 @@ const DetailAvatarWrap = styled.div`
   border: 2px solid ${(p) => p.theme.colors.primary}20;
 
   @media (max-width: 768px) {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
+    font-size: ${(p) => p.theme.typography.fontSizes.s5};
   }
 `;
 
@@ -169,6 +170,19 @@ const RoleBadge = styled.span`
   border: 1px solid ${(p) => p.theme.colors.primary}30;
   white-space: nowrap;
 `;
+const StatusBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  background: ${(p) =>
+    p.$disabled ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};
+  color: ${(p) => (p.$disabled ? '#f87171' : '#4ade80')};
+  border: 1px solid
+    ${(p) => (p.$disabled ? 'rgba(239,68,68,0.2)' : 'rgba(34,197,94,0.2)')};
+  white-space: nowrap;
+`;
 
 const ProviderBadge = styled.span`
   display: inline-flex;
@@ -273,6 +287,9 @@ export default function UserProfileHeader({
           </RoleBadge>
         )}
         <ProviderBadge>{getProviderLabel(targetUser.providers)}</ProviderBadge>
+        <StatusBadge $disabled={status === 'disabled'}>
+          {status === 'disabled' ? 'Disabled' : 'Active'}
+        </StatusBadge>
       </DetailBadges>
     </DetailProfile>
   );

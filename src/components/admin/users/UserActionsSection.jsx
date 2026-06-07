@@ -7,46 +7,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import styled from '@emotion/styled';
-
-const DetailSection = styled.div`
-  padding: 12px 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const ActionRow = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: ${(p) => p.theme.borderRadius.s1};
-  cursor: pointer;
-  text-align: left;
-  font-family: inherit;
-  transition:
-    background ${(p) => p.theme.transitions.fast},
-    border-color ${(p) => p.theme.transitions.fast};
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.12);
-  }
-`;
-
-const DestructiveActionRow = styled(ActionRow)`
-  border-color: rgba(239, 68, 68, 0.15);
-  background: rgba(239, 68, 68, 0.03);
-
-  &:hover {
-    background: rgba(239, 68, 68, 0.07);
-    border-color: rgba(239, 68, 68, 0.28);
-  }
-`;
+import { SwitchRoot, SwitchThumb } from 'components/ui/Switch';
 
 const ActionIconWrap = styled.div`
   width: 40px;
@@ -97,6 +58,152 @@ const ActionChevron = styled.div`
   display: flex;
 `;
 
+/* ── Desktop layout ───────────────────────────────────────── */
+
+const DesktopLayout = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const DesktopSection = styled.div`
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const ActionRow = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition:
+    background ${(p) => p.theme.transitions.fast},
+    border-color ${(p) => p.theme.transitions.fast};
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+`;
+
+const DestructiveActionRow = styled(ActionRow)`
+  border-color: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.03);
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.07);
+    border-color: rgba(239, 68, 68, 0.28);
+  }
+`;
+
+/* ── Mobile layout ────────────────────────────────────────── */
+
+const MobileLayout = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+const MobileSection = styled.div`
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+const SectionLabel = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: ${(p) => p.theme.typography.fontWeights.medium};
+  padding: 2px 2px 4px;
+`;
+
+const ActionCard = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+`;
+
+const MobileDestructiveCard = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  background: rgba(239, 68, 68, 0.04);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition:
+    background ${(p) => p.theme.transitions.fast},
+    border-color ${(p) => p.theme.transitions.fast};
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.32);
+  }
+`;
+
+const SendLinkButton = styled.button`
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all ${(p) => p.theme.transitions.fast};
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+`;
+
+const CompactSwitch = styled(SwitchRoot)`
+  width: 46px;
+  height: 26px;
+
+  &[data-state='checked'] {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.55);
+  }
+`;
+
+const CompactSwitchThumb = styled(SwitchThumb)`
+  width: 18px;
+  height: 18px;
+
+  &[data-state='checked'] {
+    transform: translateX(20px);
+    background: #4ade80;
+  }
+`;
+
 export default function UserActionsSection({
   targetUser,
   onEditRole,
@@ -104,73 +211,138 @@ export default function UserActionsSection({
   onToggleDisabled,
   onDelete,
 }) {
+  const isActive = !targetUser.disabled;
+  const hasPassword = targetUser.providers?.includes('password');
+
   return (
-    <DetailSection>
-      <ActionRow onClick={onEditRole}>
-        <ActionIconWrap $variant="primary">
-          <ShieldCheck size={16} />
-        </ActionIconWrap>
-        <ActionText>
-          <ActionTitle>Edit Role</ActionTitle>
-          <ActionSubtitle>
-            Update this user&apos;s role and permissions.
-          </ActionSubtitle>
-        </ActionText>
-        <ActionChevron>
-          <ChevronRight size={16} />
-        </ActionChevron>
-      </ActionRow>
+    <>
+      {/* Desktop: flat chevron rows */}
+      <DesktopLayout>
+        <DesktopSection>
+          <ActionRow onClick={onEditRole}>
+            <ActionIconWrap $variant="primary">
+              <ShieldCheck size={16} />
+            </ActionIconWrap>
+            <ActionText>
+              <ActionTitle>Edit Role</ActionTitle>
+              <ActionSubtitle>
+                Update this user&apos;s role and permissions.
+              </ActionSubtitle>
+            </ActionText>
+            <ActionChevron>
+              <ChevronRight size={16} />
+            </ActionChevron>
+          </ActionRow>
 
-      {targetUser.providers?.includes('password') && (
-        <ActionRow onClick={onResetPassword}>
-          <ActionIconWrap $variant="default">
-            <KeyRound size={16} />
-          </ActionIconWrap>
-          <ActionText>
-            <ActionTitle>Reset Password</ActionTitle>
-            <ActionSubtitle>
-              Send a password reset link to this user.
-            </ActionSubtitle>
-          </ActionText>
-          <ActionChevron>
-            <ChevronRight size={16} />
-          </ActionChevron>
-        </ActionRow>
-      )}
+          {hasPassword && (
+            <ActionRow onClick={onResetPassword}>
+              <ActionIconWrap>
+                <KeyRound size={16} />
+              </ActionIconWrap>
+              <ActionText>
+                <ActionTitle>Reset Password</ActionTitle>
+                <ActionSubtitle>
+                  Send a password reset link to this user.
+                </ActionSubtitle>
+              </ActionText>
+              <ActionChevron>
+                <ChevronRight size={16} />
+              </ActionChevron>
+            </ActionRow>
+          )}
 
-      <ActionRow onClick={onToggleDisabled}>
-        <ActionIconWrap $variant={targetUser.disabled ? 'success' : 'warning'}>
-          {targetUser.disabled ? <CircleCheck size={16} /> : <Ban size={16} />}
-        </ActionIconWrap>
-        <ActionText>
-          <ActionTitle>
-            {targetUser.disabled ? 'Enable Account' : 'Disable Account'}
-          </ActionTitle>
-          <ActionSubtitle>
-            {targetUser.disabled
-              ? "Restore access to this user's account."
-              : "Temporarily disable this user's account."}
-          </ActionSubtitle>
-        </ActionText>
-        <ActionChevron>
-          <ChevronRight size={16} />
-        </ActionChevron>
-      </ActionRow>
+          <ActionRow onClick={onToggleDisabled}>
+            <ActionIconWrap $variant={isActive ? 'warning' : 'success'}>
+              {isActive ? <Ban size={16} /> : <CircleCheck size={16} />}
+            </ActionIconWrap>
+            <ActionText>
+              <ActionTitle>
+                {isActive ? 'Disable Account' : 'Enable Account'}
+              </ActionTitle>
+              <ActionSubtitle>
+                {isActive
+                  ? "Temporarily disable this user's account."
+                  : "Restore access to this user's account."}
+              </ActionSubtitle>
+            </ActionText>
+            <ActionChevron>
+              <ChevronRight size={16} />
+            </ActionChevron>
+          </ActionRow>
 
-      <DestructiveActionRow onClick={onDelete}>
-        <ActionIconWrap $variant="danger">
-          <Trash2 size={16} />
-        </ActionIconWrap>
-        <ActionText>
-          <ActionTitle $danger>Delete User</ActionTitle>
-          <ActionSubtitle $danger>
-            Permanently delete this user and all data.
-          </ActionSubtitle>
-        </ActionText>
-        <ActionChevron>
-          <ChevronRight size={16} />
-        </ActionChevron>
-      </DestructiveActionRow>
-    </DetailSection>
+          <DestructiveActionRow onClick={onDelete}>
+            <ActionIconWrap $variant="danger">
+              <Trash2 size={16} />
+            </ActionIconWrap>
+            <ActionText>
+              <ActionTitle $danger>Delete User</ActionTitle>
+              <ActionSubtitle $danger>
+                Permanently delete this user and all data.
+              </ActionSubtitle>
+            </ActionText>
+            <ActionChevron>
+              <ChevronRight size={16} />
+            </ActionChevron>
+          </DestructiveActionRow>
+        </DesktopSection>
+      </DesktopLayout>
+
+      {/* Mobile: section labels + Send Link button + Account Status toggle */}
+      <MobileLayout>
+        {hasPassword && (
+          <MobileSection>
+            <SectionLabel>Security</SectionLabel>
+            <ActionCard>
+              <ActionIconWrap>
+                <KeyRound size={16} />
+              </ActionIconWrap>
+              <ActionText>
+                <ActionTitle>Reset Password</ActionTitle>
+                <ActionSubtitle>Send reset link to user</ActionSubtitle>
+              </ActionText>
+              <SendLinkButton type="button" onClick={onResetPassword}>
+                Send Link
+              </SendLinkButton>
+            </ActionCard>
+          </MobileSection>
+        )}
+
+        <MobileSection>
+          <SectionLabel>Account</SectionLabel>
+          <ActionCard>
+            <ActionIconWrap $variant={isActive ? 'success' : 'warning'}>
+              {isActive ? <Ban size={16} /> : <CircleCheck size={16} />}
+            </ActionIconWrap>
+            <ActionText>
+              <ActionTitle>Account Status</ActionTitle>
+              <ActionSubtitle>
+                {isActive ? 'Account is active' : 'Account is disabled'}
+              </ActionSubtitle>
+            </ActionText>
+            <CompactSwitch
+              checked={isActive}
+              onCheckedChange={() => onToggleDisabled()}
+            >
+              <CompactSwitchThumb />
+            </CompactSwitch>
+          </ActionCard>
+
+          <MobileDestructiveCard onClick={onDelete}>
+            <ActionIconWrap $variant="danger">
+              <Trash2 size={16} />
+            </ActionIconWrap>
+            <ActionText>
+              <ActionTitle $danger>Delete User</ActionTitle>
+              <ActionSubtitle $danger>
+                Permanently delete this user and all data.
+              </ActionSubtitle>
+            </ActionText>
+            <ActionChevron>
+              <ChevronRight size={16} />
+            </ActionChevron>
+          </MobileDestructiveCard>
+        </MobileSection>
+      </MobileLayout>
+    </>
   );
 }
