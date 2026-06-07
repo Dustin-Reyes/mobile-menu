@@ -19,6 +19,7 @@ const MobilePagePicker = styled.div`
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
+    margin-top: 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     flex-shrink: 0;
   }
