@@ -22,8 +22,10 @@ const ModalContent = styled(DialogContent)`
   width: 100%;
 
   @media (max-width: 768px) {
-    max-width: 92vw;
-    margin: 16px;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
   }
 `;
 
