@@ -12,11 +12,6 @@ const DetailProfile = styled.div`
   background: rgba(255, 255, 255, 0.025);
   border-radius: ${(p) => p.theme.borderRadius.s2}
     ${(p) => p.theme.borderRadius.s2} 0 0;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-  }
 `;
 
 const AvatarContainer = styled.div`
@@ -58,9 +53,9 @@ const DetailAvatarWrap = styled.div`
   border: 2px solid ${(p) => p.theme.colors.primary}20;
 
   @media (max-width: 768px) {
-    width: 76px;
-    height: 76px;
-    font-size: ${(p) => p.theme.typography.fontSizes.s5};
+    width: 48px;
+    height: 48px;
+    font-size: ${(p) => p.theme.typography.fontSizes.s3};
   }
 `;
 
@@ -70,20 +65,12 @@ const DetailInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3px;
-
-  @media (max-width: 768px) {
-    text-align: center;
-  }
 `;
 
 const NameRow = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
-
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
 `;
 
 const NameDisplay = styled.span`
