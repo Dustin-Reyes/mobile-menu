@@ -198,41 +198,6 @@ const NavItem = styled(RadixDialog.Close)`
   }
 `;
 
-// ─── Admin / sign-out items (two-line, no icon) ───────────────────────────────
-
-const TwoLineItem = styled(RadixDialog.Close)`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 15px 12px;
-  background: transparent;
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.s1};
-  cursor: pointer;
-  text-align: left;
-  transition: background ${({ theme }) => theme.transitions.fast};
-
-  &:hover {
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'};
-  }
-`;
-
-const TwoLineLabel = styled.span`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s4};
-  font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
-  color: ${({ theme }) => theme.colors.text};
-  line-height: 1.3;
-`;
-
-// ─── Admin actions (pinned above bottom bar) ──────────────────────────────────
-
-const AdminSection = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 0.5rem 1.25rem;
-  flex-shrink: 0;
-`;
-
 // ─── Bottom bar ───────────────────────────────────────────────────────────────
 
 const BottomBar = styled.div`
@@ -243,6 +208,17 @@ const BottomBar = styled.div`
   padding: 0.75rem 1rem;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+`;
+
+const BottomLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 const ThemeButton = styled.button`
@@ -264,10 +240,52 @@ const ThemeButton = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.background};
   }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    font-size: ${({ theme }) => theme.typography.fontSizes.s2};
+
+    span {
+      display: none;
+    }
+  }
 `;
 
 const AuthButtonWrapper = styled(RadixDialog.Close)`
-  flex: 1;
+  margin-left: auto;
+  margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 480px) {
+    button {
+      padding: 0.5rem 0.75rem;
+      font-size: ${({ theme }) => theme.typography.fontSizes.s2};
+    }
+  }
+`;
+
+const SignOutButtonWrapper = styled(RadixDialog.Close)`
+  margin-left: auto;
+  margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+
+  button {
+    color: #ef4444;
+    border-color: #ef4444;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.1);
+    }
+  }
+
+  @media (max-width: 480px) {
+    button {
+      padding: 0.5rem 0.75rem;
+      font-size: ${({ theme }) => theme.typography.fontSizes.s2};
+    }
+  }
 `;
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -388,35 +406,33 @@ export default function MobileMenu() {
                 )}
               </>
             )}
-          </ScrollArea>
 
-          {isAuthenticated && (
-            <AdminSection>
-              {!location.pathname.startsWith('/admin') && (
-                <TwoLineItem
+            {isAuthenticated && !location.pathname.startsWith('/admin') && (
+              <>
+                <Separator />
+                <NavItem
+                  $active={false}
                   onClick={() => handleNavigate('/admin', { tab: 'dashboard' })}
                 >
-                  <TwoLineLabel>{t('nav.goToAdminDashboard')}</TwoLineLabel>
-                </TwoLineItem>
-              )}
-
-              <TwoLineItem onClick={handleSignOut}>
-                <TwoLineLabel>{t('nav.signOut')}</TwoLineLabel>
-              </TwoLineItem>
-            </AdminSection>
-          )}
+                  {t('nav.goToAdminDashboard')}
+                </NavItem>
+              </>
+            )}
+          </ScrollArea>
 
           <BottomBar>
-            <LanguageSwitcher />
-            <ThemeButton
-              onClick={toggleMode}
-              aria-label={
-                isDark ? 'Switch to light mode' : 'Switch to dark mode'
-              }
-            >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
-              {isDark ? t('theme.light') : t('theme.dark')}
-            </ThemeButton>
+            <BottomLeft>
+              <LanguageSwitcher compact />
+              <ThemeButton
+                onClick={toggleMode}
+                aria-label={
+                  isDark ? 'Switch to light mode' : 'Switch to dark mode'
+                }
+              >
+                {isDark ? <Sun size={18} /> : <Moon size={18} />}
+                <span>{isDark ? t('theme.light') : t('theme.dark')}</span>
+              </ThemeButton>
+            </BottomLeft>
             {!isAuthenticated && (
               <AuthButtonWrapper>
                 <Button onClick={() => navigate('/admin')} fullWidth>
@@ -424,6 +440,13 @@ export default function MobileMenu() {
                   {t('nav.signIn')}
                 </Button>
               </AuthButtonWrapper>
+            )}
+            {isAuthenticated && (
+              <SignOutButtonWrapper onClick={handleSignOut}>
+                <Button fullWidth variant="outline">
+                  {t('nav.signOut')}
+                </Button>
+              </SignOutButtonWrapper>
             )}
           </BottomBar>
         </Content>

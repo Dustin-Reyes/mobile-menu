@@ -65,6 +65,10 @@ const Wrapper = styled.section`
       transparent 1px
     );
   background-size: 40px 40px;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem 2rem;
+  }
 `;
 
 const Badge = styled.div`

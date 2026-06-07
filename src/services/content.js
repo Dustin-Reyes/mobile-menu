@@ -45,7 +45,7 @@ function transformFlatToNested(flatData) {
   for (const [key, value] of Object.entries(flatData)) {
     let matched = false;
     for (const prefix of sectionPrefixes) {
-      if (key.startsWith(prefix)) {
+      if (key.startsWith(prefix) && key.length > prefix.length) {
         const field = key.slice(prefix.length);
         // Convert camelCase to lowercase first letter
         const fieldName = field.charAt(0).toLowerCase() + field.slice(1);
