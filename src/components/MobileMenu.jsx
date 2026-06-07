@@ -225,12 +225,6 @@ const TwoLineLabel = styled.span`
   line-height: 1.3;
 `;
 
-const TwoLineSubtitle = styled.span`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  line-height: 1.3;
-`;
-
 // ─── Admin actions (pinned above bottom bar) ──────────────────────────────────
 
 const AdminSection = styled.div`
@@ -408,7 +402,6 @@ export default function MobileMenu() {
 
               <TwoLineItem onClick={handleSignOut}>
                 <TwoLineLabel>{t('nav.signOut')}</TwoLineLabel>
-                <TwoLineSubtitle>{t('nav.signOutSubtitle')}</TwoLineSubtitle>
               </TwoLineItem>
             </AdminSection>
           )}
