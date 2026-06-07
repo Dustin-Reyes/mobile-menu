@@ -6,6 +6,7 @@ import { useTheme } from './ThemeProvider';
 import { useTranslation } from 'react-i18next';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import Button from 'components/ui/Button';
+import Separator from 'components/ui/Separator';
 import LanguageSwitcher from './LanguageSwitcher';
 import HeaderLogo from './HeaderLogo';
 import { SECTIONS_CONFIG } from 'config/sections';
@@ -392,7 +393,7 @@ export default function MobileMenu() {
 
             {isAuthenticated && location.pathname.startsWith('/admin') && (
               <>
-                <Divider />
+                <Separator />
                 {ADMIN_TABS.filter((tab) => tab.enabled).map(
                   ({ id, label }) => (
                     <NavItem
