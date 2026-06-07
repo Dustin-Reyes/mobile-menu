@@ -44,6 +44,10 @@ const FieldInput = styled.input`
     border-color: ${(p) => p.theme.colors.primary};
     box-shadow: 0 0 0 3px ${(p) => p.theme.colors.primary}18;
   }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const FieldSelect = styled.select`
@@ -62,6 +66,10 @@ const FieldSelect = styled.select`
   &:focus {
     border-color: ${(p) => p.theme.colors.primary};
     box-shadow: 0 0 0 3px ${(p) => p.theme.colors.primary}18;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
   }
 `;
 
