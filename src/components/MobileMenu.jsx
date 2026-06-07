@@ -177,15 +177,6 @@ const Divider = styled.div`
   margin: 0 0 12px;
 `;
 
-const SectionLabel = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s1};
-  font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin: 12px 0 4px 12px;
-`;
-
 // ─── Simple nav item ──────────────────────────────────────────────────────────
 
 const NavItem = styled(RadixDialog.Close)`
@@ -401,7 +392,7 @@ export default function MobileMenu() {
 
             {isAuthenticated && location.pathname.startsWith('/admin') && (
               <>
-                <SectionLabel>Admin</SectionLabel>
+                <Divider />
                 {ADMIN_TABS.filter((tab) => tab.enabled).map(
                   ({ id, label }) => (
                     <NavItem
