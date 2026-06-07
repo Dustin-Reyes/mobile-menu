@@ -50,6 +50,10 @@ const TabContent = styled('div', {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 768px) {
+    padding: ${(p) => (p.flush ? '0' : '16px 16px 16px')};
+  }
 `;
 
 export default function Dashboard() {
