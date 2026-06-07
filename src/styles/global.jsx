@@ -154,6 +154,15 @@ function GlobalStylesWithTheme() {
       user-select: none;
     }
 
+    /* Prevent iOS auto-zoom on input focus (requires font-size >= 16px) */
+    @media (max-width: 768px) {
+      input,
+      textarea,
+      select {
+        font-size: max(16px, 1em) !important;
+      }
+    }
+
     /* Allow text selection for text inputs */
     input[type='text'],
     input[type='email'],
