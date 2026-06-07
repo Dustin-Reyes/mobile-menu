@@ -19,6 +19,29 @@ const DetailProfile = styled.div`
   }
 `;
 
+const AvatarContainer = styled.div`
+  position: relative;
+  flex-shrink: 0;
+`;
+
+const StatusDot = styled.div`
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: ${(p) => (p.$disabled ? '#f87171' : '#4ade80')};
+  border: 2px solid rgba(14, 14, 14, 0.9);
+
+  @media (max-width: 768px) {
+    width: 13px;
+    height: 13px;
+    bottom: 3px;
+    right: 3px;
+  }
+`;
+
 const DetailAvatarWrap = styled.div`
   width: 56px;
   height: 56px;
@@ -214,17 +237,20 @@ export default function UserProfileHeader({
 
   return (
     <DetailProfile>
-      <DetailAvatarWrap>
-        {targetUser.photoURL ? (
-          <AvatarImage
-            src={targetUser.photoURL}
-            alt=""
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          getUserInitials(targetUser.email)
-        )}
-      </DetailAvatarWrap>
+      <AvatarContainer>
+        <DetailAvatarWrap>
+          {targetUser.photoURL ? (
+            <AvatarImage
+              src={targetUser.photoURL}
+              alt=""
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            getUserInitials(targetUser.email)
+          )}
+        </DetailAvatarWrap>
+        <StatusDot $disabled={status === 'disabled'} />
+      </AvatarContainer>
 
       <DetailInfo>
         {editingName ? (
