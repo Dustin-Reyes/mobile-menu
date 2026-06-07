@@ -213,26 +213,21 @@ const TwoLineItem = styled(RadixDialog.Close)`
   transition: background ${({ theme }) => theme.transitions.fast};
 
   &:hover {
-    background: ${({ $destructive, theme }) =>
-      $destructive
-        ? 'rgba(239,68,68,0.06)'
-        : theme.mode === 'dark'
-          ? 'rgba(255,255,255,0.05)'
-          : 'rgba(0,0,0,0.04)'};
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'};
   }
 `;
 
 const TwoLineLabel = styled.span`
   font-size: ${({ theme }) => theme.typography.fontSizes.s4};
   font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
-  color: ${({ $destructive }) => ($destructive ? '#ef4444' : 'inherit')};
+  color: ${({ theme }) => theme.colors.text};
   line-height: 1.3;
 `;
 
 const TwoLineSubtitle = styled.span`
   font-size: ${({ theme }) => theme.typography.fontSizes.s2};
-  color: ${({ $destructive, theme }) =>
-    $destructive ? 'rgba(239,68,68,0.6)' : theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textSecondary};
   line-height: 1.3;
 `;
 
@@ -414,11 +409,9 @@ export default function MobileMenu() {
                 </TwoLineItem>
               )}
 
-              <TwoLineItem $destructive onClick={handleSignOut}>
-                <TwoLineLabel $destructive>{t('nav.signOut')}</TwoLineLabel>
-                <TwoLineSubtitle $destructive>
-                  {t('nav.signOutSubtitle')}
-                </TwoLineSubtitle>
+              <TwoLineItem onClick={handleSignOut}>
+                <TwoLineLabel>{t('nav.signOut')}</TwoLineLabel>
+                <TwoLineSubtitle>{t('nav.signOutSubtitle')}</TwoLineSubtitle>
               </TwoLineItem>
             </AdminSection>
           )}
