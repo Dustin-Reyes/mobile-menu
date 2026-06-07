@@ -1,62 +1,31 @@
-import { useState } from 'react';
-import {
-  Copy,
-  Calendar,
-  LogIn,
-  CreditCard,
-  Info,
-  ChevronDown,
-} from 'lucide-react';
+import { Copy, Calendar, LogIn, CreditCard } from 'lucide-react';
 import styled from '@emotion/styled';
 import { formatDate } from 'utils/formatDate';
 
 const DetailSection = styled.div`
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-
   @media (max-width: 768px) {
     display: none;
   }
-`;
 
-const AccordionHeader = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 14px 20px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: ${(p) => p.theme.colors.text};
-  font-family: inherit;
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  font-weight: ${(p) => p.theme.typography.fontWeights.medium};
-  transition: background ${(p) => p.theme.transitions.fast};
-  text-align: left;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.03);
+  @media (min-width: 769px) {
+    width: 220px;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 `;
 
-const AccordionIcon = styled.div`
-  color: rgba(255, 255, 255, 0.35);
-  display: flex;
-`;
-
-const AccordionChevron = styled.div`
-  margin-left: auto;
+const SectionTitle = styled.div`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: rgba(255, 255, 255, 0.3);
-  display: flex;
-  transition: transform 0.2s ease;
-  transform: ${(p) => (p.$open ? 'rotate(180deg)' : 'rotate(0deg)')};
-`;
-
-const AccordionContent = styled.div`
-  padding: 0 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: ${(p) => p.theme.typography.fontWeights.medium};
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 `;
 
 const InfoRow = styled.div`
@@ -123,55 +92,41 @@ const CopyIcon = styled.span`
 `;
 
 export default function UserInfoSection({ targetUser, onCopyUid }) {
-  const [open, setOpen] = useState(false);
-
   return (
     <DetailSection>
-      <AccordionHeader onClick={() => setOpen((v) => !v)}>
-        <AccordionIcon>
-          <Info size={14} />
-        </AccordionIcon>
-        Account Details
-        <AccordionChevron $open={open}>
-          <ChevronDown size={14} />
-        </AccordionChevron>
-      </AccordionHeader>
-      {open && (
-        <AccordionContent>
-          <InfoRow>
-            <InfoRowLeft>
-              <InfoRowIcon>
-                <Calendar size={13} />
-              </InfoRowIcon>
-              <InfoRowLabel>Joined</InfoRowLabel>
-            </InfoRowLeft>
-            <InfoRowValue>{formatDate(targetUser.createdAt)}</InfoRowValue>
-          </InfoRow>
-          <InfoRow>
-            <InfoRowLeft>
-              <InfoRowIcon>
-                <LogIn size={13} />
-              </InfoRowIcon>
-              <InfoRowLabel>Last login</InfoRowLabel>
-            </InfoRowLeft>
-            <InfoRowValue>{formatDate(targetUser.lastLoginAt)}</InfoRowValue>
-          </InfoRow>
-          <InfoRow>
-            <InfoRowLeft>
-              <InfoRowIcon>
-                <CreditCard size={13} />
-              </InfoRowIcon>
-              <InfoRowLabel>User ID</InfoRowLabel>
-            </InfoRowLeft>
-            <UidField type="button" onClick={onCopyUid} title="Copy user ID">
-              <span>{targetUser.uid}</span>
-              <CopyIcon>
-                <Copy size={10} />
-              </CopyIcon>
-            </UidField>
-          </InfoRow>
-        </AccordionContent>
-      )}
+      <SectionTitle>Account Details</SectionTitle>
+      <InfoRow>
+        <InfoRowLeft>
+          <InfoRowIcon>
+            <Calendar size={13} />
+          </InfoRowIcon>
+          <InfoRowLabel>Joined</InfoRowLabel>
+        </InfoRowLeft>
+        <InfoRowValue>{formatDate(targetUser.createdAt)}</InfoRowValue>
+      </InfoRow>
+      <InfoRow>
+        <InfoRowLeft>
+          <InfoRowIcon>
+            <LogIn size={13} />
+          </InfoRowIcon>
+          <InfoRowLabel>Last login</InfoRowLabel>
+        </InfoRowLeft>
+        <InfoRowValue>{formatDate(targetUser.lastLoginAt)}</InfoRowValue>
+      </InfoRow>
+      <InfoRow>
+        <InfoRowLeft>
+          <InfoRowIcon>
+            <CreditCard size={13} />
+          </InfoRowIcon>
+          <InfoRowLabel>User ID</InfoRowLabel>
+        </InfoRowLeft>
+        <UidField type="button" onClick={onCopyUid} title="Copy user ID">
+          <span>{targetUser.uid}</span>
+          <CopyIcon>
+            <Copy size={10} />
+          </CopyIcon>
+        </UidField>
+      </InfoRow>
     </DetailSection>
   );
 }

@@ -13,6 +13,13 @@ import UserInfoSection from './UserInfoSection';
 import UserActionsSection from './UserActionsSection';
 import UserEditSection from './UserEditSection';
 
+const BodyColumns = styled.div`
+  @media (min-width: 769px) {
+    display: flex;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+`;
+
 const BackButton = styled.button`
   display: inline-flex;
   align-items: center;
@@ -127,7 +134,7 @@ export default function UserDetail({
             }}
           />
         ) : (
-          <>
+          <BodyColumns>
             <UserInfoSection
               targetUser={targetUser}
               onCopyUid={handleCopyUid}
@@ -141,7 +148,7 @@ export default function UserDetail({
                 onDelete={() => setDeleteDialog(true)}
               />
             )}
-          </>
+          </BodyColumns>
         )}
       </SectionCard>
 

@@ -64,14 +64,17 @@ const DesktopLayout = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
+
+  @media (min-width: 769px) {
+    flex: 1;
+  }
 `;
 
 const DesktopSection = styled.div`
-  padding: 12px 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
 `;
 
 const ActionRow = styled.button`
@@ -79,31 +82,32 @@ const ActionRow = styled.button`
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
   border-radius: ${(p) => p.theme.borderRadius.s1};
   cursor: pointer;
   text-align: left;
   font-family: inherit;
-  transition:
-    background ${(p) => p.theme.transitions.fast},
-    border-color ${(p) => p.theme.transitions.fast};
+  transition: background ${(p) => p.theme.transitions.fast};
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.12);
   }
 `;
 
 const DestructiveActionRow = styled(ActionRow)`
-  border-color: rgba(239, 68, 68, 0.15);
-  background: rgba(239, 68, 68, 0.03);
+  margin-top: 4px;
 
   &:hover {
     background: rgba(239, 68, 68, 0.07);
-    border-color: rgba(239, 68, 68, 0.28);
   }
+`;
+
+const DesktopDivider = styled.div`
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 4px 12px;
 `;
 
 /* ── Mobile layout ────────────────────────────────────────── */
@@ -270,6 +274,7 @@ export default function UserActionsSection({
             </ActionChevron>
           </ActionRow>
 
+          <DesktopDivider />
           <DestructiveActionRow onClick={onDelete}>
             <ActionIconWrap $variant="danger">
               <Trash2 size={16} />
