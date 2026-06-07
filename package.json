@@ -1,6 +1,6 @@
 {
   "name": "transpiled-web-template",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "description": "Transpiled web template — Vite + React starter with full toolchain",
   "license": "MIT",
