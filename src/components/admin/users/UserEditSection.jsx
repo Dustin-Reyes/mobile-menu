@@ -164,7 +164,7 @@ export default function UserEditSection({
       <FormActions>
         <Button
           type="button"
-          variant="secondary"
+          variant="outline"
           onClick={onCancel}
           disabled={saving}
         >
