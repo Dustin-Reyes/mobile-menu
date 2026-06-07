@@ -224,7 +224,7 @@ const StrengthLabel = styled.span`
 
 const CheckboxRow = styled.label`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.02);
