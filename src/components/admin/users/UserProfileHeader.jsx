@@ -170,6 +170,11 @@ export default function UserProfileHeader({
   onEdit,
 }) {
   const isGoogle = targetUser.providers?.includes('google.com');
+  const displayName = targetUser.displayName
+    ? targetUser.displayName.length > 15
+      ? `${targetUser.displayName.slice(0, 15)}…`
+      : targetUser.displayName
+    : null;
 
   return (
     <DetailProfile>
@@ -198,8 +203,8 @@ export default function UserProfileHeader({
 
         <DetailInfo>
           <NameRow>
-            {targetUser.displayName ? (
-              <NameDisplay>{targetUser.displayName}</NameDisplay>
+            {displayName ? (
+              <NameDisplay>{displayName}</NameDisplay>
             ) : (
               <NamePlaceholder>No display name</NamePlaceholder>
             )}
