@@ -83,7 +83,8 @@ export function AuthProvider({ children }) {
     const current = auth.currentUser;
     if (current) {
       await current.reload();
-      setUser({ ...auth.currentUser });
+      setUser(null);
+      setUser(auth.currentUser);
     }
   }, []);
 
