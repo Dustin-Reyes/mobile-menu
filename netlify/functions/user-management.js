@@ -34,6 +34,19 @@ function getAdminApp() {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const ALLOWED_ROLES = ['admin', 'site_manager', 'content_manager'];
+const ROLE_LEVELS = { admin: 0, site_manager: 1, content_manager: 2 };
+
+// Returns an error response if callerRole cannot act on the target uid, else null
+async function checkHierarchy(adminAuth, callerRole, targetUid) {
+  const targetRecord = await adminAuth.getUser(targetUid);
+  const targetRole = targetRecord.customClaims?.role ?? null;
+  const callerLevel = ROLE_LEVELS[callerRole] ?? -1;
+  const targetLevel = ROLE_LEVELS[targetRole] ?? 99;
+  if (callerLevel >= targetLevel) {
+    return err(403, 'You do not have permission to act on this user');
+  }
+  return null;
+}
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -126,38 +139,60 @@ async function updateRole(adminAuth, body, callerRole) {
       `Invalid role. Must be one of: ${ALLOWED_ROLES.join(', ')}`,
     );
   }
-  if (callerRole === 'site_manager' && role === 'admin') {
-    return err(403, 'Site managers cannot assign the admin role');
+  // Cannot act on a user above or at your own level
+  const hierarchyErr = await checkHierarchy(adminAuth, callerRole, uid);
+  if (hierarchyErr) return hierarchyErr;
+  // Cannot assign a role at or above your own level
+  const callerLevel = ROLE_LEVELS[callerRole] ?? -1;
+  const newRoleLevel = ROLE_LEVELS[role] ?? 99;
+  if (newRoleLevel <= callerLevel) {
+    return err(403, 'You cannot assign a role equal to or above your own');
   }
 
   await adminAuth.setCustomUserClaims(uid, { role });
   return json(200, { user: formatUser(await adminAuth.getUser(uid)) });
 }
 
-async function deleteUser(adminAuth, body) {
+async function deleteUser(adminAuth, body, callerRole) {
   const { uid } = body;
   if (!uid) return err(400, 'uid is required');
+  const hierarchyErr = await checkHierarchy(adminAuth, callerRole, uid);
+  if (hierarchyErr) return hierarchyErr;
   await adminAuth.deleteUser(uid);
   return json(200, { deleted: uid });
 }
 
-async function resetPassword(adminAuth, body) {
+async function resetPassword(adminAuth, body, callerRole) {
   const { email } = body;
   if (!email) return err(400, 'email is required');
+  const userRecord = await adminAuth.getUserByEmail(email);
+  const hierarchyErr = await checkHierarchy(
+    adminAuth,
+    callerRole,
+    userRecord.uid,
+  );
+  if (hierarchyErr) return hierarchyErr;
   const link = await adminAuth.generatePasswordResetLink(email);
   return json(200, { resetLink: link });
 }
 
-async function setDisabled(adminAuth, body, disabled) {
+async function setDisabled(adminAuth, body, disabled, callerRole) {
   const { uid } = body;
   if (!uid) return err(400, 'uid is required');
+  const hierarchyErr = await checkHierarchy(adminAuth, callerRole, uid);
+  if (hierarchyErr) return hierarchyErr;
   await adminAuth.updateUser(uid, { disabled });
   return json(200, { user: formatUser(await adminAuth.getUser(uid)) });
 }
 
-async function updateProfile(adminAuth, body) {
+async function updateProfile(adminAuth, body, callerRole, callerUid) {
   const { uid, displayName } = body;
   if (!uid) return err(400, 'uid is required');
+  // Allow self-edit; otherwise enforce hierarchy
+  if (uid !== callerUid) {
+    const hierarchyErr = await checkHierarchy(adminAuth, callerRole, uid);
+    if (hierarchyErr) return hierarchyErr;
+  }
   const updates = {};
   if (displayName !== undefined) updates.displayName = displayName || null;
   await adminAuth.updateUser(uid, updates);
@@ -207,15 +242,15 @@ export const handler = async (event) => {
       case 'update-role':
         return await updateRole(adminAuth, body, callerRole);
       case 'delete':
-        return await deleteUser(adminAuth, body);
+        return await deleteUser(adminAuth, body, callerRole);
       case 'reset-password':
-        return await resetPassword(adminAuth, body);
+        return await resetPassword(adminAuth, body, callerRole);
       case 'disable':
-        return await setDisabled(adminAuth, body, true);
+        return await setDisabled(adminAuth, body, true, callerRole);
       case 'enable':
-        return await setDisabled(adminAuth, body, false);
+        return await setDisabled(adminAuth, body, false, callerRole);
       case 'update-profile':
-        return await updateProfile(adminAuth, body);
+        return await updateProfile(adminAuth, body, callerRole, caller.uid);
       default:
         return err(400, `Unknown action: ${action}`);
     }

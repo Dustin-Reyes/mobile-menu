@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { ChevronLeft } from 'lucide-react';
 import { useAuth } from 'context/AuthContext';
 import { toast } from '@/utils/toast';
-import { canManageUsers } from 'utils/roleHelpers';
+import { canManageUsers, canActOnUser } from 'utils/roleHelpers';
 import { callUserManagement } from 'utils/admin/userHelpers';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { SectionCard } from '../shared/SectionCard';
@@ -58,7 +58,8 @@ export default function UserDetail({
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [resetDialog, setResetDialog] = useState(false);
 
-  const canEdit = canManageUsers(callerRole);
+  const canEdit =
+    canManageUsers(callerRole) && canActOnUser(callerRole, targetUser.role);
 
   const handleToggleDisabled = useCallback(async () => {
     try {
