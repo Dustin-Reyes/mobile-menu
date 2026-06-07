@@ -293,7 +293,7 @@ export default function ProfileTab() {
   }, [user]);
 
   const initials = getUserInitials(user?.email);
-  const displayName = getUserDisplayName(user?.email);
+  const displayName = user?.displayName || getUserDisplayName(user?.email);
   const roleLabel = userRole ? ROLE_LABELS[userRole] : null;
 
   return (
