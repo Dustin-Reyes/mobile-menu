@@ -44,6 +44,7 @@ const TabContent = styled('div', {
 })`
   flex: 1;
   overflow-y: ${(p) => (p.flush ? 'hidden' : 'auto')};
+  overflow-x: hidden;
   padding: ${(p) => (p.flush ? '0' : '60px 20px 16px')};
   display: flex;
   flex-direction: column;
