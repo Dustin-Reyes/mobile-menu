@@ -102,7 +102,7 @@ export default function Sidebar({
   onPageChange,
   userRole,
 }) {
-  const pagesOpen = activeTab === 'pages';
+  const pagesOpen = activeTab === 'content';
   const pages = useMemo(() => Object.entries(pageSchema), []);
   const visibleGroups = useMemo(
     () => getVisibleTabGroups(userRole),
@@ -128,14 +128,14 @@ export default function Sidebar({
                 >
                   <Icon size={14} />
                   {tab.label}
-                  {tab.id === 'pages' && (
+                  {tab.id === 'content' && (
                     <ChevronWrap open={pagesOpen}>
                       <ChevronDown size={12} />
                     </ChevronWrap>
                   )}
                 </SidebarItem>
 
-                {tab.id === 'pages' && pagesOpen && (
+                {tab.id === 'content' && pagesOpen && (
                   <PageSubList>
                     {pages.map(([pageId, page]) => (
                       <PageSubItem
@@ -143,7 +143,7 @@ export default function Sidebar({
                         active={selectedPage === pageId}
                         onClick={() => {
                           onPageChange(pageId);
-                          onTabChange('pages');
+                          onTabChange('content');
                         }}
                       >
                         {page.label}
