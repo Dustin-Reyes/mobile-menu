@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import * as Sentry from '@sentry/react';
+import { browserTracingIntegration } from '@sentry/react';
+import PROJECT_CONFIG from 'config/project';
 import '@fontsource/inter/latin-400.css';
 import '@fontsource/inter/latin-500.css';
 import '@fontsource/inter/latin-600.css';
@@ -23,6 +25,11 @@ Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
   environment: import.meta.env.VITE_APP_ENV || 'development',
   enabled: !!import.meta.env.VITE_SENTRY_DSN,
+  release: __APP_VERSION__,
+  ...(PROJECT_CONFIG.features.performanceMonitoring && {
+    integrations: [browserTracingIntegration()],
+    tracesSampleRate: 0.2,
+  }),
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(

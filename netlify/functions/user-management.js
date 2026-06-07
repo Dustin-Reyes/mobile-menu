@@ -14,8 +14,17 @@
  * POST ?action=enable         ← { uid }
  */
 
+import * as Sentry from '@sentry/node';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+
+// ─── Sentry ───────────────────────────────────────────────────────────────────
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  enabled: !!process.env.SENTRY_DSN,
+  environment: process.env.NODE_ENV || 'production',
+});
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
@@ -221,6 +230,7 @@ export const handler = async (event) => {
   try {
     adminAuth = getAuth(getAdminApp());
   } catch (e) {
+    Sentry.captureException(e, { extra: { context: 'firebase-admin-init' } });
     return err(500, `Firebase Admin init failed: ${e.message}`);
   }
 
@@ -256,6 +266,9 @@ export const handler = async (event) => {
     }
   } catch (e) {
     const isFirebaseError = e.code?.startsWith('auth/');
+    if (!isFirebaseError) {
+      Sentry.captureException(e, { extra: { action, callerRole } });
+    }
     return err(isFirebaseError ? 400 : 500, e.message);
   }
 };

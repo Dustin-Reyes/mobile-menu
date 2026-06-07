@@ -12,6 +12,7 @@ import Button from 'components/ui/Button';
 import { PageHeader, PageTitle, PageSubtitle } from '../shared/PageHeader';
 import { SectionCard } from '../shared/SectionCard';
 import ConfirmDialog from '../shared/ConfirmDialog';
+import globalErrorHandler from 'utils/errorHandler';
 
 const motionProps = {
   initial: { opacity: 0, y: 10 },
@@ -282,6 +283,7 @@ export default function ProfileTab() {
         setEditingName(false);
       } catch (err) {
         toast.error(err.message || 'Failed to update name');
+        globalErrorHandler.reportError(err, { action: 'update-display-name' });
       } finally {
         setSaving(false);
       }
@@ -295,6 +297,7 @@ export default function ProfileTab() {
       toast.success('Password reset email sent');
     } catch (err) {
       toast.error(err.message || 'Failed to send reset email');
+      globalErrorHandler.reportError(err, { action: 'reset-password' });
     }
   }, [user]);
 

@@ -17,6 +17,7 @@ import { SectionCard } from '../shared/SectionCard';
 import { LoadingSpinner } from '../shared/LoadingSpinner';
 import CreateUserModal from './CreateUserModal';
 import UserDetail from './UserDetail';
+import globalErrorHandler from 'utils/errorHandler';
 
 // ─── Motion ───────────────────────────────────────────────────────────────────
 
@@ -247,6 +248,7 @@ export default function UsersTab() {
       return data.users;
     } catch (err) {
       setFetchError(err.message || 'Failed to load users');
+      globalErrorHandler.reportError(err, { action: 'load-users' });
       return null;
     } finally {
       setLoading(false);

@@ -5,6 +5,7 @@ import { toast } from '@/utils/toast';
 import { ROLE_LABELS, ROLES, getAssignableRoles } from 'utils/roleHelpers';
 import { callUserManagement } from 'utils/admin/userHelpers';
 import Button from 'components/ui/Button';
+import globalErrorHandler from 'utils/errorHandler';
 import {
   DialogRoot,
   DialogPortal,
@@ -104,6 +105,10 @@ export default function EditRoleModal({
       onOpenChange(false);
     } catch (err) {
       toast.error(err.message || 'Failed to update role');
+      globalErrorHandler.reportError(err, {
+        action: 'update-role',
+        uid: targetUser?.uid,
+      });
     } finally {
       setSaving(false);
     }

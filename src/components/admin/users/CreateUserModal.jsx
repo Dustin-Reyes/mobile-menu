@@ -7,6 +7,7 @@ import { ROLE_LABELS, ROLES, getAssignableRoles } from 'utils/roleHelpers';
 import { getPasswordStrength } from 'utils/passwordStrength';
 import { callUserManagement } from 'utils/admin/userHelpers';
 import Button from 'components/ui/Button';
+import globalErrorHandler from 'utils/errorHandler';
 import {
   DialogRoot,
   DialogPortal,
@@ -355,6 +356,7 @@ export default function CreateUserModal({
       });
     } catch (err) {
       toast.error(err.message || 'Failed to create user');
+      globalErrorHandler.reportError(err, { action: 'create-user' });
     } finally {
       setSaving(false);
     }
