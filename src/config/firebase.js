@@ -10,6 +10,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
+import globalErrorHandler from 'utils/errorHandler';
 
 // Firebase configuration from environment variables
 const firebaseConfig = {
@@ -44,11 +45,15 @@ if (isFirebaseConfigured()) {
     storage = getStorage(app);
     auth = getAuth(app);
 
-    console.log('🔥 Firebase CMS initialized successfully');
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log('🔥 Firebase CMS initialized successfully');
+    }
   } catch (error) {
-    console.error('🔥 Firebase initialization failed:', error);
+    globalErrorHandler.reportError(error, { context: 'firebase-init' });
   }
-} else {
+} else if (import.meta.env.DEV) {
+  // eslint-disable-next-line no-console
   console.log('📝 Firebase CMS disabled - using local content');
 }
 

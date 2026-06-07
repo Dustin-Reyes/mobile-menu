@@ -12,6 +12,7 @@ import HeaderLogo from './HeaderLogo';
 import { SECTIONS_CONFIG } from 'config/sections';
 import { ADMIN_TABS } from 'components/admin/tabs/adminTabsConfig';
 import { getUserInitials, getUserDisplayName } from 'utils/userHelpers';
+import globalErrorHandler from 'utils/errorHandler';
 
 // ─── Shell ────────────────────────────────────────────────────────────────────
 
@@ -309,8 +310,7 @@ export default function MobileMenu() {
       await logout();
       navigate('/');
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to sign out:', error);
+      globalErrorHandler.reportError(error, { action: 'sign-out' });
     }
   };
 

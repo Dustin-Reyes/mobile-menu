@@ -20,6 +20,7 @@ import {
 } from 'components/ui/DropdownMenu';
 import { getUserInitials, getUserDisplayName } from 'utils/userHelpers';
 import { ROLE_LABELS } from 'utils/roleHelpers';
+import globalErrorHandler from 'utils/errorHandler';
 
 // ─── Trigger ─────────────────────────────────────────────────────────────────
 
@@ -217,8 +218,7 @@ export default function UserMenu() {
       await logout();
       navigate('/');
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to sign out:', error);
+      globalErrorHandler.reportError(error, { action: 'sign-out' });
     }
   };
 
