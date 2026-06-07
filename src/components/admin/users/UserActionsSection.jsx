@@ -1,11 +1,4 @@
-import {
-  ShieldCheck,
-  KeyRound,
-  Ban,
-  CircleCheck,
-  Trash2,
-  ChevronRight,
-} from 'lucide-react';
+import { KeyRound, Ban, CircleCheck, Trash2, ChevronRight } from 'lucide-react';
 import styled from '@emotion/styled';
 import { SwitchRoot, SwitchThumb } from 'components/ui/Switch';
 
@@ -52,62 +45,69 @@ const ActionSubtitle = styled.div`
   margin-top: 3px;
 `;
 
-const ActionChevron = styled.div`
-  color: rgba(255, 255, 255, 0.2);
-  flex-shrink: 0;
-  display: flex;
-`;
-
 /* ── Desktop layout ───────────────────────────────────────── */
 
 const DesktopLayout = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
-
-  @media (min-width: 769px) {
-    flex: 1;
-  }
 `;
 
-const DesktopSection = styled.div`
-  padding: 8px 12px;
+const DesktopActionBar = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: stretch;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 `;
 
-const ActionRow = styled.button`
+const BarItem = styled.button`
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 10px 12px;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 12px;
   background: transparent;
   border: none;
-  border-radius: ${(p) => p.theme.borderRadius.s1};
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
   cursor: pointer;
-  text-align: left;
   font-family: inherit;
-  transition: background ${(p) => p.theme.transitions.fast};
+  color: rgba(255, 255, 255, 0.55);
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-weight: ${(p) => p.theme.typography.fontWeights.medium};
+  transition:
+    background ${(p) => p.theme.transitions.fast},
+    color ${(p) => p.theme.transitions.fast};
+
+  &:last-child {
+    border-right: none;
+  }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.85);
   }
 `;
 
-const DestructiveActionRow = styled(ActionRow)`
-  margin-top: 4px;
+const DestructiveBarItem = styled(BarItem)`
+  color: rgba(248, 113, 113, 0.6);
 
   &:hover {
-    background: rgba(239, 68, 68, 0.07);
+    background: rgba(239, 68, 68, 0.06);
+    color: #f87171;
   }
 `;
 
-const DesktopDivider = styled.div`
-  height: 1px;
-  background: rgba(255, 255, 255, 0.05);
-  margin: 4px 12px;
+const BarToggleItem = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 12px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-weight: ${(p) => p.theme.typography.fontWeights.medium};
 `;
 
 /* ── Mobile layout ────────────────────────────────────────── */
@@ -210,7 +210,6 @@ const CompactSwitchThumb = styled(SwitchThumb)`
 
 export default function UserActionsSection({
   targetUser,
-  onEditRole,
   onResetPassword,
   onToggleDisabled,
   onDelete,
@@ -220,76 +219,30 @@ export default function UserActionsSection({
 
   return (
     <>
-      {/* Desktop: flat chevron rows */}
+      {/* Desktop: horizontal action bar */}
       <DesktopLayout>
-        <DesktopSection>
-          <ActionRow onClick={onEditRole}>
-            <ActionIconWrap $variant="primary">
-              <ShieldCheck size={16} />
-            </ActionIconWrap>
-            <ActionText>
-              <ActionTitle>Edit Role</ActionTitle>
-              <ActionSubtitle>
-                Update this user&apos;s role and permissions.
-              </ActionSubtitle>
-            </ActionText>
-            <ActionChevron>
-              <ChevronRight size={16} />
-            </ActionChevron>
-          </ActionRow>
-
+        <DesktopActionBar>
           {hasPassword && (
-            <ActionRow onClick={onResetPassword}>
-              <ActionIconWrap>
-                <KeyRound size={16} />
-              </ActionIconWrap>
-              <ActionText>
-                <ActionTitle>Reset Password</ActionTitle>
-                <ActionSubtitle>
-                  Send a password reset link to this user.
-                </ActionSubtitle>
-              </ActionText>
-              <ActionChevron>
-                <ChevronRight size={16} />
-              </ActionChevron>
-            </ActionRow>
+            <BarItem onClick={onResetPassword}>
+              <KeyRound size={15} />
+              Reset Password
+            </BarItem>
           )}
-
-          <ActionRow onClick={onToggleDisabled}>
-            <ActionIconWrap $variant={isActive ? 'warning' : 'success'}>
-              {isActive ? <Ban size={16} /> : <CircleCheck size={16} />}
-            </ActionIconWrap>
-            <ActionText>
-              <ActionTitle>
-                {isActive ? 'Disable Account' : 'Enable Account'}
-              </ActionTitle>
-              <ActionSubtitle>
-                {isActive
-                  ? "Temporarily disable this user's account."
-                  : "Restore access to this user's account."}
-              </ActionSubtitle>
-            </ActionText>
-            <ActionChevron>
-              <ChevronRight size={16} />
-            </ActionChevron>
-          </ActionRow>
-
-          <DesktopDivider />
-          <DestructiveActionRow onClick={onDelete}>
-            <ActionIconWrap $variant="danger">
-              <Trash2 size={16} />
-            </ActionIconWrap>
-            <ActionText>
-              <ActionTitle $danger>Delete User</ActionTitle>
-              <ActionSubtitle $danger>
-                Permanently delete this user and all data.
-              </ActionSubtitle>
-            </ActionText>
-            <ActionChevron>
-              <ChevronRight size={16} />
-            </ActionChevron>
-          </DestructiveActionRow>
-        </DesktopSection>
+          <BarToggleItem>
+            {isActive ? <Ban size={15} /> : <CircleCheck size={15} />}
+            {isActive ? 'Disable Account' : 'Enable Account'}
+            <CompactSwitch
+              checked={isActive}
+              onCheckedChange={() => onToggleDisabled()}
+            >
+              <CompactSwitchThumb />
+            </CompactSwitch>
+          </BarToggleItem>
+          <DestructiveBarItem onClick={onDelete}>
+            <Trash2 size={15} />
+            Delete User
+          </DestructiveBarItem>
+        </DesktopActionBar>
       </DesktopLayout>
 
       {/* Mobile: section labels + Send Link button + Account Status toggle */}
@@ -342,9 +295,15 @@ export default function UserActionsSection({
                 Permanently delete this user and all data.
               </ActionSubtitle>
             </ActionText>
-            <ActionChevron>
+            <span
+              style={{
+                color: 'rgba(255,255,255,0.2)',
+                display: 'flex',
+                flexShrink: 0,
+              }}
+            >
               <ChevronRight size={16} />
-            </ActionChevron>
+            </span>
           </MobileDestructiveCard>
         </MobileSection>
       </MobileLayout>

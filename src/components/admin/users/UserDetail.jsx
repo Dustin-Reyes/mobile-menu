@@ -9,16 +9,8 @@ import { callUserManagement } from 'utils/admin/userHelpers';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { SectionCard } from '../shared/SectionCard';
 import UserProfileHeader from './UserProfileHeader';
-import UserInfoSection from './UserInfoSection';
 import UserActionsSection from './UserActionsSection';
 import UserEditSection from './UserEditSection';
-
-const BodyColumns = styled.div`
-  @media (min-width: 769px) {
-    display: flex;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
-`;
 
 const BackButton = styled.button`
   display: inline-flex;
@@ -102,12 +94,6 @@ export default function UserDetail({
     }
   }, [user, targetUser.email]);
 
-  const handleCopyUid = useCallback(() => {
-    navigator.clipboard.writeText(targetUser.uid).then(() => {
-      toast.success('User ID copied');
-    });
-  }, [targetUser.uid]);
-
   return (
     <motion.div key="detail" {...motionProps}>
       <BackButton onClick={onBack}>
@@ -134,21 +120,16 @@ export default function UserDetail({
             }}
           />
         ) : (
-          <BodyColumns>
-            <UserInfoSection
-              targetUser={targetUser}
-              onCopyUid={handleCopyUid}
-            />
+          <>
             {canEdit && (
               <UserActionsSection
                 targetUser={targetUser}
-                onEditRole={() => setEditing(true)}
                 onResetPassword={() => setResetDialog(true)}
                 onToggleDisabled={handleToggleDisabled}
                 onDelete={() => setDeleteDialog(true)}
               />
             )}
-          </BodyColumns>
+          </>
         )}
       </SectionCard>
 
