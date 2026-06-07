@@ -52,7 +52,7 @@ const TabContent = styled('div', {
   width: 100%;
 
   @media (max-width: 768px) {
-    padding: ${(p) => (p.flush ? '0' : '16px 16px 16px')};
+    padding: ${(p) => (p.flush ? '0' : '24px 16px 16px')};
   }
 `;
 
