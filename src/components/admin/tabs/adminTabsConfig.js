@@ -43,9 +43,9 @@ export const ADMIN_TABS = [
     enabled: true,
   },
   {
-    id: 'pages',
-    label: 'Pages',
-    shortLabel: 'Pages',
+    id: 'content',
+    label: 'Content',
+    shortLabel: 'Content',
     icon: FileText,
     enabled: true,
   },
@@ -68,11 +68,11 @@ export const ADMIN_TABS = [
 // Visual groupings for the desktop sidebar (dividers rendered between groups).
 export const ADMIN_TAB_GROUPS = [
   ['dashboard', 'users', 'settings', 'profile'],
-  ['pages', 'posts', 'media'],
+  ['content', 'posts', 'media'],
 ];
 
 // Tabs surfaced in the mobile bottom bar (space constrained — Users omitted).
-export const BOTTOM_TAB_IDS = ['dashboard', 'pages', 'posts', 'media'];
+export const BOTTOM_TAB_IDS = ['dashboard', 'content', 'posts', 'media'];
 
 export const getAdminTab = (id) => ADMIN_TABS.find((tab) => tab.id === id);
 

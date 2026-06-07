@@ -10,7 +10,7 @@ import { pageSchema } from '../../../content/schema';
 import Sidebar from './Sidebar';
 import DashboardTab from '../tabs/DashboardTab';
 import SettingsTab from '../tabs/SettingsTab';
-import PagesTab from '../tabs/PagesTab';
+import ContentTab from '../tabs/ContentTab';
 import PostsTab from '../tabs/PostsTab';
 import MediaTab from '../tabs/MediaTab';
 import ProfileTab from '../tabs/ProfileTab';
@@ -109,7 +109,7 @@ export default function Dashboard() {
       />
 
       <MainContent>
-        <TabContent flush={activeTab === 'pages'}>
+        <TabContent flush={activeTab === 'content'}>
           <AnimatePresence mode="wait">
             {activeTab === 'dashboard' && (
               <DashboardTab
@@ -129,8 +129,8 @@ export default function Dashboard() {
               />
             )}
 
-            {activeTab === 'pages' && (
-              <PagesTab
+            {activeTab === 'content' && (
+              <ContentTab
                 selectedPage={selectedPage}
                 onPageChange={setSelectedPage}
               />
