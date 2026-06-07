@@ -1,10 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import styled from '@emotion/styled';
 import { useCMS, useSettings, usePosts } from 'hooks/useContent';
 import PROJECT_CONFIG from 'config/project';
 import { useAuth } from 'context/AuthContext';
+import { callUserManagement } from 'utils/admin/userHelpers';
 import { pageSchema } from '../../../content/schema';
 import Sidebar from './Sidebar';
 import BottomTabBar from './BottomTabBar';
@@ -59,7 +60,8 @@ const TabContent = styled('div', {
 
 export default function Dashboard() {
   const location = useLocation();
-  const { userRole } = useAuth();
+  const { user, userRole } = useAuth();
+  const [userCount, setUserCount] = useState(null);
   const [activeTab, setActiveTab] = useState(
     location.state?.tab || 'dashboard',
   );
@@ -77,13 +79,28 @@ export default function Dashboard() {
   const { settings, updateSettings } = useSettings('site');
   const { posts } = usePosts();
 
+  const fetchUserCount = useCallback(async () => {
+    if (!user) return;
+    try {
+      const data = await callUserManagement('list', user);
+      setUserCount(data.users?.length ?? 0);
+    } catch {
+      setUserCount(0);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchUserCount();
+  }, [fetchUserCount]);
+
   const calculatedStats = useMemo(
     () => ({
       pages: stats?.pages || 1,
       posts: posts?.length || 0,
       cacheSize: stats?.cacheSize || 0,
+      users: userCount,
     }),
-    [stats, posts],
+    [stats, posts, userCount],
   );
 
   return (
