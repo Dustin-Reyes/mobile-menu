@@ -403,9 +403,6 @@ export default function MobileMenu() {
                   onClick={() => handleNavigate('/admin', { tab: 'dashboard' })}
                 >
                   <TwoLineLabel>{t('nav.goToAdminDashboard')}</TwoLineLabel>
-                  <TwoLineSubtitle>
-                    {t('nav.goToAdminDashboardSubtitle')}
-                  </TwoLineSubtitle>
                 </TwoLineItem>
               )}
 
