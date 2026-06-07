@@ -17,10 +17,24 @@ export const ALL_ROLES = [
   ROLES.CONTENT_MANAGER,
 ];
 
+// Numeric authority level — lower number = higher authority
+export const ROLE_LEVELS = {
+  [ROLES.ADMIN]: 0,
+  [ROLES.SITE_MANAGER]: 1,
+  [ROLES.CONTENT_MANAGER]: 2,
+};
+
 export const canManageUsers = (role) =>
   role === ROLES.ADMIN || role === ROLES.SITE_MANAGER;
 
 export const canEditContent = (role) => !!role;
+
+// Returns true if callerRole has authority strictly above targetRole
+export const canActOnUser = (callerRole, targetRole) => {
+  const callerLevel = ROLE_LEVELS[callerRole] ?? 99;
+  const targetLevel = ROLE_LEVELS[targetRole] ?? 99;
+  return callerLevel < targetLevel;
+};
 
 // Returns the role keys the current user is allowed to assign
 export const getAssignableRoles = (myRole) => {
