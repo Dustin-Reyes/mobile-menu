@@ -346,6 +346,8 @@ const Footer = styled.div`
 
   @media (max-width: 768px) {
     left: 0;
+    padding: 12px 16px;
+    gap: 8px;
   }
 `;
 
@@ -358,6 +360,10 @@ const ChangeStatus = styled('div', {
   gap: 6px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: ${(p) => (p.dirty ? '#f59e0b' : 'rgba(255,255,255,0.3)')};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const DirtyDot = styled.div`
@@ -560,6 +566,7 @@ export default function PageEditor({ pageId }) {
             variant="ghost"
             onClick={handleCancel}
             disabled={!hasChanges || busy}
+            style={{ flex: '1 1 0', minWidth: 0 }}
           >
             Cancel
           </Button>
@@ -567,6 +574,7 @@ export default function PageEditor({ pageId }) {
             variant="primary"
             onClick={handleSave}
             disabled={!hasChanges || busy}
+            style={{ flex: '2 1 0', minWidth: 0 }}
           >
             Save Changes
           </Button>
