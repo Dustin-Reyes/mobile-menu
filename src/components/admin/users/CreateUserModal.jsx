@@ -354,6 +354,22 @@ export default function CreateUserModal({
           <FormContainer onSubmit={handleSubmit}>
             <FormRow>
               <FormGroup>
+                <FormLabel htmlFor="new-display-name">
+                  Display Name <OptionalLabel>optional</OptionalLabel>
+                </FormLabel>
+                <FormInput
+                  id="new-display-name"
+                  type="text"
+                  placeholder="Full name"
+                  value={form.displayName}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, displayName: e.target.value }))
+                  }
+                  autoComplete="off"
+                />
+              </FormGroup>
+
+              <FormGroup>
                 <FormLabel htmlFor="new-email">
                   Email <OptionalLabel>required</OptionalLabel>
                 </FormLabel>
@@ -366,22 +382,6 @@ export default function CreateUserModal({
                     setForm((f) => ({ ...f, email: e.target.value }))
                   }
                   required
-                  autoComplete="off"
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <FormLabel htmlFor="new-display-name">
-                  Display Name <OptionalLabel>optional</OptionalLabel>
-                </FormLabel>
-                <FormInput
-                  id="new-display-name"
-                  type="text"
-                  placeholder="Full name"
-                  value={form.displayName}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, displayName: e.target.value }))
-                  }
                   autoComplete="off"
                 />
               </FormGroup>
