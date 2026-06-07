@@ -1,5 +1,7 @@
 # transpiled-web-template
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/beb5cc8a-ecf1-4e88-b459-35c05c033229/deploy-status)](https://app.netlify.com/projects/transpiled-web-template/deploys)
+
 > Vite + React starter with the full TranspiledCode toolchain. Clone it, run `yarn setup`, and start building.
 
 ## Getting Started
@@ -83,6 +85,7 @@ docs/           — Project documentation
 ## Template Scaffolding
 
 `yarn cleanup` permanently removes:
+
 - The component demo page (`/demo` route)
 - `src/dev/demo/` component showcase
 - `src/components/DemoWidget.jsx`, `ErrorTrigger.jsx`, `CodeBlock.jsx`

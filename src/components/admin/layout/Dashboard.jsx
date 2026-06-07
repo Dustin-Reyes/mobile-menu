@@ -118,6 +118,7 @@ export default function Dashboard() {
                 settings={settings}
                 postsEnabled={PROJECT_CONFIG.features.posts}
                 onTabChange={setActiveTab}
+                loading={userCount === null}
               />
             )}
 

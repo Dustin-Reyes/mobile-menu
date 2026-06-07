@@ -34,6 +34,7 @@ import { dirname, join, resolve } from 'path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const isDryRun = process.argv.includes('--dry-run');
+const isForce = process.argv.includes('--force');
 
 // ─── Load .env ────────────────────────────────────────────────────────────────
 
@@ -141,7 +142,12 @@ async function upsert(collection, docId, data) {
     );
     return;
   }
-  await db.collection(collection).doc(docId).set(data, { merge: true });
+  if (isForce) {
+    // Full overwrite — clears stale fields not present in seed data
+    await db.collection(collection).doc(docId).set(data);
+  } else {
+    await db.collection(collection).doc(docId).set(data, { merge: true });
+  }
   console.log(`  ✓ ${collection}/${docId}`);
 }
 
@@ -184,5 +190,7 @@ for (const [menuId, items] of Object.entries(navigation)) {
 console.log(
   isDryRun
     ? '\n✅  Dry run complete — no data was written.'
-    : '\n✅  Seed complete. Open /admin to manage content.',
+    : isForce
+      ? '\n✅  Force seed complete — all documents fully overwritten. Open /admin to manage content.'
+      : '\n✅  Seed complete. Open /admin to manage content.',
 );

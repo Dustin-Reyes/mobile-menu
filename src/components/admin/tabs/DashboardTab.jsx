@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { Settings, Image } from 'lucide-react';
+import { keyframes } from '@emotion/react';
 
 const SiteIdentityCard = styled.div`
   display: flex;
@@ -81,6 +82,7 @@ const ContentCardCount = styled.div`
   color: ${(p) => p.theme.colors.primary};
   line-height: 1;
   margin-bottom: 6px;
+  min-width: 30px;
 `;
 
 const ContentCardIcon = styled.div`
@@ -134,12 +136,30 @@ const motionProps = {
   transition: { duration: 0.2 },
 };
 
+const shimmer = keyframes`
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+`;
+
+const Skeleton = styled.div`
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: ${shimmer} 1.5s infinite;
+  border-radius: 4px;
+`;
+
 export default function DashboardTab({
   isCMSEnabled,
   stats,
   settings,
   postsEnabled,
   onTabChange,
+  loading = false,
 }) {
   const siteName = settings?.title || 'Your Site';
   const siteUrl = settings?.url || '';
@@ -171,14 +191,26 @@ export default function DashboardTab({
 
       <ContentCardsGrid>
         <ContentCard onClick={() => onTabChange('pages')}>
-          <ContentCardCount>{stats.pages}</ContentCardCount>
+          {loading ? (
+            <Skeleton
+              style={{ width: '30px', height: '32px', marginBottom: '6px' }}
+            />
+          ) : (
+            <ContentCardCount>{stats.pages}</ContentCardCount>
+          )}
           <ContentCardLabel>Pages</ContentCardLabel>
           <ContentCardHint>Manage →</ContentCardHint>
         </ContentCard>
 
         {postsEnabled && (
           <ContentCard onClick={() => onTabChange('posts')}>
-            <ContentCardCount>{stats.posts}</ContentCardCount>
+            {loading ? (
+              <Skeleton
+                style={{ width: '30px', height: '32px', marginBottom: '6px' }}
+              />
+            ) : (
+              <ContentCardCount>{stats.posts}</ContentCardCount>
+            )}
             <ContentCardLabel>Posts</ContentCardLabel>
             <ContentCardHint>Manage →</ContentCardHint>
           </ContentCard>
@@ -193,7 +225,13 @@ export default function DashboardTab({
         </ContentCard>
 
         <ContentCard onClick={() => onTabChange('users')}>
-          <ContentCardCount>{stats.users || 0}</ContentCardCount>
+          {loading ? (
+            <Skeleton
+              style={{ width: '30px', height: '32px', marginBottom: '6px' }}
+            />
+          ) : (
+            <ContentCardCount>{stats.users || 0}</ContentCardCount>
+          )}
           <ContentCardLabel>Users</ContentCardLabel>
           <ContentCardHint>Manage →</ContentCardHint>
         </ContentCard>
