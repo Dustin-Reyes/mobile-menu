@@ -538,8 +538,14 @@ class ContentService {
       try {
         const doc = await fetchFromFirebase('pages', pageId);
         return !!(doc && doc[locale]);
-      } catch {
+      } catch (error) {
         // Fall through to local check on Firebase error
+        globalErrorHandler.addBreadcrumb({
+          category: 'cms',
+          message: `hasLocaleContent Firebase fallback: ${pageId}/${locale}`,
+          level: 'info',
+          data: { pageId, locale, error: error.message },
+        });
       }
     }
     return !!localContent.pages[pageId]?.[locale];

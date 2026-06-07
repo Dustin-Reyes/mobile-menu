@@ -57,6 +57,7 @@ export default [
         crypto: 'readonly',
         global: 'readonly',
         import: 'readonly',
+        __APP_VERSION__: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: {

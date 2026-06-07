@@ -11,6 +11,7 @@ import { SectionCard } from '../shared/SectionCard';
 import UserProfileHeader from './UserProfileHeader';
 import UserActionsSection from './UserActionsSection';
 import UserEditSection from './UserEditSection';
+import globalErrorHandler from 'utils/errorHandler';
 
 const BackButton = styled.button`
   display: inline-flex;
@@ -71,6 +72,10 @@ export default function UserDetail({
       onUpdated();
     } catch (err) {
       toast.error(err.message || 'Failed to update account status');
+      globalErrorHandler.reportError(err, {
+        action: 'toggle-disabled',
+        uid: targetUser.uid,
+      });
     }
   }, [targetUser.disabled, user, targetUser.uid, onUpdated]);
 
@@ -81,6 +86,10 @@ export default function UserDetail({
       onDeleted();
     } catch (err) {
       toast.error(err.message || 'Failed to delete user');
+      globalErrorHandler.reportError(err, {
+        action: 'delete-user',
+        uid: targetUser.uid,
+      });
     }
   }, [user, targetUser.uid, onDeleted]);
 
@@ -92,8 +101,12 @@ export default function UserDetail({
       toast.success('Password reset email sent');
     } catch (err) {
       toast.error(err.message || 'Failed to send reset email');
+      globalErrorHandler.reportError(err, {
+        action: 'reset-password',
+        uid: targetUser.uid,
+      });
     }
-  }, [user, targetUser.email]);
+  }, [user, targetUser.email, targetUser.uid]);
 
   return (
     <motion.div key="detail" {...motionProps}>
