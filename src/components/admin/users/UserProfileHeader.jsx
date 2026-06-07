@@ -1,4 +1,4 @@
-import { ShieldCheck, Check, X, KeyRound } from 'lucide-react';
+import { ShieldCheck, KeyRound } from 'lucide-react';
 import styled from '@emotion/styled';
 import { ROLE_LABELS } from 'utils/roleHelpers';
 import { getUserInitials } from 'utils/userHelpers';
@@ -107,7 +107,6 @@ const DetailInfo = styled.div`
 const NameRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
 `;
 
 const NameDisplay = styled.span`
@@ -124,32 +123,6 @@ const NamePlaceholder = styled(NameDisplay)`
   color: rgba(255, 255, 255, 0.2);
   font-style: italic;
   font-weight: ${(p) => p.theme.typography.fontWeights.normal};
-`;
-
-const NameEditForm = styled.form`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-`;
-
-const IconButton = styled.button`
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  border-radius: ${(p) => p.theme.borderRadius.s1};
-  flex-shrink: 0;
-  transition:
-    background ${(p) => p.theme.transitions.fast},
-    color ${(p) => p.theme.transitions.fast};
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: ${(p) => (p.$danger ? '#f87171' : 'rgba(255,255,255,0.8)')};
-  }
 `;
 
 const DetailEmail = styled.div`
@@ -190,30 +163,18 @@ const AvatarImage = styled.img`
   object-fit: cover;
 `;
 
-const NameEditInput = styled.input`
-  flex: 1;
-  min-width: 0;
-  padding: 4px 10px;
-  font-size: 0.875rem;
-`;
-
 export default function UserProfileHeader({
   targetUser,
   canEdit,
-  editingName,
-  displayName,
-  savingName,
-  onEditName,
-  onSaveName,
-  onCancelEdit,
-  onDisplayNameChange,
+  editing,
+  onEdit,
 }) {
   const isGoogle = targetUser.providers?.includes('google.com');
 
   return (
     <DetailProfile>
-      {canEdit && !editingName && (
-        <EditButton type="button" onClick={onEditName}>
+      {canEdit && !editing && (
+        <EditButton type="button" onClick={onEdit}>
           Edit
         </EditButton>
       )}
@@ -236,35 +197,13 @@ export default function UserProfileHeader({
         </AvatarContainer>
 
         <DetailInfo>
-          {editingName ? (
-            <NameEditForm onSubmit={onSaveName}>
-              <NameEditInput
-                value={displayName}
-                onChange={onDisplayNameChange}
-                placeholder="Display name"
-                autoFocus
-              />
-              <IconButton type="submit" disabled={savingName} title="Save">
-                <Check size={14} />
-              </IconButton>
-              <IconButton
-                type="button"
-                $danger
-                onClick={onCancelEdit}
-                title="Cancel"
-              >
-                <X size={14} />
-              </IconButton>
-            </NameEditForm>
-          ) : (
-            <NameRow>
-              {targetUser.displayName ? (
-                <NameDisplay>{targetUser.displayName}</NameDisplay>
-              ) : (
-                <NamePlaceholder>No display name</NamePlaceholder>
-              )}
-            </NameRow>
-          )}
+          <NameRow>
+            {targetUser.displayName ? (
+              <NameDisplay>{targetUser.displayName}</NameDisplay>
+            ) : (
+              <NamePlaceholder>No display name</NamePlaceholder>
+            )}
+          </NameRow>
           <DetailEmail>{targetUser.email}</DetailEmail>
         </DetailInfo>
       </ProfileTopRow>

@@ -7,11 +7,11 @@ import { toast } from '@/utils/toast';
 import { canManageUsers } from 'utils/roleHelpers';
 import { callUserManagement } from 'utils/admin/userHelpers';
 import ConfirmDialog from '../shared/ConfirmDialog';
-import EditRoleModal from './EditRoleModal';
 import { SectionCard } from '../shared/SectionCard';
 import UserProfileHeader from './UserProfileHeader';
 import UserInfoSection from './UserInfoSection';
 import UserActionsSection from './UserActionsSection';
+import UserEditSection from './UserEditSection';
 
 const BackButton = styled.button`
   display: inline-flex;
@@ -55,40 +55,11 @@ export default function UserDetail({
   onDeleted,
 }) {
   const { user } = useAuth();
-  const [editingName, setEditingName] = useState(false);
-  const [displayName, setDisplayName] = useState(targetUser.displayName ?? '');
-  const [savingName, setSavingName] = useState(false);
-  const [showEditRole, setShowEditRole] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [resetDialog, setResetDialog] = useState(false);
 
   const canEdit = canManageUsers(callerRole);
-
-  const handleSaveName = useCallback(
-    async (e) => {
-      e.preventDefault();
-      setSavingName(true);
-      try {
-        await callUserManagement('update-profile', user, {
-          uid: targetUser.uid,
-          displayName: displayName.trim() || null,
-        });
-        toast.success('Display name updated');
-        setEditingName(false);
-        onUpdated();
-      } catch (err) {
-        toast.error(err.message || 'Failed to update display name');
-      } finally {
-        setSavingName(false);
-      }
-    },
-    [user, targetUser.uid, displayName, onUpdated],
-  );
-
-  const handleCancelEdit = useCallback(() => {
-    setDisplayName(targetUser.displayName ?? '');
-    setEditingName(false);
-  }, [targetUser.displayName]);
 
   const handleToggleDisabled = useCallback(async () => {
     try {
@@ -130,14 +101,6 @@ export default function UserDetail({
     });
   }, [targetUser.uid]);
 
-  const handleEditName = useCallback(() => {
-    setEditingName(true);
-  }, []);
-
-  const handleDisplayNameChange = useCallback((e) => {
-    setDisplayName(e.target.value);
-  }, []);
-
   return (
     <motion.div key="detail" {...motionProps}>
       <BackButton onClick={onBack}>
@@ -149,35 +112,38 @@ export default function UserDetail({
         <UserProfileHeader
           targetUser={targetUser}
           canEdit={canEdit}
-          editingName={editingName}
-          displayName={displayName}
-          savingName={savingName}
-          onEditName={handleEditName}
-          onSaveName={handleSaveName}
-          onCancelEdit={handleCancelEdit}
-          onDisplayNameChange={handleDisplayNameChange}
+          editing={editing}
+          onEdit={() => setEditing(true)}
         />
 
-        <UserInfoSection targetUser={targetUser} onCopyUid={handleCopyUid} />
-
-        {canEdit && (
-          <UserActionsSection
+        {editing ? (
+          <UserEditSection
             targetUser={targetUser}
-            onEditRole={() => setShowEditRole(true)}
-            onResetPassword={() => setResetDialog(true)}
-            onToggleDisabled={handleToggleDisabled}
-            onDelete={() => setDeleteDialog(true)}
+            callerRole={callerRole}
+            onCancel={() => setEditing(false)}
+            onSaved={() => {
+              setEditing(false);
+              onUpdated();
+            }}
           />
+        ) : (
+          <>
+            <UserInfoSection
+              targetUser={targetUser}
+              onCopyUid={handleCopyUid}
+            />
+            {canEdit && (
+              <UserActionsSection
+                targetUser={targetUser}
+                onEditRole={() => setEditing(true)}
+                onResetPassword={() => setResetDialog(true)}
+                onToggleDisabled={handleToggleDisabled}
+                onDelete={() => setDeleteDialog(true)}
+              />
+            )}
+          </>
         )}
       </SectionCard>
-
-      <EditRoleModal
-        open={showEditRole}
-        onOpenChange={setShowEditRole}
-        targetUser={targetUser}
-        onUpdated={onUpdated}
-        callerRole={callerRole}
-      />
 
       <ConfirmDialog
         open={deleteDialog}
