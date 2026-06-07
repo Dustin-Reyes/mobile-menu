@@ -46,10 +46,13 @@ const Wrapper = styled.section`
   padding: 8rem 2rem 4rem;
   background-color: ${({ theme }) => theme.colors.background};
   background-image:
-    linear-gradient(${({ theme }) => theme.colors.border} 1px, transparent 1px),
+    linear-gradient(
+      ${({ theme }) => theme.colors.secondaryBackground} 1px,
+      transparent 1px
+    ),
     linear-gradient(
       90deg,
-      ${({ theme }) => theme.colors.border} 1px,
+      ${({ theme }) => theme.colors.secondaryBackground} 1px,
       transparent 1px
     );
   background-size: 40px 40px;
