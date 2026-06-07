@@ -41,13 +41,30 @@
     "phoneLabel": "Phone",
     "addressLabel": "Address"
   },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "What we can do for you",
+    "ctaText": "Learn More",
+    "fastDelivery": {
+      "title": "Fast Delivery",
+      "description": "Quick turnaround times without compromising quality."
+    },
+    "customDesign": {
+      "title": "Custom Design",
+      "description": "Tailored solutions that match your brand and needs."
+    },
+    "expertSupport": {
+      "title": "Expert Support",
+      "description": "Dedicated support from our experienced team."
+    }
+  },
   "nav": {
     "getAQuote": "Get a Quote",
     "home": "Home",
     "hero": "Hero",
     "development": "Development",
     "adminDashboard": "Admin Dashboard",
-    "goToAdminDashboard": "Go to Admin Dashboard",
+    "goToAdminDashboard": "Admin Dashboard",
     "signOut": "Sign out",
     "signIn": "Sign In",
     "services": "Services",

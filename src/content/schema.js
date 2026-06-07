@@ -53,6 +53,19 @@ export const pageSchema = {
         type: 'textarea',
         group: 'Services',
       },
+      {
+        key: 'servicesItems',
+        label: 'Services Items',
+        type: 'service-items',
+        maxItems: 4,
+        group: 'Services',
+      },
+      {
+        key: 'servicesCtaText',
+        label: 'Services CTA Button Text',
+        type: 'text',
+        group: 'Services',
+      },
       // About section
       {
         key: 'aboutTitle',
@@ -102,6 +115,7 @@ export const pageSchema = {
         key: 'faqItems',
         label: 'FAQ Items',
         type: 'faq-items',
+        maxItems: 6,
         group: 'FAQ',
       },
       // Contact section
@@ -149,28 +163,29 @@ export const pageSchema = {
     label: 'Site (Global)',
     emoji: '🌐',
     fields: [
+      // Contact info (used in footer and contact section)
+      {
+        key: 'footerContactEmail',
+        label: 'Email Address',
+        type: 'text',
+        group: 'Contact Info',
+      },
+      {
+        key: 'footerContactPhone',
+        label: 'Phone Number',
+        type: 'text',
+        group: 'Contact Info',
+      },
+      {
+        key: 'footerAddress',
+        label: 'Address',
+        type: 'textarea',
+        group: 'Contact Info',
+      },
       // Footer section (global footer content)
       {
         key: 'footerTagline',
         label: 'Footer Tagline',
-        type: 'text',
-        group: 'Footer',
-      },
-      {
-        key: 'footerAddress',
-        label: 'Footer Address',
-        type: 'textarea',
-        group: 'Footer',
-      },
-      {
-        key: 'footerContactEmail',
-        label: 'Footer Contact Email',
-        type: 'text',
-        group: 'Footer',
-      },
-      {
-        key: 'footerContactPhone',
-        label: 'Footer Contact Phone',
         type: 'text',
         group: 'Footer',
       },

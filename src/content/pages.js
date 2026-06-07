@@ -29,6 +29,22 @@ export const pages = {
       services: {
         title: 'Our Services',
         subtitle: 'We provide comprehensive solutions tailored to your needs',
+        items: [
+          {
+            title: 'Fast Delivery',
+            description: 'Quick turnaround times without compromising quality.',
+          },
+          {
+            title: 'Custom Design',
+            description: 'Tailored solutions that match your brand and needs.',
+          },
+          {
+            title: 'Expert Support',
+            description: 'Dedicated support from our experienced team.',
+          },
+        ],
+        ctaText: 'Learn More',
+        ctaHref: '/#contact',
       },
       about: {
         title: 'About Us',
@@ -92,6 +108,27 @@ export const pages = {
       services: {
         title: 'Nuestros Servicios',
         subtitle: 'Ofrecemos soluciones integrales adaptadas a tus necesidades',
+        items: [
+          {
+            icon: '⚡',
+            title: 'Entrega Rápida',
+            description:
+              'Tiempos de entrega rápidos sin comprometer la calidad.',
+          },
+          {
+            icon: '🎨',
+            title: 'Diseño Personalizado',
+            description:
+              'Soluciones a medida que coinciden con tu marca y necesidades.',
+          },
+          {
+            icon: '🔧',
+            title: 'Soporte Experto',
+            description: 'Soporte dedicado de nuestro equipo experimentado.',
+          },
+        ],
+        ctaText: 'Más Información',
+        ctaHref: '/#contact',
       },
       about: {
         title: 'Sobre Nosotros',

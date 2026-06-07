@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
 import Button from 'components/ui/Button';
@@ -71,11 +72,6 @@ const ServiceCard = styled.div`
   }
 `;
 
-const ServiceIcon = styled.div`
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-`;
-
 const ServiceTitle = styled.h3`
   font-size: ${({ theme }) => theme.typography.fontSizes.s4};
   font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
@@ -98,33 +94,44 @@ const CtaContainer = styled.div`
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Services() {
+  const { t } = useTranslation();
   const { content, loading } = usePage('home');
 
-  const title = content?.services?.title ?? (loading ? null : 'Our Services');
+  const title =
+    content?.services?.title ?? (loading ? null : t('services.title'));
   const subtitle =
-    content?.services?.subtitle ?? (loading ? null : 'What we can do for you');
+    content?.services?.subtitle ?? (loading ? null : t('services.subtitle'));
+
+  // Parse services items from CMS if it's a string, otherwise use as-is or fallback
+  let servicesItems = content?.services?.items;
+  if (typeof servicesItems === 'string') {
+    try {
+      servicesItems = JSON.parse(servicesItems);
+    } catch {
+      servicesItems = null;
+    }
+  }
+
   const services =
-    content?.services?.items ??
+    servicesItems ??
     (loading
       ? null
       : [
           {
-            icon: '⚡',
-            title: 'Fast Delivery',
-            description: 'Quick turnaround times without compromising quality.',
+            title: t('services.fastDelivery.title'),
+            description: t('services.fastDelivery.description'),
           },
           {
-            icon: '🎨',
-            title: 'Custom Design',
-            description: 'Tailored solutions that match your brand and needs.',
+            title: t('services.customDesign.title'),
+            description: t('services.customDesign.description'),
           },
           {
-            icon: '🔧',
-            title: 'Expert Support',
-            description: 'Dedicated support from our experienced team.',
+            title: t('services.expertSupport.title'),
+            description: t('services.expertSupport.description'),
           },
         ]);
-  const ctaText = content?.services?.ctaText ?? (loading ? null : 'Learn More');
+  const ctaText =
+    content?.services?.ctaText ?? (loading ? null : t('services.ctaText'));
   const ctaHref = content?.services?.ctaHref ?? '/#contact';
 
   if (!services) return null;
@@ -150,7 +157,6 @@ export default function Services() {
         <ServicesGrid>
           {services.map((service, index) => (
             <ServiceCard key={index}>
-              <ServiceIcon>{service.icon}</ServiceIcon>
               <ServiceTitle>{service.title}</ServiceTitle>
               <ServiceDescription>{service.description}</ServiceDescription>
             </ServiceCard>
