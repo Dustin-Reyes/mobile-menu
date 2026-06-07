@@ -2,7 +2,6 @@ import { Pencil, ShieldCheck, Check, X, KeyRound } from 'lucide-react';
 import styled from '@emotion/styled';
 import { ROLE_LABELS } from 'utils/roleHelpers';
 import { getUserInitials } from 'utils/userHelpers';
-import { getProviderLabel } from 'utils/admin/userHelpers';
 
 const DetailProfile = styled.div`
   display: flex;
@@ -179,18 +178,6 @@ const RoleBadge = styled.span`
   white-space: nowrap;
 `;
 
-const ProviderBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  white-space: nowrap;
-`;
-
 const AvatarImage = styled.img`
   width: 100%;
   height: 100%;
@@ -283,7 +270,6 @@ export default function UserProfileHeader({
             {ROLE_LABELS[targetUser.role] ?? targetUser.role}
           </RoleBadge>
         )}
-        <ProviderBadge>{getProviderLabel(targetUser.providers)}</ProviderBadge>
       </DetailBadges>
     </DetailProfile>
   );
