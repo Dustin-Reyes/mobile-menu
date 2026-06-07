@@ -76,8 +76,7 @@ const UserInfoHeader = styled(RadixDropdownMenu.Item)`
   outline: none;
 
   &[data-highlighted] {
-    background: ${(p) =>
-      p.theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'};
+    background: ${(p) => p.theme.colors.secondaryBackground};
   }
 `;
 
@@ -142,8 +141,7 @@ const MenuIcon = styled.div`
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: ${(p) =>
-    p.theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'};
+  background: ${(p) => p.theme.colors.secondaryBackground};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   color: ${(p) => p.theme.colors.textSecondary};
   flex-shrink: 0;
@@ -184,20 +182,20 @@ const MenuChevron = styled.div`
 
 const DestructiveItem = styled(MenuItem)`
   &[data-highlighted] {
-    background: rgba(239, 68, 68, 0.08);
+    background: ${(p) => p.theme.colors.error}14;
   }
 
   ${MenuIcon} {
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.08);
+    color: ${(p) => p.theme.colors.error};
+    background: ${(p) => p.theme.colors.error}14;
   }
 
   ${MenuLabel} {
-    color: #ef4444;
+    color: ${(p) => p.theme.colors.error};
   }
 
   ${MenuSubtitle} {
-    color: rgba(239, 68, 68, 0.6);
+    color: ${(p) => p.theme.colors.error}99;
   }
 `;
 

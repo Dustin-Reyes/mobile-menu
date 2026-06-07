@@ -20,14 +20,14 @@ const BackButton = styled.button`
   margin-bottom: 12px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-family: inherit;
   cursor: pointer;
   transition: color ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    color: rgba(255, 255, 255, 0.75);
+    color: ${(p) => p.theme.colors.text};
   }
 
   @media (max-width: 768px) {

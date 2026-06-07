@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 export const SectionCard = styled.div`
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s2};
   padding: 16px;
   margin-bottom: 12px;
@@ -26,5 +26,5 @@ export const SectionCardTitle = styled.div`
   gap: 6px;
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
-  color: rgba(255, 255, 255, 0.7);
+  color: ${(p) => p.theme.colors.text};
 `;

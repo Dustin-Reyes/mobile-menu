@@ -46,7 +46,7 @@ const CopyButton = styled.button`
 
   &:hover {
     background: ${(p) => p.theme.colors.primary};
-    color: ${(p) => p.theme.colors.onPrimary || '#ffffff'};
+    color: ${(p) => p.theme.colors.onPrimary};
   }
 
   &:active {

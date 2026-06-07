@@ -16,7 +16,7 @@ const StyledTextarea = styled.textarea`
   font-family: inherit;
   color: ${(p) => p.theme.colors.text};
   background: ${(p) => p.theme.colors.surface};
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   outline: none;
   transition: border-color 0.15s;
@@ -39,12 +39,11 @@ const LocalePill = styled('button', {
     background 0.15s,
     color 0.15s;
   border: 1px solid
-    ${(p) =>
-      p.active ? `${p.theme.colors.primary}4d` : 'rgba(255,255,255,0.1)'};
+    ${(p) => (p.active ? `${p.theme.colors.primary}4d` : p.theme.colors.border)};
   background: ${(p) =>
     p.active ? `${p.theme.colors.primary}40` : 'transparent'};
   color: ${(p) =>
-    p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.5)'};
+    p.active ? p.theme.colors.primary : p.theme.colors.textSecondary};
 `;
 
 const spin = keyframes`
@@ -66,8 +65,8 @@ const Spinner = styled.span`
 // ─── FAQ Items Editor ────────────────────────────────────────────────────────
 
 const FaqItemCard = styled.div`
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: 5px;
   padding: 10px 12px;
   margin-bottom: 8px;
@@ -91,7 +90,7 @@ const FaqItemLabel = styled.span`
   font-weight: ${(p) => p.theme.typography.fontWeights.bold};
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.25);
+  color: ${(p) => p.theme.colors.textMuted};
   display: block;
   margin-bottom: 3px;
 `;
@@ -104,9 +103,9 @@ const RemoveItemBtn = styled.button`
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: 4px;
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   font-size: 14px;
   cursor: pointer;
   font-family: inherit;
@@ -114,9 +113,9 @@ const RemoveItemBtn = styled.button`
   margin-top: 2px;
 
   &:hover:not(:disabled) {
-    border-color: rgba(239, 68, 68, 0.5);
-    color: rgb(239, 68, 68);
-    background: rgba(239, 68, 68, 0.08);
+    border-color: ${(p) => p.theme.colors.error}80;
+    color: ${(p) => p.theme.colors.error};
+    background: ${(p) => p.theme.colors.error}14;
   }
 
   &:disabled {
@@ -132,9 +131,9 @@ const AddItemBtn = styled.button`
   margin-top: 6px;
   padding: 6px 12px;
   background: transparent;
-  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border: 1px dashed ${(p) => p.theme.colors.secondaryBorder};
   border-radius: 5px;
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   font-family: inherit;
   cursor: pointer;
@@ -312,7 +311,7 @@ const EditorWrap = styled.div`
 
 const EditorHeader = styled.div`
   padding: 16px 20px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
   flex-shrink: 0;
 `;
 
@@ -325,7 +324,7 @@ const PageTitle = styled.h2`
 
 const PageMeta = styled.p`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.35);
+  color: ${(p) => p.theme.colors.textMuted};
   margin: 0 0 12px;
 `;
 
@@ -368,16 +367,16 @@ const GroupLabel = styled.div`
   font-weight: ${(p) => p.theme.typography.fontWeights.bold};
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-top: 16px;
   margin-bottom: 8px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
 `;
 
 const FieldCard = styled.div`
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: 5px;
   padding: 10px 12px;
   margin-bottom: 10px;
@@ -389,7 +388,7 @@ const FieldLabel = styled.label`
   font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.35);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-bottom: 6px;
 `;
 
@@ -398,7 +397,7 @@ const SaveBar = styled.div`
   align-items: center;
   gap: 12px;
   padding: 12px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
   background: ${(p) => p.theme.colors.background};
   backdrop-filter: blur(8px);
   flex-shrink: 0;
@@ -408,7 +407,7 @@ const UnsavedDot = styled.div`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #f59e0b;
+  background: ${(p) => p.theme.colors.warning};
   flex-shrink: 0;
 `;
 
@@ -417,7 +416,8 @@ const SaveStatus = styled('span', {
 })`
   flex: 1;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: ${(p) => (p.dirty ? '#f59e0b' : 'rgba(255,255,255,0.3)')};
+  color: ${(p) =>
+    p.dirty ? p.theme.colors.warning : p.theme.colors.textMuted};
 `;
 
 function DesktopEditor({
@@ -579,7 +579,7 @@ const MobileHeader = styled.div`
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
 `;
 
 const BackBtn = styled.button`
@@ -604,7 +604,7 @@ const StickyLocaleRow = styled.div`
   display: flex;
   gap: 8px;
   padding: 10px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
   overflow-x: auto;
 `;
 
@@ -618,10 +618,10 @@ const FieldRow = styled.button`
   cursor: pointer;
   width: 100%;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: ${(p) => p.theme.colors.surface};
   }
 `;
 
@@ -639,10 +639,15 @@ const FieldRowName = styled.div`
 
 const FieldRowPreview = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+const MobileFieldChevron = styled.span`
+  color: ${(p) => p.theme.colors.textMuted};
+  font-size: 1rem;
 `;
 
 function MobileFieldList({
@@ -720,9 +725,7 @@ function MobileFieldList({
                 : (values[field.key] ?? '—')}
             </FieldRowPreview>
           </FieldRowLeft>
-          <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '1rem' }}>
-            ›
-          </span>
+          <MobileFieldChevron>›</MobileFieldChevron>
         </FieldRow>
       ))}
     </div>
@@ -748,15 +751,15 @@ const SectionTitle = styled.div`
   font-weight: ${(p) => p.theme.typography.fontWeights.bold};
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.25);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-bottom: 8px;
 `;
 
 const SavedPreview = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: ${(p) => p.theme.colors.textSecondary};
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: 5px;
   padding: 10px 12px;
   margin-bottom: 16px;
@@ -771,20 +774,20 @@ const OtherLocaleCode = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s0};
   font-weight: ${(p) => p.theme.typography.fontWeights.bold};
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.25);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-bottom: 4px;
 `;
 
 const OtherLocaleValue = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
 `;
 
 const FieldEditBar = styled.div`
   display: flex;
   gap: 10px;
   padding: 12px 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
 `;
 
 function MobileFieldEdit({

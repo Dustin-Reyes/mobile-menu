@@ -76,7 +76,7 @@ const Placeholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
 `;
 
@@ -85,7 +85,7 @@ const Header = styled.div`
   align-items: center;
   gap: 12px;
   padding: 16px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
   flex-shrink: 0;
 `;
 
@@ -110,9 +110,9 @@ const PublishedBadge = styled.span`
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
-  background: rgba(34, 197, 94, 0.1);
-  color: #4ade80;
-  border: 1px solid rgba(34, 197, 94, 0.2);
+  background: ${(p) => p.theme.colors.success}1a;
+  color: ${(p) => p.theme.colors.success};
+  border: 1px solid ${(p) => p.theme.colors.success}33;
   border-radius: 9999px;
   font-size: ${(p) => p.theme.typography.fontSizes.s1};
   font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
@@ -122,7 +122,7 @@ const PublishedBadge = styled.span`
 
 const PageMeta = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   white-space: nowrap;
 `;
 
@@ -131,13 +131,13 @@ const LocaleBar = styled.div`
   align-items: center;
   gap: 6px;
   padding: 8px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
   flex-shrink: 0;
 `;
 
 const LocaleLabel = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.35);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-right: 4px;
 `;
 
@@ -182,12 +182,11 @@ const LocaleTab = styled('button', {
   cursor: pointer;
   transition: all 0.15s;
   border: 1px solid
-    ${(p) =>
-      p.active ? `${p.theme.colors.primary}4d` : 'rgba(255,255,255,0.1)'};
+    ${(p) => (p.active ? `${p.theme.colors.primary}4d` : p.theme.colors.border)};
   background: ${(p) =>
     p.active ? `${p.theme.colors.primary}40` : 'transparent'};
   color: ${(p) =>
-    p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.4)'};
+    p.active ? p.theme.colors.primary : p.theme.colors.textMuted};
   font-family: inherit;
 
   &:disabled {
@@ -200,7 +199,7 @@ const SectionTabBar = styled.div`
   display: flex;
   gap: 0;
   padding: 0 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
   flex-shrink: 0;
   overflow-x: auto;
   scrollbar-width: none;
@@ -219,7 +218,7 @@ const SectionTab = styled('button', {
   border-bottom: 2px solid
     ${(p) => (p.active ? p.theme.colors.primary : 'transparent')};
   color: ${(p) =>
-    p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.4)'};
+    p.active ? p.theme.colors.primary : p.theme.colors.textMuted};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) =>
     p.active
@@ -232,8 +231,7 @@ const SectionTab = styled('button', {
   margin-bottom: -1px;
 
   &:hover {
-    color: ${(p) =>
-      p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.7)'};
+    color: ${(p) => (p.active ? p.theme.colors.primary : p.theme.colors.text)};
   }
 `;
 
@@ -247,8 +245,8 @@ const FieldsArea = styled.div`
 const FieldCard = styled.div`
   display: flex;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: 6px;
   padding: 12px 14px;
   margin-bottom: 10px;
@@ -258,7 +256,7 @@ const FieldIconWrap = styled.div`
   display: flex;
   align-items: flex-start;
   padding-top: 3px;
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   flex-shrink: 0;
 `;
 
@@ -271,7 +269,7 @@ const FieldLabel = styled.label`
   display: block;
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
-  color: rgba(255, 255, 255, 0.7);
+  color: ${(p) => p.theme.colors.text};
   margin-bottom: 6px;
 `;
 
@@ -283,13 +281,13 @@ const FieldInput = styled.input`
   font-family: inherit;
   color: ${(p) => p.theme.colors.text};
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   outline: none;
   transition: border-color 0.15s;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.15);
+    color: ${(p) => p.theme.colors.textMuted};
   }
 
   &:focus {
@@ -312,13 +310,13 @@ const FieldTextarea = styled.textarea`
   font-family: inherit;
   color: ${(p) => p.theme.colors.text};
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   outline: none;
   transition: border-color 0.15s;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.15);
+    color: ${(p) => p.theme.colors.textMuted};
   }
 
   &:focus {
@@ -340,7 +338,7 @@ const Footer = styled.div`
   align-items: center;
   gap: 10px;
   padding: 12px 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
   background: ${(p) => p.theme.colors.background};
   z-index: 50;
 
@@ -359,7 +357,8 @@ const ChangeStatus = styled('div', {
   align-items: center;
   gap: 6px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: ${(p) => (p.dirty ? '#f59e0b' : 'rgba(255,255,255,0.3)')};
+  color: ${(p) =>
+    p.dirty ? p.theme.colors.warning : p.theme.colors.textMuted};
 
   @media (max-width: 768px) {
     display: none;
@@ -370,7 +369,7 @@ const DirtyDot = styled.div`
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #f59e0b;
+  background: ${(p) => p.theme.colors.warning};
   flex-shrink: 0;
 `;
 

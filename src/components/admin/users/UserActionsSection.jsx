@@ -12,17 +12,17 @@ const ActionIconWrap = styled.div`
   flex-shrink: 0;
   background: ${(p) => {
     if (p.$variant === 'primary') return `${p.theme.colors.primary}20`;
-    if (p.$variant === 'warning') return 'rgba(245,158,11,0.12)';
-    if (p.$variant === 'success') return 'rgba(34,197,94,0.12)';
-    if (p.$variant === 'danger') return 'rgba(239,68,68,0.12)';
-    return 'rgba(255,255,255,0.06)';
+    if (p.$variant === 'warning') return `${p.theme.colors.warning}1f`;
+    if (p.$variant === 'success') return `${p.theme.colors.success}1f`;
+    if (p.$variant === 'danger') return `${p.theme.colors.error}1f`;
+    return p.theme.colors.secondaryBackground;
   }};
   color: ${(p) => {
     if (p.$variant === 'primary') return p.theme.colors.primary;
-    if (p.$variant === 'warning') return '#fbbf24';
-    if (p.$variant === 'success') return '#4ade80';
-    if (p.$variant === 'danger') return '#f87171';
-    return 'rgba(255,255,255,0.5)';
+    if (p.$variant === 'warning') return p.theme.colors.warning;
+    if (p.$variant === 'success') return p.theme.colors.success;
+    if (p.$variant === 'danger') return p.theme.colors.error;
+    return p.theme.colors.textSecondary;
   }};
 `;
 
@@ -34,14 +34,14 @@ const ActionText = styled.div`
 const ActionTitle = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
-  color: ${(p) => (p.$danger ? '#f87171' : p.theme.colors.text)};
+  color: ${(p) => (p.$danger ? p.theme.colors.error : p.theme.colors.text)};
   line-height: 1.2;
 `;
 
 const ActionSubtitle = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: ${(p) =>
-    p.$danger ? 'rgba(248,113,113,0.65)' : 'rgba(255,255,255,0.35)'};
+    p.$danger ? p.theme.colors.error : p.theme.colors.textMuted};
   margin-top: 3px;
 `;
 
@@ -56,7 +56,7 @@ const DesktopLayout = styled.div`
 const DesktopActionBar = styled.div`
   display: flex;
   align-items: stretch;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
 `;
 
 const BarItem = styled.button`
@@ -68,10 +68,10 @@ const BarItem = styled.button`
   padding: 14px 12px;
   background: transparent;
   border: none;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid ${(p) => p.theme.colors.border};
   cursor: pointer;
   font-family: inherit;
-  color: rgba(255, 255, 255, 0.55);
+  color: ${(p) => p.theme.colors.textSecondary};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
   transition:
@@ -83,17 +83,17 @@ const BarItem = styled.button`
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: rgba(255, 255, 255, 0.85);
+    background: ${(p) => p.theme.colors.secondaryBackground};
+    color: ${(p) => p.theme.colors.text};
   }
 `;
 
 const DestructiveBarItem = styled(BarItem)`
-  color: rgba(248, 113, 113, 0.6);
+  color: ${(p) => p.theme.colors.error};
 
   &:hover {
-    background: rgba(239, 68, 68, 0.06);
-    color: #f87171;
+    background: ${(p) => `${p.theme.colors.error}0f`};
+    color: ${(p) => p.theme.colors.error};
   }
 `;
 
@@ -104,8 +104,8 @@ const BarToggleItem = styled.div`
   justify-content: center;
   gap: 10px;
   padding: 14px 12px;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.55);
+  border-right: 1px solid ${(p) => p.theme.colors.border};
+  color: ${(p) => p.theme.colors.textSecondary};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
 `;
@@ -121,7 +121,7 @@ const MobileLayout = styled.div`
 
 const MobileSection = styled.div`
   padding: 12px 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -129,7 +129,7 @@ const MobileSection = styled.div`
 
 const SectionLabel = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   text-transform: uppercase;
   letter-spacing: 0.07em;
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
@@ -141,8 +141,8 @@ const ActionCard = styled.div`
   align-items: center;
   gap: 12px;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
 `;
 
@@ -152,8 +152,8 @@ const MobileDestructiveCard = styled.button`
   gap: 12px;
   width: 100%;
   padding: 12px;
-  background: rgba(239, 68, 68, 0.04);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: ${(p) => `${p.theme.colors.error}0a`};
+  border: 1px solid ${(p) => `${p.theme.colors.error}33`};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   cursor: pointer;
   text-align: left;
@@ -163,17 +163,17 @@ const MobileDestructiveCard = styled.button`
     border-color ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(239, 68, 68, 0.08);
-    border-color: rgba(239, 68, 68, 0.32);
+    background: ${(p) => `${p.theme.colors.error}14`};
+    border-color: ${(p) => `${p.theme.colors.error}52`};
   }
 `;
 
 const SendLinkButton = styled.button`
   padding: 6px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid ${(p) => p.theme.colors.secondaryBorder};
   border-radius: ${(p) => p.theme.borderRadius.s1};
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.65);
+  background: ${(p) => p.theme.colors.secondaryBackground};
+  color: ${(p) => p.theme.colors.textSecondary};
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   font-family: inherit;
   cursor: pointer;
@@ -182,9 +182,9 @@ const SendLinkButton = styled.button`
   transition: all ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.9);
-    border-color: rgba(255, 255, 255, 0.25);
+    background: ${(p) => p.theme.colors.secondaryBackground};
+    color: ${(p) => p.theme.colors.text};
+    border-color: ${(p) => p.theme.colors.secondaryBorder};
   }
 `;
 
@@ -193,8 +193,8 @@ const CompactSwitch = styled(SwitchRoot)`
   height: 26px;
 
   &[data-state='checked'] {
-    background: rgba(34, 197, 94, 0.15);
-    border-color: rgba(34, 197, 94, 0.55);
+    background: ${(p) => `${p.theme.colors.success}26`};
+    border-color: ${(p) => `${p.theme.colors.success}8c`};
   }
 `;
 
@@ -204,8 +204,14 @@ const CompactSwitchThumb = styled(SwitchThumb)`
 
   &[data-state='checked'] {
     transform: translateX(20px);
-    background: #4ade80;
+    background: ${(p) => p.theme.colors.success};
   }
+`;
+
+const ChevronIconSpan = styled.span`
+  color: ${(p) => p.theme.colors.textMuted};
+  display: flex;
+  flex-shrink: 0;
 `;
 
 export default function UserActionsSection({
@@ -295,15 +301,9 @@ export default function UserActionsSection({
                 Permanently delete this user and all data.
               </ActionSubtitle>
             </ActionText>
-            <span
-              style={{
-                color: 'rgba(255,255,255,0.2)',
-                display: 'flex',
-                flexShrink: 0,
-              }}
-            >
+            <ChevronIconSpan>
               <ChevronRight size={16} />
-            </span>
+            </ChevronIconSpan>
           </MobileDestructiveCard>
         </MobileSection>
       </MobileLayout>

@@ -10,7 +10,7 @@ const DetailSection = styled.div`
   @media (min-width: 769px) {
     width: 220px;
     flex-shrink: 0;
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid ${(p) => p.theme.colors.border};
     padding: 16px 20px;
     display: flex;
     flex-direction: column;
@@ -20,12 +20,12 @@ const DetailSection = styled.div`
 
 const SectionTitle = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   text-transform: uppercase;
   letter-spacing: 0.07em;
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
   padding-bottom: 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
 `;
 
 const InfoRow = styled.div`
@@ -42,13 +42,13 @@ const InfoRowLeft = styled.div`
 `;
 
 const InfoRowIcon = styled.div`
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   display: flex;
 `;
 
 const InfoRowLabel = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.35);
+  color: ${(p) => p.theme.colors.textMuted};
   flex-shrink: 0;
 `;
 
@@ -63,21 +63,21 @@ const UidField = styled.button`
   align-items: center;
   gap: 5px;
   padding: 2px 7px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   cursor: pointer;
   font-family: monospace;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.25);
+  color: ${(p) => p.theme.colors.textMuted};
   max-width: 180px;
   transition:
     background ${(p) => p.theme.transitions.fast},
     color ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.55);
+    background: ${(p) => p.theme.colors.secondaryBackground};
+    color: ${(p) => p.theme.colors.textSecondary};
   }
 
   span {

@@ -64,7 +64,7 @@ const ProfileName = styled.div`
 
 const ProfileEmail = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -89,14 +89,14 @@ const RoleBadge = styled.div`
 `;
 
 const NoRoleBadge = styled(RoleBadge)`
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: ${(p) => p.theme.colors.secondaryBackground};
+  color: ${(p) => p.theme.colors.textMuted};
+  border-color: ${(p) => p.theme.colors.border};
 `;
 
 const Divider = styled.hr`
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
   margin: 0 0 12px;
 `;
 
@@ -110,7 +110,7 @@ const EditRow = styled.div`
 
 const EditRowLabel = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
@@ -161,10 +161,10 @@ const EditIconButton = styled.button`
   align-items: center;
   gap: 5px;
   padding: 4px 10px;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: ${(p) => `${p.theme.colors.primary}14`};
+  border: 1px solid ${(p) => `${p.theme.colors.primary}66`};
   border-radius: ${(p) => p.theme.borderRadius.s1};
-  color: #f59e0b;
+  color: ${(p) => p.theme.colors.primary};
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   font-family: inherit;
   cursor: pointer;
@@ -172,9 +172,9 @@ const EditIconButton = styled.button`
   transition: all ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(245, 158, 11, 0.15);
-    border-color: rgba(245, 158, 11, 0.65);
-    color: #fbbf24;
+    background: ${(p) => `${p.theme.colors.primary}26`};
+    border-color: ${(p) => `${p.theme.colors.primary}a6`};
+    color: ${(p) => p.theme.colors.primary};
   }
 `;
 
@@ -191,7 +191,7 @@ const SecurityLabel = styled.div`
   align-items: center;
   gap: 8px;
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.55);
+  color: ${(p) => p.theme.colors.textSecondary};
 `;
 
 const SendLinkButton = styled.button`
@@ -200,9 +200,9 @@ const SendLinkButton = styled.button`
   gap: 6px;
   padding: 6px 12px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid ${(p) => p.theme.colors.secondaryBorder};
   border-radius: ${(p) => p.theme.borderRadius.s1};
-  color: rgba(255, 255, 255, 0.55);
+  color: ${(p) => p.theme.colors.textSecondary};
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   font-family: inherit;
   cursor: pointer;
@@ -210,10 +210,15 @@ const SendLinkButton = styled.button`
   transition: all ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.28);
-    color: rgba(255, 255, 255, 0.85);
+    background: ${(p) => p.theme.colors.secondaryBackground};
+    border-color: ${(p) => p.theme.colors.secondaryBorder};
+    color: ${(p) => p.theme.colors.text};
   }
+`;
+
+const NotSetText = styled.span`
+  color: ${(p) => p.theme.colors.textMuted};
+  font-style: italic;
 `;
 
 const SignOutButton = styled.button`
@@ -222,17 +227,17 @@ const SignOutButton = styled.button`
   gap: 7px;
   padding: 7px 14px;
   background: transparent;
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  border: 1px solid ${(p) => `${p.theme.colors.error}40`};
   border-radius: ${(p) => p.theme.borderRadius.s1};
-  color: #f87171;
+  color: ${(p) => p.theme.colors.error};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-family: inherit;
   cursor: pointer;
   transition: all ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(239, 68, 68, 0.08);
-    border-color: rgba(239, 68, 68, 0.4);
+    background: ${(p) => `${p.theme.colors.error}14`};
+    border-color: ${(p) => `${p.theme.colors.error}66`};
   }
 
   @media (max-width: 768px) {
@@ -353,16 +358,7 @@ export default function ProfileTab() {
             <EditRowMeta>
               <EditRowLabel>Display name</EditRowLabel>
               <EditRowValue>
-                {user?.displayName || (
-                  <span
-                    style={{
-                      color: 'rgba(255,255,255,0.25)',
-                      fontStyle: 'italic',
-                    }}
-                  >
-                    Not set
-                  </span>
-                )}
+                {user?.displayName || <NotSetText>Not set</NotSetText>}
               </EditRowValue>
             </EditRowMeta>
             <EditIconButton type="button" onClick={handleStartEdit}>

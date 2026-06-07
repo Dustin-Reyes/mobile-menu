@@ -24,7 +24,7 @@ const Card = styled.div`
 
 const Title = styled.h1`
   font-size: ${(props) => props.theme.typography.fontSizes.s8};
-  color: ${(props) => props.theme.colors.error || '#d73a4a'};
+  color: ${(props) => props.theme.colors.error};
   margin-bottom: 1rem;
 `;
 
@@ -53,7 +53,7 @@ const DetailsSummary = styled.summary`
 
 const DetailsContent = styled.div`
   white-space: pre-wrap;
-  color: ${(props) => props.theme.colors.error || '#d73a4a'};
+  color: ${(props) => props.theme.colors.error};
   font-family: ${(props) => props.theme.typography.fontFamilies.mono};
   font-size: ${(props) => props.theme.typography.fontSizes.s5};
   overflow: auto;
@@ -69,8 +69,7 @@ const ButtonGroup = styled.div`
 
 const PrimaryButton = styled.button`
   background: ${(props) => props.theme.colors.primary};
-  color: ${(props) =>
-    props.theme.colors.surface === '#ffffff' ? '#ffffff' : '#111827'};
+  color: ${(props) => props.theme.colors.onPrimary};
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: ${(props) => props.theme.borderRadius.s2};
@@ -85,8 +84,7 @@ const PrimaryButton = styled.button`
 
 const SecondaryButton = styled.button`
   background: ${(props) => props.theme.colors.textSecondary};
-  color: ${(props) =>
-    props.theme.colors.surface === '#ffffff' ? '#ffffff' : '#111827'};
+  color: ${(props) => props.theme.colors.onPrimary};
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: ${(props) => props.theme.borderRadius.s2};

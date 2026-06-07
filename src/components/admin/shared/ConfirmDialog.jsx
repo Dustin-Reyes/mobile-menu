@@ -9,7 +9,7 @@ const SheetContent = styled(RadixDialog.Content)`
   left: 50%;
   transform: translate(-50%, -50%);
   background: ${(p) => p.theme.colors.surface};
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s3};
   padding: 28px 28px 24px;
   width: 90%;
@@ -70,7 +70,7 @@ const Title = styled(RadixDialog.Title)`
 
 const Description = styled(RadixDialog.Description)`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.45);
+  color: ${(p) => p.theme.colors.textMuted};
   margin: 0;
   line-height: 1.5;
 `;
@@ -95,7 +95,7 @@ const Actions = styled.div`
 const DestructiveButton = styled(Button)`
   background: ${(p) => p.theme.colors.error};
   border-color: ${(p) => p.theme.colors.error};
-  color: #fff;
+  color: ${(p) => p.theme.colors.text};
 
   &:hover:not(:disabled) {
     opacity: 0.88;

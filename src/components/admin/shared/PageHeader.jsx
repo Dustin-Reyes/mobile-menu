@@ -17,5 +17,5 @@ export const PageTitle = styled.h1`
 
 export const PageSubtitle = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.35);
+  color: ${(p) => p.theme.colors.textMuted};
 `;

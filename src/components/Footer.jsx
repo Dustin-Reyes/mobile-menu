@@ -257,10 +257,7 @@ const BottomBar = styled.div`
 
 const Copyright = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSizes.s2};
-  color: rgba(
-    ${({ theme }) => (theme.mode === 'dark' ? '255,255,255' : '0,0,0')},
-    0.35
-  );
+  color: ${({ theme }) => theme.colors.textMuted};
 `;
 
 const LegalLinks = styled.div`
@@ -270,10 +267,7 @@ const LegalLinks = styled.div`
 
 const LegalLink = styled(Link)`
   font-size: ${({ theme }) => theme.typography.fontSizes.s2};
-  color: rgba(
-    ${({ theme }) => (theme.mode === 'dark' ? '255,255,255' : '0,0,0')},
-    0.35
-  );
+  color: ${({ theme }) => theme.colors.textMuted};
   text-decoration: none;
   transition: color ${({ theme }) => theme.transitions.fast};
 

@@ -92,12 +92,9 @@ const Label = styled.label`
 
 const Input = styled.input`
   padding: 0.875rem 1rem;
-  border: 1.5px solid
-    ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)'};
+  border: 1.5px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.s2};
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.02)'};
+  background: ${({ theme }) => theme.colors.secondaryBackground};
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.typography.fontSizes.s3};
   font-family: inherit;
@@ -109,8 +106,7 @@ const Input = styled.input`
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'};
+    background: ${({ theme }) => theme.colors.secondaryBackground};
     box-shadow: 0 0 0 3px
       ${({ theme }) =>
         theme.mode === 'dark'
@@ -127,19 +123,16 @@ const Input = styled.input`
     `
     border-color: ${theme.colors.error};
     &:focus {
-      box-shadow: 0 0 0 3px ${theme.mode === 'dark' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(239, 68, 68, 0.15)'};
+      box-shadow: 0 0 0 3px ${theme.colors.error}26;
     }
   `}
 `;
 
 const TextArea = styled.textarea`
   padding: 0.875rem 1rem;
-  border: 1.5px solid
-    ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)'};
+  border: 1.5px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.s2};
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.02)'};
+  background: ${({ theme }) => theme.colors.secondaryBackground};
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.typography.fontSizes.s3};
   font-family: inherit;
@@ -154,8 +147,7 @@ const TextArea = styled.textarea`
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'};
+    background: ${({ theme }) => theme.colors.secondaryBackground};
     box-shadow: 0 0 0 3px
       ${({ theme }) =>
         theme.mode === 'dark'
@@ -172,7 +164,7 @@ const TextArea = styled.textarea`
     `
     border-color: ${theme.colors.error};
     &:focus {
-      box-shadow: 0 0 0 3px ${theme.mode === 'dark' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(239, 68, 68, 0.15)'};
+      box-shadow: 0 0 0 3px ${theme.colors.error}26;
     }
   `}
 `;
@@ -191,10 +183,7 @@ const SuccessBanner = styled.div`
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: ${({ theme }) =>
-    theme.mode === 'dark'
-      ? 'rgba(34, 197, 94, 0.15)'
-      : 'rgba(34, 197, 94, 0.1)'};
+  background: ${({ theme }) => theme.colors.success}26;
   border: 1px solid ${({ theme }) => theme.colors.success};
   border-radius: ${({ theme }) => theme.borderRadius.s2};
   color: ${({ theme }) => theme.colors.text};

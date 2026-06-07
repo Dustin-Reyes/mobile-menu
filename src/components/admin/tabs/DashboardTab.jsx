@@ -8,8 +8,8 @@ const SiteIdentityCard = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s2};
   padding: 20px;
   margin-bottom: 12px;
@@ -46,7 +46,7 @@ const SiteUrlLink = styled.a`
 
 const SiteUrlPlaceholder = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.25);
+  color: ${(p) => p.theme.colors.textMuted};
   font-style: italic;
 `;
 
@@ -62,8 +62,8 @@ const ContentCard = styled.button`
   flex-direction: column;
   align-items: flex-start;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s2};
   cursor: pointer;
   text-align: left;
@@ -71,7 +71,7 @@ const ContentCard = styled.button`
   transition: all ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: ${(p) => p.theme.colors.secondaryBackground};
     border-color: ${(p) => p.theme.colors.primary}40;
   }
 `;
@@ -93,14 +93,14 @@ const ContentCardIcon = styled.div`
 
 const ContentCardLabel = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   text-transform: uppercase;
   letter-spacing: 0.07em;
 `;
 
 const ContentCardHint = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-top: 4px;
 `;
 
@@ -110,10 +110,10 @@ const StatusLine = styled.div`
   gap: 6px;
   padding: 5px 10px;
   background: ${(p) => p.theme.colors.surface};
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: 9999px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   flex-shrink: 0;
 
   @media (max-width: 768px) {
@@ -125,7 +125,8 @@ const StatusDot = styled.div`
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: ${(p) => (p.$active ? '#4ade80' : '#f87171')};
+  background: ${(p) =>
+    p.$active ? p.theme.colors.success : p.theme.colors.error};
   flex-shrink: 0;
 `;
 
@@ -144,9 +145,9 @@ const shimmer = keyframes`
 const Skeleton = styled.div`
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.05) 25%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.05) 75%
+    ${(p) => p.theme.colors.surface} 25%,
+    ${(p) => p.theme.colors.secondaryBackground} 50%,
+    ${(p) => p.theme.colors.surface} 75%
   );
   background-size: 200% 100%;
   animation: ${shimmer} 1.5s infinite;

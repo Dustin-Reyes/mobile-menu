@@ -52,8 +52,7 @@ const GalleryGrid = styled.div`
 
 const GalleryItem = styled.div`
   aspect-ratio: 4 / 3;
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'};
+  background: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.borderRadius.s2};
   overflow: hidden;
   position: relative;
@@ -86,7 +85,11 @@ const GalleryOverlay = styled.div`
   left: 0;
   right: 0;
   padding: 1.5rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  background: linear-gradient(
+    to top,
+    ${({ theme }) => theme.colors.overlay},
+    transparent
+  );
   opacity: 0;
   transition: opacity ${({ theme }) => theme.transitions.fast};
 
@@ -98,13 +101,13 @@ const GalleryOverlay = styled.div`
 const GalleryTitle = styled.h3`
   font-size: ${({ theme }) => theme.typography.fontSizes.s3};
   font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
-  color: white;
+  color: ${({ theme }) => theme.colors.onDark};
   margin-bottom: 0.25rem;
 `;
 
 const GalleryDescription = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.9);
+  color: ${({ theme }) => theme.colors.onDark};
 `;
 
 // ─── Component ────────────────────────────────────────────────────────────────

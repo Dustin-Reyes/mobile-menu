@@ -98,8 +98,7 @@ const ThemeBtn = styled.button`
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+    background: ${({ theme }) => theme.colors.secondaryBackground};
   }
 `;
 

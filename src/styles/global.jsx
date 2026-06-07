@@ -271,7 +271,7 @@ function GlobalStylesWithTheme() {
 
       pre,
       blockquote {
-        border: 1px solid #999;
+        border: 1px solid ${theme.colors.border};
         page-break-inside: avoid;
       }
 

@@ -31,8 +31,7 @@ const Trigger = styled(RadixDialog.Trigger)`
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+    background: ${({ theme }) => theme.colors.secondaryBackground};
   }
 `;
 
@@ -90,8 +89,7 @@ const CloseButton = styled(RadixDialog.Close)`
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'};
+  background: ${({ theme }) => theme.colors.secondaryBackground};
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -103,8 +101,7 @@ const CloseButton = styled(RadixDialog.Close)`
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.14)'};
+    background: ${({ theme }) => theme.colors.border};
   }
 `;
 
@@ -190,11 +187,7 @@ const NavItem = styled(RadixDialog.Close)`
 
   &:hover {
     background: ${({ $active, theme }) =>
-      $active
-        ? `${theme.colors.primary}1e`
-        : theme.mode === 'dark'
-          ? 'rgba(255,255,255,0.05)'
-          : 'rgba(0,0,0,0.04)'};
+      $active ? `${theme.colors.primary}1e` : theme.colors.secondaryBackground};
   }
 `;
 
@@ -272,11 +265,11 @@ const SignOutButtonWrapper = styled(RadixDialog.Close)`
   align-items: center;
 
   button {
-    color: #ef4444;
-    border-color: #ef4444;
+    color: ${({ theme }) => theme.colors.error};
+    border-color: ${({ theme }) => theme.colors.error};
 
     &:hover {
-      background: rgba(239, 68, 68, 0.1);
+      background: ${({ theme }) => theme.colors.error}1a;
     }
   }
 

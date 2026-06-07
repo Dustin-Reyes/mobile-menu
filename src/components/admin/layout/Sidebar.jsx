@@ -12,7 +12,7 @@ const SidebarContainer = styled.div`
   width: 200px;
   height: calc(100vh - 67px);
   background: ${(p) => p.theme.colors.background};
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid ${(p) => p.theme.colors.border};
   padding: 60px 12px 20px;
   display: flex;
   flex-direction: column;
@@ -40,16 +40,17 @@ const SidebarItem = styled.div`
 
   &:hover {
     background: ${(p) =>
-      p.active ? `${p.theme.colors.primary}1a` : 'rgba(255,255,255,0.04)'};
-    color: ${(p) =>
-      p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.7)'};
+      p.active
+        ? `${p.theme.colors.primary}1a`
+        : p.theme.colors.secondaryBackground};
+    color: ${(p) => (p.active ? p.theme.colors.primary : p.theme.colors.text)};
   }
 `;
 
 const SidebarDivider = styled(RadixSeparator.Root)`
   margin: 12px 0;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: ${(p) => p.theme.colors.border};
 `;
 
 const PageSubList = styled.div`
@@ -76,13 +77,14 @@ const PageSubItem = styled('button', {
   background: ${(p) =>
     p.active ? `${p.theme.colors.primary}18` : 'transparent'};
   color: ${(p) =>
-    p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.45)'};
+    p.active ? p.theme.colors.primary : p.theme.colors.textMuted};
 
   &:hover {
     background: ${(p) =>
-      p.active ? `${p.theme.colors.primary}18` : 'rgba(255,255,255,0.04)'};
-    color: ${(p) =>
-      p.active ? p.theme.colors.primary : 'rgba(255,255,255,0.7)'};
+      p.active
+        ? `${p.theme.colors.primary}18`
+        : p.theme.colors.secondaryBackground};
+    color: ${(p) => (p.active ? p.theme.colors.primary : p.theme.colors.text)};
   }
 `;
 

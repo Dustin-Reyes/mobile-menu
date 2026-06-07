@@ -26,8 +26,7 @@ const pulse = keyframes`
 `;
 
 const Skeleton = styled.div`
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'};
+  background: ${({ theme }) => theme.colors.secondaryBackground};
   border-radius: ${({ radius = '4px' }) => radius};
   width: ${({ width = '100%' }) => width};
   height: ${({ height = '1em' }) => height};
@@ -47,21 +46,10 @@ const Wrapper = styled.section`
   padding: 8rem 2rem 4rem;
   background-color: ${({ theme }) => theme.colors.background};
   background-image:
-    linear-gradient(
-      ${({ theme }) =>
-          theme.mode === 'dark'
-            ? 'rgba(255, 255, 255, 0.03)'
-            : 'rgba(0, 0, 0, 0.04)'}
-        1px,
-      transparent 1px
-    ),
+    linear-gradient(${({ theme }) => theme.colors.border} 1px, transparent 1px),
     linear-gradient(
       90deg,
-      ${({ theme }) =>
-          theme.mode === 'dark'
-            ? 'rgba(255, 255, 255, 0.03)'
-            : 'rgba(0, 0, 0, 0.04)'}
-        1px,
+      ${({ theme }) => theme.colors.border} 1px,
       transparent 1px
     );
   background-size: 40px 40px;
@@ -118,9 +106,7 @@ const StackGrid = styled.div`
 const StackPill = styled.span`
   font-size: ${({ theme }) => theme.typography.fontSizes.s2};
   color: ${({ theme }) => theme.colors.textSecondary};
-  border: 1px solid
-    ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0,0,0,0.12)'};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   letter-spacing: 0.02em;

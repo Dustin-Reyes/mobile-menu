@@ -32,7 +32,7 @@ const StyledButton = styled.button`
     (!p.variant || p.variant === 'primary') &&
     `
     background: ${p.theme.colors.primary};
-    color: ${p.theme.colors.onPrimary || '#ffffff'};
+    color: ${p.theme.colors.onPrimary};
     border-color: ${p.theme.colors.primary};
     &:hover:not(:disabled) { opacity: 0.88; }
     &:active:not(:disabled) { opacity: 0.76; }
@@ -42,7 +42,7 @@ const StyledButton = styled.button`
     p.variant === 'secondary' &&
     `
     background: ${p.theme.colors.secondary};
-    color: ${p.theme.colors.onPrimary || '#ffffff'};
+    color: ${p.theme.colors.onPrimary};
     border-color: ${p.theme.colors.secondary};
     &:hover:not(:disabled) { opacity: 0.88; }
     &:active:not(:disabled) { opacity: 0.76; }
