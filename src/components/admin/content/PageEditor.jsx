@@ -22,7 +22,7 @@ import {
 import Button from 'components/ui/Button';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { usePageEditor } from 'hooks/usePageEditor';
-import { FaqItemsEditor } from './ContentFieldEditor';
+import { FaqItemsEditor, ServiceItemsEditor } from './ContentFieldEditor';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -529,6 +529,14 @@ export default function PageEditor({ pageId }) {
                       value={formValues[field.key] ?? []}
                       onChange={(arr) => handleFieldChange(field.key, arr)}
                       disabled={busy}
+                      maxItems={field.maxItems}
+                    />
+                  ) : field.type === 'service-items' ? (
+                    <ServiceItemsEditor
+                      value={formValues[field.key] ?? []}
+                      onChange={(arr) => handleFieldChange(field.key, arr)}
+                      disabled={busy}
+                      maxItems={field.maxItems}
                     />
                   ) : field.type === 'textarea' ? (
                     <FieldTextarea

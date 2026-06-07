@@ -153,8 +153,9 @@ const AddItemBtn = styled.button`
   }
 `;
 
-export function FaqItemsEditor({ value, onChange, disabled }) {
+export function FaqItemsEditor({ value, onChange, disabled, maxItems }) {
   const items = Array.isArray(value) ? value : [];
+  const atLimit = maxItems != null && items.length >= maxItems;
 
   const updateItem = (index, field, text) => {
     const updated = items.map((item, i) =>
@@ -210,8 +211,75 @@ export function FaqItemsEditor({ value, onChange, disabled }) {
           </FaqItemRow>
         </FaqItemCard>
       ))}
-      <AddItemBtn onClick={addItem} disabled={disabled}>
-        ＋ Add FAQ Item
+      <AddItemBtn onClick={addItem} disabled={disabled || atLimit}>
+        {atLimit ? `Max ${maxItems} items reached` : '＋ Add FAQ Item'}
+      </AddItemBtn>
+    </div>
+  );
+}
+
+// ─── Service Items Editor ─────────────────────────────────────────────────────
+
+export function ServiceItemsEditor({ value, onChange, disabled, maxItems }) {
+  const items = Array.isArray(value) ? value : [];
+  const atLimit = maxItems != null && items.length >= maxItems;
+
+  const updateItem = (index, field, text) => {
+    const updated = items.map((item, i) =>
+      i === index ? { ...item, [field]: text } : item,
+    );
+    onChange(updated);
+  };
+
+  const addItem = () => {
+    onChange([...items, { title: '', description: '' }]);
+  };
+
+  const removeItem = (index) => {
+    onChange(items.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div>
+      {items.map((item, index) => (
+        <FaqItemCard key={index}>
+          <FaqItemRow>
+            <FaqItemFields>
+              <div>
+                <FaqItemLabel>Title</FaqItemLabel>
+                <Input
+                  value={item.title ?? ''}
+                  onChange={(e) => updateItem(index, 'title', e.target.value)}
+                  disabled={disabled}
+                  placeholder="Service name…"
+                />
+              </div>
+              <div>
+                <FaqItemLabel>Description</FaqItemLabel>
+                <StyledTextarea
+                  value={item.description ?? ''}
+                  onChange={(e) =>
+                    updateItem(index, 'description', e.target.value)
+                  }
+                  disabled={disabled}
+                  placeholder="Short description…"
+                  style={{ minHeight: 60 }}
+                />
+              </div>
+            </FaqItemFields>
+            <RemoveItemBtn
+              onClick={() => removeItem(index)}
+              disabled={disabled}
+              title="Remove item"
+              aria-label="Remove service item"
+            >
+              ×
+            </RemoveItemBtn>
+          </FaqItemRow>
+        </FaqItemCard>
+      ))}
+      <AddItemBtn onClick={addItem} disabled={disabled || atLimit}>
+        {atLimit ? `Max ${maxItems} items reached` : '＋ Add Service Item'}
       </AddItemBtn>
     </div>
   );
@@ -447,6 +515,14 @@ function DesktopEditor({
                     value={formValues[field.key] ?? []}
                     onChange={(arr) => onFieldChange(field.key, arr)}
                     disabled={isLoading}
+                    maxItems={field.maxItems}
+                  />
+                ) : field.type === 'service-items' ? (
+                  <ServiceItemsEditor
+                    value={formValues[field.key] ?? []}
+                    onChange={(arr) => onFieldChange(field.key, arr)}
+                    disabled={isLoading}
+                    maxItems={field.maxItems}
                   />
                 ) : field.type === 'textarea' ? (
                   <StyledTextarea
@@ -639,7 +715,7 @@ function MobileFieldList({
           <FieldRowLeft>
             <FieldRowName>{field.label}</FieldRowName>
             <FieldRowPreview>
-              {field.type === 'faq-items'
+              {field.type === 'faq-items' || field.type === 'service-items'
                 ? `${(values[field.key] ?? []).length} item${(values[field.key] ?? []).length !== 1 ? 's' : ''}`
                 : (values[field.key] ?? '—')}
             </FieldRowPreview>
@@ -722,8 +798,11 @@ function MobileFieldEdit({
 }) {
   const fieldDef = schema.fields.find((f) => f.key === selectedField);
   const isFaqItems = fieldDef?.type === 'faq-items';
+  const isServiceItems = fieldDef?.type === 'service-items';
+  const isArrayField = isFaqItems || isServiceItems;
   const currentSaved =
-    allLocaleContent[selectedLocale]?.[selectedField] ?? (isFaqItems ? [] : '');
+    allLocaleContent[selectedLocale]?.[selectedField] ??
+    (isArrayField ? [] : '');
   const [inputValue, setInputValue] = useState(currentSaved);
 
   useEffect(() => {
@@ -743,7 +822,7 @@ function MobileFieldEdit({
       </MobileHeader>
 
       <FieldEditContent>
-        {!isFaqItems && (
+        {!isArrayField && (
           <>
             <SectionTitle>Current saved value</SectionTitle>
             <SavedPreview>{currentSaved || '—'}</SavedPreview>
@@ -756,6 +835,14 @@ function MobileFieldEdit({
             value={inputValue}
             onChange={setInputValue}
             disabled={false}
+            maxItems={fieldDef.maxItems}
+          />
+        ) : isServiceItems ? (
+          <ServiceItemsEditor
+            value={inputValue}
+            onChange={setInputValue}
+            disabled={false}
+            maxItems={fieldDef.maxItems}
           />
         ) : fieldDef.type === 'textarea' ? (
           <StyledTextarea
@@ -771,7 +858,7 @@ function MobileFieldEdit({
           />
         )}
 
-        {!isFaqItems && otherLocales.length > 0 && (
+        {!isArrayField && otherLocales.length > 0 && (
           <>
             <SectionTitle>Other locales</SectionTitle>
             {otherLocales.map((locale) => (

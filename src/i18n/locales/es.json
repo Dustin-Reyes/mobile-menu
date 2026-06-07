@@ -41,6 +41,23 @@
     "phoneLabel": "Teléfono",
     "addressLabel": "Dirección"
   },
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Lo que podemos hacer por ti",
+    "ctaText": "Más Información",
+    "fastDelivery": {
+      "title": "Entrega Rápida",
+      "description": "Tiempos de entrega rápidos sin comprometer la calidad."
+    },
+    "customDesign": {
+      "title": "Diseño Personalizado",
+      "description": "Soluciones a medida que coinciden con tu marca y necesidades."
+    },
+    "expertSupport": {
+      "title": "Soporte Experto",
+      "description": "Soporte dedicado de nuestro equipo experimentado."
+    }
+  },
   "nav": {
     "getAQuote": "Obtener Cotización",
     "home": "Inicio",
