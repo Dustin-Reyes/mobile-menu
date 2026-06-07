@@ -346,7 +346,6 @@ const Footer = styled.div`
 
   @media (max-width: 768px) {
     left: 0;
-    bottom: 56px;
   }
 `;
 
