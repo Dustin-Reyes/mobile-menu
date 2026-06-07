@@ -6,12 +6,17 @@ import { getUserStatus, getProviderLabel } from 'utils/admin/userHelpers';
 
 const DetailProfile = styled.div`
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
   padding: 20px;
   background: rgba(255, 255, 255, 0.025);
   border-radius: ${(p) => p.theme.borderRadius.s2}
     ${(p) => p.theme.borderRadius.s2} 0 0;
+`;
+
+const ProfileTopRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
 `;
 
 const AvatarContainer = styled.div`
@@ -53,9 +58,8 @@ const DetailAvatarWrap = styled.div`
   border: 2px solid ${(p) => p.theme.colors.primary}20;
 
   @media (max-width: 768px) {
-    width: 48px;
-    height: 48px;
-    font-size: ${(p) => p.theme.typography.fontSizes.s3};
+    width: 60px;
+    height: 60px;
   }
 `;
 
@@ -147,13 +151,9 @@ const DetailBadges = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  padding: 10px 20px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-
-  @media (max-width: 768px) {
-    justify-content: center;
-    padding: 10px 16px;
-  }
 `;
 
 const RoleBadge = styled.span`
@@ -224,72 +224,73 @@ export default function UserProfileHeader({
 
   return (
     <DetailProfile>
-      <AvatarContainer>
-        <DetailAvatarWrap>
-          {targetUser.photoURL ? (
-            <AvatarImage
-              src={targetUser.photoURL}
-              alt=""
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            getUserInitials(targetUser.email)
-          )}
-        </DetailAvatarWrap>
-        <StatusDot $disabled={status === 'disabled'} />
-      </AvatarContainer>
-
-      <DetailInfo>
-        {editingName ? (
-          <NameEditForm onSubmit={onSaveName}>
-            <NameEditInput
-              value={displayName}
-              onChange={onDisplayNameChange}
-              placeholder="Display name"
-              autoFocus
-            />
-            <IconButton type="submit" disabled={savingName} title="Save">
-              <Check size={14} />
-            </IconButton>
-            <IconButton
-              type="button"
-              $danger
-              onClick={onCancelEdit}
-              title="Cancel"
-            >
-              <X size={14} />
-            </IconButton>
-          </NameEditForm>
-        ) : (
-          <NameRow>
-            {targetUser.displayName ? (
-              <NameDisplay>{targetUser.displayName}</NameDisplay>
+      <ProfileTopRow>
+        <AvatarContainer>
+          <DetailAvatarWrap>
+            {targetUser.photoURL ? (
+              <AvatarImage
+                src={targetUser.photoURL}
+                alt=""
+                referrerPolicy="no-referrer"
+              />
             ) : (
-              <NamePlaceholder>No display name</NamePlaceholder>
+              getUserInitials(targetUser.email)
             )}
-            {canEdit && (
-              <EditNameButton onClick={onEditName} title="Edit display name">
-                <Pencil size={11} />
-              </EditNameButton>
-            )}
-          </NameRow>
-        )}
-        <DetailEmail>{targetUser.email}</DetailEmail>
-        <DetailBadges>
-          {targetUser.role && (
-            <RoleBadge>
-              <ShieldCheck size={10} />
-              {ROLE_LABELS[targetUser.role] ?? targetUser.role}
-            </RoleBadge>
+          </DetailAvatarWrap>
+          <StatusDot $disabled={status === 'disabled'} />
+        </AvatarContainer>
+
+        <DetailInfo>
+          {editingName ? (
+            <NameEditForm onSubmit={onSaveName}>
+              <NameEditInput
+                value={displayName}
+                onChange={onDisplayNameChange}
+                placeholder="Display name"
+                autoFocus
+              />
+              <IconButton type="submit" disabled={savingName} title="Save">
+                <Check size={14} />
+              </IconButton>
+              <IconButton
+                type="button"
+                $danger
+                onClick={onCancelEdit}
+                title="Cancel"
+              >
+                <X size={14} />
+              </IconButton>
+            </NameEditForm>
+          ) : (
+            <NameRow>
+              {targetUser.displayName ? (
+                <NameDisplay>{targetUser.displayName}</NameDisplay>
+              ) : (
+                <NamePlaceholder>No display name</NamePlaceholder>
+              )}
+              {canEdit && (
+                <EditNameButton onClick={onEditName} title="Edit display name">
+                  <Pencil size={11} />
+                </EditNameButton>
+              )}
+            </NameRow>
           )}
-          <ProviderBadge>
-            {getProviderLabel(targetUser.providers)}
-          </ProviderBadge>
-          <StatusBadge $disabled={status === 'disabled'}>
-            {status === 'disabled' ? 'Disabled' : 'Active'}
-          </StatusBadge>
-        </DetailBadges>
-      </DetailInfo>
+          <DetailEmail>{targetUser.email}</DetailEmail>
+        </DetailInfo>
+      </ProfileTopRow>
+
+      <DetailBadges>
+        {targetUser.role && (
+          <RoleBadge>
+            <ShieldCheck size={10} />
+            {ROLE_LABELS[targetUser.role] ?? targetUser.role}
+          </RoleBadge>
+        )}
+        <ProviderBadge>{getProviderLabel(targetUser.providers)}</ProviderBadge>
+        <StatusBadge $disabled={status === 'disabled'}>
+          {status === 'disabled' ? 'Disabled' : 'Active'}
+        </StatusBadge>
+      </DetailBadges>
     </DetailProfile>
   );
 }
