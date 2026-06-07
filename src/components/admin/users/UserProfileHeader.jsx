@@ -1,4 +1,4 @@
-import { ShieldCheck, KeyRound } from 'lucide-react';
+import { ShieldCheck, KeyRound, Pencil } from 'lucide-react';
 import styled from '@emotion/styled';
 import { ROLE_LABELS } from 'utils/roleHelpers';
 import { getUserInitials } from 'utils/userHelpers';
@@ -17,12 +17,15 @@ const EditButton = styled.button`
   position: absolute;
   top: 14px;
   right: 14px;
-  padding: 4px 10px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.45);
   border-radius: ${(p) => p.theme.borderRadius.s1};
-  color: rgba(255, 255, 255, 0.45);
-  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: #f59e0b;
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-family: inherit;
   cursor: pointer;
   transition:
@@ -31,9 +34,9 @@ const EditButton = styled.button`
     background ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    color: rgba(255, 255, 255, 0.85);
-    border-color: rgba(255, 255, 255, 0.28);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.7);
+    color: #fbbf24;
   }
 `;
 
@@ -180,6 +183,7 @@ export default function UserProfileHeader({
     <DetailProfile>
       {canEdit && !editing && (
         <EditButton type="button" onClick={onEdit}>
+          <Pencil size={13} />
           Edit
         </EditButton>
       )}
