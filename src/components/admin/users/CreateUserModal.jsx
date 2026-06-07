@@ -282,6 +282,12 @@ const CheckboxText = styled.span`
   line-height: 1.4;
 `;
 
+const CheckboxSubtext = styled.span`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.3;
+`;
+
 const ModalActions = styled.div`
   display: flex;
   gap: 10px;
@@ -451,9 +457,12 @@ export default function CreateUserModal({
                   setForm((f) => ({ ...f, sendWelcomeEmail: e.target.checked }))
                 }
               />
-              <CheckboxText>
-                Send password reset email — lets user set their own password
-              </CheckboxText>
+              <div>
+                <CheckboxText>Send password reset email</CheckboxText>
+                <CheckboxSubtext>
+                  Lets user set their own password
+                </CheckboxSubtext>
+              </div>
             </CheckboxRow>
 
             <ModalActions>
