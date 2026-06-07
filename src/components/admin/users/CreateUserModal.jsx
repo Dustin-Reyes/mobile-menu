@@ -299,6 +299,22 @@ const ModalActions = styled.div`
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   margin-top: 8px;
+
+  @media (max-width: 768px) {
+    justify-content: stretch;
+
+    button {
+      flex: 1;
+    }
+
+    button[type='button'] {
+      flex: 1;
+    }
+
+    button[type='submit'] {
+      flex: 2;
+    }
+  }
 `;
 
 // ─── Component ───────────────────────────────────────────────────────────────────
