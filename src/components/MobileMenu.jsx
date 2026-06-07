@@ -170,14 +170,6 @@ const UserEmail = styled.span`
   white-space: nowrap;
 `;
 
-// ─── Nav section ──────────────────────────────────────────────────────────────
-
-const Divider = styled.div`
-  height: 1px;
-  background: ${({ theme }) => theme.colors.border};
-  margin: 0 0 12px;
-`;
-
 // ─── Simple nav item ──────────────────────────────────────────────────────────
 
 const NavItem = styled(RadixDialog.Close)`
@@ -366,7 +358,7 @@ export default function MobileMenu() {
                     <ChevronRight size={16} />
                   </UserChevron>
                 </UserInfo>
-                <Divider />
+                <Separator />
               </>
             )}
 
