@@ -1,15 +1,40 @@
-import { Pencil, ShieldCheck, Check, X, KeyRound } from 'lucide-react';
+import { ShieldCheck, Check, X, KeyRound } from 'lucide-react';
 import styled from '@emotion/styled';
 import { ROLE_LABELS } from 'utils/roleHelpers';
 import { getUserInitials } from 'utils/userHelpers';
 
 const DetailProfile = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 20px;
   background: rgba(255, 255, 255, 0.025);
   border-radius: ${(p) => p.theme.borderRadius.s2}
     ${(p) => p.theme.borderRadius.s2} 0 0;
+`;
+
+const EditButton = styled.button`
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  color: rgba(255, 255, 255, 0.45);
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    color ${(p) => p.theme.transitions.fast},
+    border-color ${(p) => p.theme.transitions.fast},
+    background ${(p) => p.theme.transitions.fast};
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.05);
+  }
 `;
 
 const ProfileTopRow = styled.div`
@@ -101,25 +126,6 @@ const NamePlaceholder = styled(NameDisplay)`
   font-weight: ${(p) => p.theme.typography.fontWeights.normal};
 `;
 
-const EditNameButton = styled.button`
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  padding: 2px;
-  display: flex;
-  flex-shrink: 0;
-  border-radius: ${(p) => p.theme.borderRadius.s1};
-  transition:
-    color ${(p) => p.theme.transitions.fast},
-    background ${(p) => p.theme.transitions.fast};
-
-  &:hover {
-    color: rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.06);
-  }
-`;
-
 const NameEditForm = styled.form`
   display: flex;
   align-items: center;
@@ -206,6 +212,11 @@ export default function UserProfileHeader({
 
   return (
     <DetailProfile>
+      {canEdit && !editingName && (
+        <EditButton type="button" onClick={onEditName}>
+          Edit
+        </EditButton>
+      )}
       <ProfileTopRow>
         <AvatarContainer>
           <DetailAvatarWrap>
@@ -251,11 +262,6 @@ export default function UserProfileHeader({
                 <NameDisplay>{targetUser.displayName}</NameDisplay>
               ) : (
                 <NamePlaceholder>No display name</NamePlaceholder>
-              )}
-              {canEdit && (
-                <EditNameButton onClick={onEditName} title="Edit display name">
-                  <Pencil size={11} />
-                </EditNameButton>
               )}
             </NameRow>
           )}
