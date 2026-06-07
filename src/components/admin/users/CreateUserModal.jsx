@@ -283,6 +283,8 @@ const CheckboxText = styled.span`
 `;
 
 const CheckboxSubtext = styled.span`
+  display: block;
+  margin-top: 2px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: rgba(255, 255, 255, 0.35);
   line-height: 1.3;
