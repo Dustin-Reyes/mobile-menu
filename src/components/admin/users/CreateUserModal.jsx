@@ -363,7 +363,7 @@ export default function CreateUserModal({
             <FormRow>
               <FormGroup>
                 <FormLabel htmlFor="new-display-name">
-                  Display Name <OptionalLabel>optional</OptionalLabel>
+                  Display Name <OptionalLabel>required</OptionalLabel>
                 </FormLabel>
                 <FormInput
                   id="new-display-name"
@@ -373,6 +373,7 @@ export default function CreateUserModal({
                   onChange={(e) =>
                     setForm((f) => ({ ...f, displayName: e.target.value }))
                   }
+                  required
                   autoComplete="off"
                 />
               </FormGroup>
