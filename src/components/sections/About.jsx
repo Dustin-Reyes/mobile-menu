@@ -93,8 +93,7 @@ const StatLabel = styled.div`
 const PlaceholderImage = styled.div`
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'};
+  background: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.borderRadius.s2};
   display: flex;
   align-items: center;

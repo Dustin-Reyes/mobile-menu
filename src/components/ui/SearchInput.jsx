@@ -16,7 +16,7 @@ const LeadingIcon = styled.div`
   align-items: center;
   pointer-events: none;
   color: ${(p) =>
-    p.$focused ? p.theme.colors.primary : 'rgba(255,255,255,0.25)'};
+    p.$focused ? p.theme.colors.primary : p.theme.colors.textMuted};
   transition: color ${(p) => p.theme.transitions.fast};
 `;
 
@@ -24,8 +24,8 @@ const StyledInput = styled.input`
   width: 100%;
   height: ${(p) => (p.$size === 'sm' ? '34px' : '40px')};
   padding: 0 ${(p) => (p.$hasClear ? '36px' : '12px')} 0 38px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   color: ${(p) => p.theme.colors.text};
   font-size: ${(p) =>
@@ -51,17 +51,17 @@ const StyledInput = styled.input`
   }
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.22);
+    color: ${(p) => p.theme.colors.textMuted};
   }
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.05);
+    border-color: ${(p) => p.theme.colors.secondaryBorder};
+    background: ${(p) => p.theme.colors.secondaryBackground};
   }
 
   &:focus {
     border-color: ${(p) => p.theme.colors.primary}60;
-    background: rgba(255, 255, 255, 0.05);
+    background: ${(p) => p.theme.colors.secondaryBackground};
     box-shadow: 0 0 0 3px ${(p) => p.theme.colors.primary}14;
   }
 `;
@@ -77,18 +77,18 @@ const ClearButton = styled.button`
   width: 20px;
   height: 20px;
   padding: 0;
-  background: rgba(255, 255, 255, 0.08);
+  background: ${(p) => p.theme.colors.secondaryBackground};
   border: none;
   border-radius: 50%;
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   cursor: pointer;
   transition:
     background ${(p) => p.theme.transitions.fast},
     color ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.8);
+    background: ${(p) => p.theme.colors.secondaryBorder};
+    color: ${(p) => p.theme.colors.text};
   }
 
   &:focus-visible {

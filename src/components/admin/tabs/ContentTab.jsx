@@ -20,7 +20,7 @@ const MobilePagePicker = styled.div`
     gap: 8px;
     padding: 10px 16px;
     margin-top: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid ${(p) => p.theme.colors.border};
     flex-shrink: 0;
   }
 `;
@@ -28,8 +28,8 @@ const MobilePagePicker = styled.div`
 const PageSelect = styled.select`
   flex: 1;
   padding: 7px 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${(p) => p.theme.colors.secondaryBackground};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   color: ${(p) => p.theme.colors.text};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};

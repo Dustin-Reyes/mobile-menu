@@ -8,7 +8,7 @@ import Button from 'components/ui/Button';
 
 const EditForm = styled.form`
   padding: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -22,7 +22,7 @@ const FieldGroup = styled.div`
 
 const FieldLabel = styled.label`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};

@@ -29,7 +29,7 @@ const BottomTab = styled.button`
   padding: 6px 0;
   background: transparent;
   border: none;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid ${(p) => p.theme.colors.border};
   cursor: pointer;
   font-family: inherit;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};

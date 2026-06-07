@@ -54,8 +54,7 @@ const Input = styled.input`
 const Button = styled.button`
   padding: 0.75rem 1.25rem;
   background: ${(props) => props.theme.colors.primary};
-  color: ${(props) =>
-    props.theme.colors.surface === '#ffffff' ? '#ffffff' : '#111827'};
+  color: ${(props) => props.theme.colors.onPrimary};
   border: none;
   border-radius: ${(props) => props.theme.borderRadius.s2};
   font-size: ${(props) => props.theme.typography.fontSizes.s4};
@@ -91,6 +90,11 @@ const CloseButton = styled.button`
   }
 `;
 
+const Hint = styled.span`
+  font-size: 0.8rem;
+  color: ${(props) => props.theme.colors.textMuted};
+`;
+
 // ─── DemoWidget ───────────────────────────────────────────────────────────────
 
 function DemoWidget() {
@@ -122,9 +126,7 @@ function DemoWidget() {
           aria-describedby="demo-hint"
         />
       </FieldLabel>
-      <span id="demo-hint" style={{ fontSize: '0.8rem', color: '#888' }}>
-        Press Enter or click Submit
-      </span>
+      <Hint id="demo-hint">Press Enter or click Submit</Hint>
       <Button
         type="button"
         onClick={handleSubmit}

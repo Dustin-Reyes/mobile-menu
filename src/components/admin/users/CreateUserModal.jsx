@@ -34,7 +34,7 @@ const ModalHeader = styled.div`
   align-items: center;
   gap: 12px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
   margin-bottom: 20px;
 `;
 
@@ -56,7 +56,7 @@ const HeaderText = styled.div`
 const HeaderSubtitle = styled.p`
   margin: 0;
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-top: 2px;
 `;
 
@@ -85,12 +85,12 @@ const FormGroup = styled.div`
 const FormLabel = styled.label`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
-  color: rgba(255, 255, 255, 0.55);
+  color: ${(p) => p.theme.colors.textSecondary};
   letter-spacing: 0.02em;
 `;
 
 const OptionalLabel = styled.span`
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   font-weight: normal;
   margin-left: 4px;
 `;
@@ -99,8 +99,8 @@ const FormInput = styled.input`
   width: 100%;
   height: 42px;
   padding: 0 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   color: ${(p) => p.theme.colors.text};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
@@ -112,17 +112,17 @@ const FormInput = styled.input`
     box-shadow ${(p) => p.theme.transitions.fast};
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.25);
+    color: ${(p) => p.theme.colors.textMuted};
   }
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.16);
-    background: rgba(255, 255, 255, 0.05);
+    border-color: ${(p) => p.theme.colors.secondaryBorder};
+    background: ${(p) => p.theme.colors.secondaryBackground};
   }
 
   &:focus {
     border-color: ${(p) => p.theme.colors.primary}60;
-    background: rgba(255, 255, 255, 0.05);
+    background: ${(p) => p.theme.colors.secondaryBackground};
     box-shadow: 0 0 0 3px ${(p) => p.theme.colors.primary}14;
   }
 
@@ -136,8 +136,8 @@ const FormSelect = styled.select`
   width: 100%;
   height: 42px;
   padding: 0 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   color: ${(p) => p.theme.colors.text};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
@@ -155,23 +155,23 @@ const FormSelect = styled.select`
   padding-right: 36px;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.25);
+    color: ${(p) => p.theme.colors.textMuted};
   }
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.16);
-    background: rgba(255, 255, 255, 0.05);
+    border-color: ${(p) => p.theme.colors.secondaryBorder};
+    background: ${(p) => p.theme.colors.secondaryBackground};
   }
 
   &:focus {
     border-color: ${(p) => p.theme.colors.primary}60;
-    background: rgba(255, 255, 255, 0.05);
+    background: ${(p) => p.theme.colors.secondaryBackground};
     box-shadow: 0 0 0 3px ${(p) => p.theme.colors.primary}14;
   }
 
   option {
-    background: #1a1a1a;
-    color: #fff;
+    background: ${(p) => p.theme.colors.surface};
+    color: ${(p) => p.theme.colors.text};
   }
 `;
 
@@ -185,7 +185,7 @@ const PasswordStrengthContainer = styled.div`
 const StrengthBar = styled.div`
   height: 4px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: ${(p) => p.theme.colors.secondaryBackground};
   overflow: hidden;
 `;
 
@@ -194,12 +194,12 @@ const StrengthFill = styled.div`
   border-radius: 9999px;
   background: ${(p) =>
     p.$strength === 'strong'
-      ? '#4ade80'
+      ? p.theme.colors.success
       : p.$strength === 'medium'
-        ? '#fbbf24'
+        ? p.theme.colors.warning
         : p.$strength === 'weak'
-          ? '#f87171'
-          : 'rgba(255,255,255,0.1)'};
+          ? p.theme.colors.error
+          : p.theme.colors.secondaryBackground};
   width: ${(p) =>
     p.$strength === 'strong'
       ? '100%'
@@ -215,12 +215,12 @@ const StrengthLabel = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: ${(p) =>
     p.$strength === 'strong'
-      ? '#4ade80'
+      ? p.theme.colors.success
       : p.$strength === 'medium'
-        ? '#fbbf24'
+        ? p.theme.colors.warning
         : p.$strength === 'weak'
-          ? '#f87171'
-          : 'rgba(255,255,255,0.25)'};
+          ? p.theme.colors.error
+          : p.theme.colors.textMuted};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
 `;
 
@@ -229,15 +229,15 @@ const CheckboxRow = styled.label`
   align-items: center;
   gap: 10px;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${(p) => p.theme.colors.surface};
+  border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
   cursor: pointer;
   transition: all ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: ${(p) => p.theme.colors.secondaryBackground};
+    border-color: ${(p) => p.theme.colors.border};
   }
 `;
 
@@ -246,7 +246,7 @@ const CheckboxInput = styled.input`
   width: 18px;
   height: 18px;
   min-width: 18px;
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border: 1.5px solid ${(p) => p.theme.colors.secondaryBorder};
   border-radius: 4px;
   background: transparent;
   cursor: pointer;
@@ -280,7 +280,7 @@ const CheckboxInput = styled.input`
 
 const CheckboxText = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.6);
+  color: ${(p) => p.theme.colors.textSecondary};
   line-height: 1.4;
 `;
 
@@ -288,7 +288,7 @@ const CheckboxSubtext = styled.span`
   display: block;
   margin-top: 2px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.35);
+  color: ${(p) => p.theme.colors.textMuted};
   line-height: 1.3;
 `;
 
@@ -297,7 +297,7 @@ const ModalActions = styled.div`
   gap: 10px;
   justify-content: flex-end;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
   margin-top: 8px;
 
   @media (max-width: 768px) {

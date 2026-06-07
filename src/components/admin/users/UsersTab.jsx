@@ -40,7 +40,7 @@ const UserRow = styled.div`
   gap: 12px;
   padding: 10px 14px;
   border-radius: ${(p) => p.theme.borderRadius.s1};
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid ${(p) => p.theme.colors.border};
   cursor: pointer;
   transition: background ${(p) => p.theme.transitions.fast};
 
@@ -49,7 +49,7 @@ const UserRow = styled.div`
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: ${(p) => p.theme.colors.secondaryBackground};
   }
 `;
 
@@ -89,7 +89,7 @@ const UserPrimary = styled.div`
 
 const UserSecondary = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -117,7 +117,7 @@ const MobileRole = styled.div`
   @media (max-width: 1024px) {
     display: block;
     font-size: ${(p) => p.theme.typography.fontSizes.s2};
-    color: rgba(255, 255, 255, 0.3);
+    color: ${(p) => p.theme.colors.textMuted};
     margin-top: 2px;
   }
 `;
@@ -128,7 +128,7 @@ const MobileChevron = styled.div`
   @media (max-width: 1024px) {
     display: flex;
     align-items: center;
-    color: rgba(255, 255, 255, 0.2);
+    color: ${(p) => p.theme.colors.textMuted};
     flex-shrink: 0;
   }
 `;
@@ -158,10 +158,14 @@ const StatusBadge = styled.span`
   border-radius: 9999px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   background: ${(p) =>
-    p.$disabled ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};
-  color: ${(p) => (p.$disabled ? '#f87171' : '#4ade80')};
+    p.$disabled ? `${p.theme.colors.error}1a` : `${p.theme.colors.success}1a`};
+  color: ${(p) =>
+    p.$disabled ? p.theme.colors.error : p.theme.colors.success};
   border: 1px solid
-    ${(p) => (p.$disabled ? 'rgba(239,68,68,0.2)' : 'rgba(34,197,94,0.2)')};
+    ${(p) =>
+      p.$disabled
+        ? `${p.theme.colors.error}33`
+        : `${p.theme.colors.success}33`};
   white-space: nowrap;
 `;
 
@@ -171,9 +175,9 @@ const ProviderBadge = styled.span`
   padding: 2px 8px;
   border-radius: 9999px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${(p) => p.theme.colors.surface};
+  color: ${(p) => p.theme.colors.textMuted};
+  border: 1px solid ${(p) => p.theme.colors.border};
   white-space: nowrap;
 `;
 
@@ -183,13 +187,13 @@ const EmptyState = styled.div`
   align-items: center;
   gap: 8px;
   padding: 40px 20px;
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   text-align: center;
 `;
 
 const ErrorState = styled(EmptyState)`
-  color: #f87171;
+  color: ${(p) => p.theme.colors.error};
 `;
 
 const RetryButton = styled(Button)`

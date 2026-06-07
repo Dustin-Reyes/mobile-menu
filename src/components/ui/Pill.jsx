@@ -37,7 +37,7 @@ const variantStyles = (p) => {
     primary: {
       solid: `
         background: ${colors.primary};
-        color: ${colors.onPrimary || '#ffffff'};
+        color: ${colors.onPrimary};
         border-color: ${colors.primary};
       `,
       subtle: `
@@ -54,7 +54,7 @@ const variantStyles = (p) => {
     secondary: {
       solid: `
         background: ${colors.secondary};
-        color: ${colors.onPrimary || '#ffffff'};
+        color: ${colors.onPrimary};
         border-color: ${colors.secondary};
       `,
       subtle: `
@@ -71,7 +71,7 @@ const variantStyles = (p) => {
     success: {
       solid: `
         background: ${colors.success};
-        color: ${colors.onPrimary || '#ffffff'};
+        color: ${colors.onPrimary};
         border-color: ${colors.success};
       `,
       subtle: `
@@ -105,7 +105,7 @@ const variantStyles = (p) => {
     error: {
       solid: `
         background: ${colors.error};
-        color: ${colors.onPrimary || '#ffffff'};
+        color: ${colors.onPrimary};
         border-color: ${colors.error};
       `,
       subtle: `

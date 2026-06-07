@@ -38,7 +38,7 @@ const PositionButton = styled.button`
     ${(p) => (p.active ? p.theme.colors.primary : p.theme.colors.border)};
   background: ${(p) =>
     p.active ? p.theme.colors.primary : p.theme.colors.surface};
-  color: ${(p) => (p.active ? '#fff' : p.theme.colors.text)};
+  color: ${(p) => (p.active ? p.theme.colors.onPrimary : p.theme.colors.text)};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-family: ${(p) => p.theme.typography.fontFamilies.mono};
   cursor: pointer;

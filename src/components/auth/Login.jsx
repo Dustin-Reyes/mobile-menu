@@ -21,7 +21,7 @@ const FormGroup = styled.div`
 const FormLabel = styled.label`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
-  color: rgba(255, 255, 255, 0.5);
+  color: ${(p) => p.theme.colors.textSecondary};
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 8px;
@@ -48,23 +48,8 @@ const Wrapper = styled.div`
   padding: 1rem;
   background-color: ${(p) => p.theme.colors.background};
   background-image:
-    linear-gradient(
-      ${(p) =>
-          p.theme.mode === 'dark'
-            ? 'rgba(100, 100, 100, 0.15)'
-            : 'rgba(0, 0, 0, 0.05)'}
-        1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      ${(p) =>
-          p.theme.mode === 'dark'
-            ? 'rgba(100, 100, 100, 0.15)'
-            : 'rgba(0, 0, 0, 0.05)'}
-        1px,
-      transparent 1px
-    );
+    linear-gradient(${(p) => p.theme.colors.border} 1px, transparent 1px),
+    linear-gradient(90deg, ${(p) => p.theme.colors.border} 1px, transparent 1px);
   background-size: 40px 40px;
 
   @media (min-width: ${(p) => p.theme.breakpoints.tablet}) {
@@ -122,8 +107,8 @@ const ErrorMessage = styled.div`
   padding: 12px;
   background: ${(p) =>
     p.theme.mode === 'dark'
-      ? 'rgba(239, 68, 68, 0.1)'
-      : 'rgba(239, 68, 68, 0.08)'};
+      ? `${p.theme.colors.error}1a`
+      : `${p.theme.colors.error}14`};
   border-radius: ${(p) => p.theme.borderRadius.s2};
   border: 1px solid ${(p) => p.theme.colors.error}33;
   text-align: center;

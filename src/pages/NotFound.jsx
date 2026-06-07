@@ -76,7 +76,7 @@ const PrimaryLink = styled(Link)`
   justify-content: center;
   padding: 1rem 2rem;
   background: ${(props) => props.theme.colors.primary};
-  color: ${(props) => props.theme.colors.onPrimary || '#ffffff'};
+  color: ${(props) => props.theme.colors.onPrimary};
   border-radius: ${(props) => props.theme.borderRadius.s3};
   font-weight: ${(props) => props.theme.typography.fontWeights.semibold};
   font-size: ${(props) => props.theme.typography.fontSizes.s4};

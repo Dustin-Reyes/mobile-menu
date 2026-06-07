@@ -10,21 +10,10 @@ const Wrapper = styled.section`
   padding: 8rem 2rem 4rem;
   background-color: ${({ theme }) => theme.colors.background};
   background-image:
-    linear-gradient(
-      ${({ theme }) =>
-          theme.mode === 'dark'
-            ? 'rgba(255, 255, 255, 0.03)'
-            : 'rgba(0, 0, 0, 0.04)'}
-        1px,
-      transparent 1px
-    ),
+    linear-gradient(${({ theme }) => theme.colors.border} 1px, transparent 1px),
     linear-gradient(
       90deg,
-      ${({ theme }) =>
-          theme.mode === 'dark'
-            ? 'rgba(255, 255, 255, 0.03)'
-            : 'rgba(0, 0, 0, 0.04)'}
-        1px,
+      ${({ theme }) => theme.colors.border} 1px,
       transparent 1px
     );
   background-size: 40px 40px;

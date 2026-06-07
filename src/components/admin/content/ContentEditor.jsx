@@ -22,7 +22,7 @@ const SplitPane = styled.div`
 const ListPane = styled.div`
   width: 220px;
   flex-shrink: 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid ${(p) => p.theme.colors.border};
   overflow-y: auto;
 `;
 
@@ -39,7 +39,7 @@ const Placeholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
 `;
 

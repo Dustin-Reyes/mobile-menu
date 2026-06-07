@@ -44,7 +44,7 @@ export const SwitchThumb = styled(RadixSwitch.Thumb)`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(p) => p.theme.colors.onPrimary || '#ffffff'};
+  color: ${(p) => p.theme.colors.onPrimary};
   box-shadow: ${(p) => p.theme.shadows.s0};
 
   &[data-state='checked'] {

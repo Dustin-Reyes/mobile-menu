@@ -11,7 +11,7 @@ const SectionLabel = styled.div`
   font-weight: ${(p) => p.theme.typography.fontWeights.bold};
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   padding: 12px 16px 6px;
 `;
 
@@ -30,7 +30,7 @@ const Row = styled('button', { shouldForwardProp: (p) => p !== 'active' })`
 
   &:hover {
     background: ${(p) =>
-      p.active ? `${p.theme.colors.primary}14` : 'rgba(255, 255, 255, 0.03)'};
+      p.active ? `${p.theme.colors.primary}14` : p.theme.colors.surface};
   }
 `;
 
@@ -48,12 +48,12 @@ const RowName = styled('span', { shouldForwardProp: (p) => p !== 'active' })`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
   color: ${(p) =>
-    p.active ? p.theme.colors.primary : 'rgba(255, 255, 255, 0.6)'};
+    p.active ? p.theme.colors.primary : p.theme.colors.textSecondary};
 `;
 
 const Chevron = styled('span', { shouldForwardProp: (p) => p !== 'open' })`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   flex-shrink: 0;
   display: inline-block;
   transform: ${(p) => (p.open ? 'rotate(90deg)' : 'rotate(0deg)')};
@@ -77,7 +77,7 @@ const SectionRow = styled('button', {
 
   &:hover {
     background: ${(p) =>
-      p.active ? `${p.theme.colors.primary}14` : 'rgba(255, 255, 255, 0.03)'};
+      p.active ? `${p.theme.colors.primary}14` : p.theme.colors.surface};
   }
 `;
 
@@ -99,7 +99,7 @@ const SectionRowName = styled('span', {
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
   color: ${(p) =>
-    p.active ? p.theme.colors.primary : 'rgba(255, 255, 255, 0.45)'};
+    p.active ? p.theme.colors.primary : p.theme.colors.textMuted};
   padding-left: 20px;
 `;
 

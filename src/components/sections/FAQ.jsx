@@ -47,11 +47,8 @@ const FAQItem = styled.div`
 const FAQQuestion = styled.button`
   width: 100%;
   padding: 1.5rem;
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'};
-  border: 1px solid
-    ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'};
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.s2};
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.typography.fontSizes.s3};
@@ -67,19 +64,15 @@ const FAQQuestion = styled.button`
     border-color ${({ theme }) => theme.transitions.fast};
 
   &:hover {
-    background: ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+    background: ${({ theme }) => theme.colors.secondaryBackground};
     border-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
 const FAQAnswer = styled.div`
   padding: ${({ isOpen }) => (isOpen ? '1.5rem' : '0 1.5rem')};
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)'};
-  border: 1px solid
-    ${({ theme }) =>
-      theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'};
+  background: ${({ theme }) => theme.colors.secondaryBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-top: none;
   border-radius: 0 0 ${({ theme }) => theme.borderRadius.s2}
     ${({ theme }) => theme.borderRadius.s2};

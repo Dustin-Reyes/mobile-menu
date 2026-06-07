@@ -6,7 +6,7 @@ export const CompactEmptyState = styled.div`
   align-items: center;
   padding: 20px;
   gap: 5px;
-  color: rgba(255, 255, 255, 0.25);
+  color: ${(p) => p.theme.colors.textMuted};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
 `;
 

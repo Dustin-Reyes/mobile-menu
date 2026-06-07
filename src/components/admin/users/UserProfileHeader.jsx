@@ -8,7 +8,7 @@ const DetailProfile = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.025);
+  background: ${(p) => p.theme.colors.surface};
   border-radius: ${(p) => p.theme.borderRadius.s2}
     ${(p) => p.theme.borderRadius.s2} 0 0;
 `;
@@ -21,10 +21,10 @@ const EditButton = styled.button`
   align-items: center;
   gap: 6px;
   padding: 5px 12px;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.45);
+  background: ${(p) => `${p.theme.colors.primary}14`};
+  border: 1px solid ${(p) => `${p.theme.colors.primary}73`};
   border-radius: ${(p) => p.theme.borderRadius.s1};
-  color: #f59e0b;
+  color: ${(p) => p.theme.colors.primary};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-family: inherit;
   cursor: pointer;
@@ -34,9 +34,9 @@ const EditButton = styled.button`
     background ${(p) => p.theme.transitions.fast};
 
   &:hover {
-    background: rgba(245, 158, 11, 0.15);
-    border-color: rgba(245, 158, 11, 0.7);
-    color: #fbbf24;
+    background: ${(p) => `${p.theme.colors.primary}26`};
+    border-color: ${(p) => `${p.theme.colors.primary}b3`};
+    color: ${(p) => p.theme.colors.primary};
   }
 `;
 
@@ -58,14 +58,16 @@ const ProviderDot = styled.div`
   width: 19px;
   height: 19px;
   border-radius: 50%;
-  border: 2px solid rgba(14, 14, 14, 0.9);
+  border: 2px solid ${(p) => p.theme.colors.background};
   display: flex;
   align-items: center;
   justify-content: center;
   background: ${(p) =>
-    p.$provider === 'google' ? '#4285F4' : 'rgba(255,255,255,0.1)'};
+    p.$provider === 'google' ? '#4285F4' : p.theme.colors.surface};
   color: ${(p) =>
-    p.$provider === 'google' ? '#fff' : 'rgba(255,255,255,0.6)'};
+    p.$provider === 'google'
+      ? p.theme.colors.text
+      : p.theme.colors.textSecondary};
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
@@ -123,14 +125,14 @@ const NameDisplay = styled.span`
 `;
 
 const NamePlaceholder = styled(NameDisplay)`
-  color: rgba(255, 255, 255, 0.2);
+  color: ${(p) => p.theme.colors.textMuted};
   font-style: italic;
   font-weight: ${(p) => p.theme.typography.fontWeights.normal};
 `;
 
 const DetailEmail = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  color: rgba(255, 255, 255, 0.35);
+  color: ${(p) => p.theme.colors.textMuted};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -143,7 +145,7 @@ const DetailBadges = styled.div`
   gap: 6px;
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${(p) => p.theme.colors.border};
 `;
 
 const RoleBadge = styled.span`

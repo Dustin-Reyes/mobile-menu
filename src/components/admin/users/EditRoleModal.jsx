@@ -24,7 +24,7 @@ const FormGroup = styled.div`
 const FormLabel = styled.label`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
-  color: rgba(255, 255, 255, 0.5);
+  color: ${(p) => p.theme.colors.textSecondary};
   text-transform: uppercase;
   letter-spacing: 0.06em;
 `;
@@ -63,7 +63,7 @@ const FormContainer = styled.form`
 
 const EmailDescription = styled.p`
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: ${(p) => p.theme.colors.textMuted};
   margin: 0;
 
   @media (max-width: 768px) {

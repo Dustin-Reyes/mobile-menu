@@ -42,7 +42,7 @@ const FormGroup = styled.div`
 const FormLabel = styled.label`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   font-weight: ${(p) => p.theme.typography.fontWeights.medium};
-  color: rgba(255, 255, 255, 0.5);
+  color: ${(p) => p.theme.colors.textSecondary};
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 8px;
@@ -91,14 +91,14 @@ const SettingsLabel = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.3);
+  color: ${(p) => p.theme.colors.textMuted};
   margin-bottom: 2px;
 `;
 
 const SettingsValue = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
   color: ${(p) =>
-    p.hasValue ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.25)'};
+    p.hasValue ? p.theme.colors.text : p.theme.colors.textMuted};
 `;
 
 const motionProps = {
