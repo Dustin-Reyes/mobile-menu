@@ -190,7 +190,7 @@ export default function DashboardTab({
       </SiteIdentityCard>
 
       <ContentCardsGrid>
-        <ContentCard onClick={() => onTabChange('pages')}>
+        <ContentCard onClick={() => onTabChange('content')}>
           {loading ? (
             <Skeleton
               style={{ width: '30px', height: '32px', marginBottom: '6px' }}
@@ -198,7 +198,7 @@ export default function DashboardTab({
           ) : (
             <ContentCardCount>{stats.pages}</ContentCardCount>
           )}
-          <ContentCardLabel>Pages</ContentCardLabel>
+          <ContentCardLabel>Content</ContentCardLabel>
           <ContentCardHint>Manage →</ContentCardHint>
         </ContentCard>
 
