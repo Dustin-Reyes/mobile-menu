@@ -362,10 +362,13 @@ gh issue develop <issue-number> --checkout
 git branch --show-current
 ```
 
-**Branch naming rules:**
+**Naming rules (branches, issues, and PRs):**
 
-- Keep feature branch names **≤ 45 characters** (including issue prefix)
-- Format: `<issue-number>-<short-kebab-summary>`
+- Keep **branch names ≤ 45 characters** (including issue number prefix)
+- Keep **issue titles ≤ 45 characters**
+- Keep **PR titles ≤ 45 characters**
+- Branch format: `<issue-number>-<short-kebab-summary>`
+- Issue/PR format: `type(scope): short description` (conventional commit style)
 - Use concise verbs/nouns (e.g., `193-doc-merge-strategy`, `205-fix-cart-totals`)
 - Avoid filler words, articles, or unnecessary context
 
