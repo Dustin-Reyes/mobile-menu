@@ -1,15 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
-import { Settings, Edit2 } from 'lucide-react';
+import { Edit2 } from 'lucide-react';
 import Button from 'components/ui/Button';
 import Input from 'components/ui/Input';
 import { PageHeader, PageTitle, PageSubtitle } from '../shared/PageHeader';
-import {
-  SectionCard,
-  SectionCardHeader,
-  SectionCardTitle,
-} from '../shared/SectionCard';
+import { SectionCard, SectionCardHeader } from '../shared/SectionCard';
 import { toast } from '@/utils/toast';
 
 const GhostTealButton = styled.button`
@@ -121,16 +117,6 @@ export default function SettingsTab({ settings, updateSettings }) {
     description: '',
     author: '',
     url: '',
-    tagline: '',
-    facebook: '',
-    instagram: '',
-    twitter: '',
-    linkedin: '',
-    github: '',
-    youtube: '',
-    contactPhone: '',
-    contactEmail: '',
-    address: '',
   });
 
   useEffect(() => {
@@ -140,16 +126,6 @@ export default function SettingsTab({ settings, updateSettings }) {
         description: settings.description || '',
         author: settings.author || '',
         url: settings.url || '',
-        tagline: settings.tagline || '',
-        facebook: settings.facebook || '',
-        instagram: settings.instagram || '',
-        twitter: settings.twitter || '',
-        linkedin: settings.linkedin || '',
-        github: settings.github || '',
-        youtube: settings.youtube || '',
-        contactPhone: settings.contactPhone || '',
-        contactEmail: settings.contactEmail || '',
-        address: settings.address || '',
       });
     }
   }, [settings]);
@@ -172,18 +148,8 @@ export default function SettingsTab({ settings, updateSettings }) {
     () => [
       ['Title', settings?.title],
       ['Description', settings?.description],
-      ['Tagline', settings?.tagline],
       ['Author', settings?.author],
       ['URL', settings?.url],
-      ['Facebook', settings?.facebook],
-      ['Instagram', settings?.instagram],
-      ['Twitter', settings?.twitter],
-      ['LinkedIn', settings?.linkedin],
-      ['GitHub', settings?.github],
-      ['YouTube', settings?.youtube],
-      ['Contact Phone', settings?.contactPhone],
-      ['Contact Email', settings?.contactEmail],
-      ['Address', settings?.address],
     ],
     [settings],
   );
@@ -199,10 +165,6 @@ export default function SettingsTab({ settings, updateSettings }) {
 
       <SectionCard>
         <SectionCardHeader>
-          <SectionCardTitle>
-            <Settings size={12} />
-            Site Settings
-          </SectionCardTitle>
           {!editingSettings && (
             <GhostTealButton onClick={() => setEditingSettings(true)}>
               <Edit2 size={12} />
@@ -237,16 +199,6 @@ export default function SettingsTab({ settings, updateSettings }) {
               />
             </FormGroup>
             <FormGroup>
-              <FormLabel>Tagline</FormLabel>
-              <Input
-                value={settingsForm.tagline}
-                onChange={(e) =>
-                  setSettingsForm({ ...settingsForm, tagline: e.target.value })
-                }
-                placeholder="Your tagline"
-              />
-            </FormGroup>
-            <FormGroup>
               <FormLabel>Author</FormLabel>
               <Input
                 value={settingsForm.author}
@@ -267,123 +219,16 @@ export default function SettingsTab({ settings, updateSettings }) {
                 type="url"
               />
             </FormGroup>
-            <FormGroup>
-              <FormLabel>Facebook URL</FormLabel>
-              <Input
-                value={settingsForm.facebook}
-                onChange={(e) =>
-                  setSettingsForm({ ...settingsForm, facebook: e.target.value })
-                }
-                placeholder="https://facebook.com/yourpage"
-                type="url"
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormLabel>Instagram URL</FormLabel>
-              <Input
-                value={settingsForm.instagram}
-                onChange={(e) =>
-                  setSettingsForm({
-                    ...settingsForm,
-                    instagram: e.target.value,
-                  })
-                }
-                placeholder="https://instagram.com/yourhandle"
-                type="url"
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormLabel>Twitter URL</FormLabel>
-              <Input
-                value={settingsForm.twitter}
-                onChange={(e) =>
-                  setSettingsForm({ ...settingsForm, twitter: e.target.value })
-                }
-                placeholder="https://twitter.com/yourhandle"
-                type="url"
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormLabel>LinkedIn URL</FormLabel>
-              <Input
-                value={settingsForm.linkedin}
-                onChange={(e) =>
-                  setSettingsForm({ ...settingsForm, linkedin: e.target.value })
-                }
-                placeholder="https://linkedin.com/in/yourprofile"
-                type="url"
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormLabel>GitHub URL</FormLabel>
-              <Input
-                value={settingsForm.github}
-                onChange={(e) =>
-                  setSettingsForm({ ...settingsForm, github: e.target.value })
-                }
-                placeholder="https://github.com/yourusername"
-                type="url"
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormLabel>YouTube URL</FormLabel>
-              <Input
-                value={settingsForm.youtube}
-                onChange={(e) =>
-                  setSettingsForm({ ...settingsForm, youtube: e.target.value })
-                }
-                placeholder="https://youtube.com/@yourchannel"
-                type="url"
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormLabel>Contact Phone</FormLabel>
-              <Input
-                value={settingsForm.contactPhone}
-                onChange={(e) =>
-                  setSettingsForm({
-                    ...settingsForm,
-                    contactPhone: e.target.value,
-                  })
-                }
-                placeholder="+1 (555) 123-4567"
-                type="tel"
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormLabel>Contact Email</FormLabel>
-              <Input
-                value={settingsForm.contactEmail}
-                onChange={(e) =>
-                  setSettingsForm({
-                    ...settingsForm,
-                    contactEmail: e.target.value,
-                  })
-                }
-                placeholder="contact@example.com"
-                type="email"
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormLabel>Address</FormLabel>
-              <StyledTextarea
-                value={settingsForm.address}
-                onChange={(e) =>
-                  setSettingsForm({ ...settingsForm, address: e.target.value })
-                }
-                placeholder="123 Main Street, City, State, Country"
-              />
-            </FormGroup>
             <ActionButtons>
-              <Button type="submit" disabled={loading}>
-                {loading ? 'Saving...' : 'Save Changes'}
-              </Button>
               <Button
                 type="button"
-                variant="secondary"
+                variant="outline"
                 onClick={() => setEditingSettings(false)}
               >
                 Cancel
+              </Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? 'Saving...' : 'Save Changes'}
               </Button>
             </ActionButtons>
           </Form>

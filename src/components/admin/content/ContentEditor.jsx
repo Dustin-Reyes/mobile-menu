@@ -134,8 +134,6 @@ export function ContentEditor() {
     // No need to reload content - we'll filter fields in the editor
   }, []);
 
-  // Locale switch (discards unsaved changes silently)
-  // On mobile, allLocaleContent already has all locales — skip the redundant fetch
   const handleLocaleChange = useCallback(
     async (locale) => {
       setSelectedLocale(locale);

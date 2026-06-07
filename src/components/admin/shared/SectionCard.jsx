@@ -15,7 +15,7 @@ export const FlushSectionCard = styled(SectionCard)`
 
 export const SectionCardHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 12px;
 `;

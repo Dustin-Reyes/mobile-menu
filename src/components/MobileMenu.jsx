@@ -204,7 +204,7 @@ const TwoLineItem = styled(RadixDialog.Close)`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 10px 12px;
+  padding: 15px 12px;
   background: transparent;
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius.s1};
