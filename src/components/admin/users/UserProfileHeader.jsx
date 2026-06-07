@@ -1,8 +1,8 @@
-import { Pencil, ShieldCheck, Check, X } from 'lucide-react';
+import { Pencil, ShieldCheck, Check, X, KeyRound } from 'lucide-react';
 import styled from '@emotion/styled';
 import { ROLE_LABELS } from 'utils/roleHelpers';
 import { getUserInitials } from 'utils/userHelpers';
-import { getUserStatus, getProviderLabel } from 'utils/admin/userHelpers';
+import { getProviderLabel } from 'utils/admin/userHelpers';
 
 const DetailProfile = styled.div`
   display: flex;
@@ -24,21 +24,29 @@ const AvatarContainer = styled.div`
   flex-shrink: 0;
 `;
 
-const StatusDot = styled.div`
+const ProviderDot = styled.div`
   position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 11px;
-  height: 11px;
+  bottom: 1px;
+  right: 1px;
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
-  background: ${(p) => (p.$disabled ? '#f87171' : '#4ade80')};
   border: 2px solid rgba(14, 14, 14, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${(p) =>
+    p.$provider === 'google' ? '#4285F4' : 'rgba(255,255,255,0.1)'};
+  color: ${(p) =>
+    p.$provider === 'google' ? '#fff' : 'rgba(255,255,255,0.6)'};
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
 
   @media (max-width: 768px) {
-    width: 13px;
-    height: 13px;
-    bottom: 3px;
-    right: 3px;
+    width: 23px;
+    height: 23px;
+    font-size: 11px;
   }
 `;
 
@@ -170,19 +178,6 @@ const RoleBadge = styled.span`
   border: 1px solid ${(p) => p.theme.colors.primary}30;
   white-space: nowrap;
 `;
-const StatusBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  background: ${(p) =>
-    p.$disabled ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};
-  color: ${(p) => (p.$disabled ? '#f87171' : '#4ade80')};
-  border: 1px solid
-    ${(p) => (p.$disabled ? 'rgba(239,68,68,0.2)' : 'rgba(34,197,94,0.2)')};
-  white-space: nowrap;
-`;
 
 const ProviderBadge = styled.span`
   display: inline-flex;
@@ -220,7 +215,7 @@ export default function UserProfileHeader({
   onCancelEdit,
   onDisplayNameChange,
 }) {
-  const status = getUserStatus(targetUser);
+  const isGoogle = targetUser.providers?.includes('google.com');
 
   return (
     <DetailProfile>
@@ -237,7 +232,9 @@ export default function UserProfileHeader({
               getUserInitials(targetUser.email)
             )}
           </DetailAvatarWrap>
-          <StatusDot $disabled={status === 'disabled'} />
+          <ProviderDot $provider={isGoogle ? 'google' : 'password'}>
+            {isGoogle ? 'G' : <KeyRound size={9} />}
+          </ProviderDot>
         </AvatarContainer>
 
         <DetailInfo>
@@ -287,9 +284,6 @@ export default function UserProfileHeader({
           </RoleBadge>
         )}
         <ProviderBadge>{getProviderLabel(targetUser.providers)}</ProviderBadge>
-        <StatusBadge $disabled={status === 'disabled'}>
-          {status === 'disabled' ? 'Disabled' : 'Active'}
-        </StatusBadge>
       </DetailBadges>
     </DetailProfile>
   );
