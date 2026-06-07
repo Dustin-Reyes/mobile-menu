@@ -57,6 +57,7 @@ export default function UserDetail({
   const { user } = useAuth();
   const [editing, setEditing] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [resetDialog, setResetDialog] = useState(false);
 
   const canEdit = canManageUsers(callerRole);
 
@@ -135,7 +136,7 @@ export default function UserDetail({
               <UserActionsSection
                 targetUser={targetUser}
                 onEditRole={() => setEditing(true)}
-                onResetPassword={confirmResetPassword}
+                onResetPassword={() => setResetDialog(true)}
                 onToggleDisabled={handleToggleDisabled}
                 onDelete={() => setDeleteDialog(true)}
               />
@@ -152,6 +153,15 @@ export default function UserDetail({
         confirmLabel="Delete"
         destructive
         onConfirm={confirmDelete}
+      />
+
+      <ConfirmDialog
+        open={resetDialog}
+        onOpenChange={setResetDialog}
+        title="Reset Password"
+        description={`Send a password reset link to ${targetUser.email}?`}
+        confirmLabel="Send Link"
+        onConfirm={confirmResetPassword}
       />
     </motion.div>
   );
