@@ -242,7 +242,7 @@ const SignOutButton = styled.button`
 `;
 
 export default function ProfileTab() {
-  const { user, userRole, logout } = useAuth();
+  const { user, userRole, logout, reloadUser } = useAuth();
   const navigate = useNavigate();
   const [editingName, setEditingName] = useState(false);
   const [nameValue, setNameValue] = useState('');
@@ -272,6 +272,7 @@ export default function ProfileTab() {
           uid: user.uid,
           displayName: nameValue.trim() || null,
         });
+        await reloadUser();
         toast.success('Display name updated');
         setEditingName(false);
       } catch (err) {
@@ -280,7 +281,7 @@ export default function ProfileTab() {
         setSaving(false);
       }
     },
-    [user, nameValue],
+    [user, nameValue, reloadUser],
   );
 
   const handleResetPassword = useCallback(async () => {
