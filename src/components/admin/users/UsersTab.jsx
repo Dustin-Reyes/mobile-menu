@@ -196,6 +196,12 @@ const RetryButton = styled(Button)`
   margin-top: 8px;
 `;
 
+const HideOnMobile = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const AddUserButton = styled(Button)`
   gap: 6px;
 
@@ -284,12 +290,14 @@ export default function UsersTab() {
   if (view === 'detail' && detailUser) {
     return (
       <div>
-        <PageHeader>
-          <div>
-            <PageTitle>Users</PageTitle>
-            <PageSubtitle>Manage team members and their roles</PageSubtitle>
-          </div>
-        </PageHeader>
+        <HideOnMobile>
+          <PageHeader>
+            <div>
+              <PageTitle>Users</PageTitle>
+              <PageSubtitle>Manage team members and their roles</PageSubtitle>
+            </div>
+          </PageHeader>
+        </HideOnMobile>
         <UserDetail
           targetUser={detailUser}
           callerRole={userRole}
