@@ -8,6 +8,7 @@
 
 import CMS_CONFIG from '../config/firebase';
 import { pages, settings, navigation, pageSchema } from '../content';
+import { translateText } from './translate';
 
 // Simple in-memory cache for content
 const contentCache = new Map();
@@ -538,42 +539,33 @@ class ContentService {
       // Translate each flat field in the content
       const translatedContent = {};
 
+      const translateString = async (str) => {
+        try {
+          return await translateText(str, targetLocale, 'en');
+        } catch {
+          return str;
+        }
+      };
+
       for (const [key, value] of Object.entries(flatContent)) {
         if (typeof value === 'string' && value.trim()) {
-          try {
-            // Call the Netlify translation function using the current window origin
-            const response = await fetch(
-              `${window.location.origin}/.netlify/functions/translate`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  text: value,
-                  targetLang: targetLocale,
-                  sourceLang: 'en',
-                }),
-              },
-            );
-
-            if (!response.ok) {
-              console.warn(
-                `Translation failed for field ${key}:`,
-                response.status,
-              );
-              translatedContent[key] = value; // Fallback to original
-              continue;
-            }
-
-            const result = await response.json();
-            translatedContent[key] = result.translatedText || value; // Fallback to original
-          } catch (error) {
-            console.warn(`Translation error for field ${key}:`, error);
-            translatedContent[key] = value; // Fallback to original
-          }
+          translatedContent[key] = await translateString(value);
+        } else if (Array.isArray(value)) {
+          // Translate string fields inside each array item (e.g. faqItems)
+          translatedContent[key] = await Promise.all(
+            value.map(async (item) => {
+              if (typeof item !== 'object' || item === null) return item;
+              const translatedItem = {};
+              for (const [field, fieldValue] of Object.entries(item)) {
+                translatedItem[field] =
+                  typeof fieldValue === 'string' && fieldValue.trim()
+                    ? await translateString(fieldValue)
+                    : fieldValue;
+              }
+              return translatedItem;
+            }),
+          );
         } else {
-          // Non-string values or empty strings, keep as-is
           translatedContent[key] = value;
         }
       }
