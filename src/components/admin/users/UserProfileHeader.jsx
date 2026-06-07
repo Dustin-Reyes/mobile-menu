@@ -33,6 +33,12 @@ const DetailAvatarWrap = styled.div`
   flex-shrink: 0;
   overflow: hidden;
   border: 2px solid ${(p) => p.theme.colors.primary}20;
+
+  @media (max-width: 768px) {
+    width: 76px;
+    height: 76px;
+    font-size: ${(p) => p.theme.typography.fontSizes.s5};
+  }
 `;
 
 const DetailInfo = styled.div`
@@ -51,6 +57,10 @@ const NameRow = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `;
 
 const NameDisplay = styled.span`
@@ -127,11 +137,12 @@ const DetailBadges = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  padding: 12px 20px;
+  padding: 10px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 
   @media (max-width: 768px) {
     justify-content: center;
+    padding: 10px 16px;
   }
 `;
 

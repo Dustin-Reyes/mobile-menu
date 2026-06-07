@@ -16,6 +16,7 @@ const ActionButtonGrid = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+    gap: 6px;
   }
 `;
 
@@ -39,6 +40,12 @@ const ActionButton = styled.button`
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.2);
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 11px 14px;
+    justify-content: center;
+  }
 `;
 
 const DestructiveButton = styled(ActionButton)`
@@ -54,6 +61,8 @@ const DestructiveButton = styled(ActionButton)`
 
   @media (max-width: 768px) {
     margin-left: 0;
+    margin-top: 6px;
+    border-top: 1px solid rgba(239, 68, 68, 0.12);
   }
 `;
 
