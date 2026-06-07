@@ -8,6 +8,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import contentService from '../services/content';
+import globalErrorHandler from 'utils/errorHandler';
 
 /**
  * Hook for fetching page content
@@ -34,7 +35,12 @@ export function usePage(pageId, options = {}) {
       setContent(pageContent);
     } catch (err) {
       setError(err);
-      console.error(`Failed to fetch page ${pageId}:`, err);
+      globalErrorHandler.reportError(err, {
+        hook: 'usePage',
+        action: 'fetch',
+        pageId,
+        locale,
+      });
     } finally {
       setLoading(false);
     }
@@ -53,7 +59,12 @@ export function usePage(pageId, options = {}) {
         return updated;
       } catch (err) {
         setError(err);
-        console.error(`Failed to update page ${pageId}:`, err);
+        globalErrorHandler.reportError(err, {
+          hook: 'usePage',
+          action: 'update',
+          pageId,
+          locale,
+        });
         throw err;
       } finally {
         setLoading(false);
@@ -98,7 +109,11 @@ export function useSettings(category = null, options = {}) {
       setSettings(settingsData);
     } catch (err) {
       setError(err);
-      console.error(`Failed to fetch settings ${category || 'all'}:`, err);
+      globalErrorHandler.reportError(err, {
+        hook: 'useSettings',
+        action: 'fetch',
+        category,
+      });
     } finally {
       setLoading(false);
     }
@@ -120,7 +135,11 @@ export function useSettings(category = null, options = {}) {
         return updatedSettings;
       } catch (err) {
         setError(err);
-        console.error(`Failed to update settings ${category || 'all'}:`, err);
+        globalErrorHandler.reportError(err, {
+          hook: 'useSettings',
+          action: 'update',
+          category,
+        });
         throw err;
       } finally {
         setLoading(false);
@@ -167,7 +186,11 @@ export function useNavigation(menuId = 'main', options = {}) {
       setNavigation(navItems);
     } catch (err) {
       setError(err);
-      console.error(`Failed to fetch navigation ${menuId}:`, err);
+      globalErrorHandler.reportError(err, {
+        hook: 'useNavigation',
+        action: 'fetch',
+        menuId,
+      });
     } finally {
       setLoading(false);
     }
@@ -190,7 +213,11 @@ export function useNavigation(menuId = 'main', options = {}) {
         return updatedItems;
       } catch (err) {
         setError(err);
-        console.error(`Failed to update navigation ${menuId}:`, err);
+        globalErrorHandler.reportError(err, {
+          hook: 'useNavigation',
+          action: 'update',
+          menuId,
+        });
         throw err;
       } finally {
         setLoading(false);
@@ -237,7 +264,10 @@ export function usePosts(options = {}) {
       setHasMore(postsData.length === limit);
     } catch (err) {
       setError(err);
-      console.error('Failed to fetch posts:', err);
+      globalErrorHandler.reportError(err, {
+        hook: 'usePosts',
+        action: 'fetch',
+      });
     } finally {
       setLoading(false);
     }
@@ -279,7 +309,11 @@ export function usePost(slug, options = {}) {
       setPost(postData);
     } catch (err) {
       setError(err);
-      console.error(`Failed to fetch post ${slug}:`, err);
+      globalErrorHandler.reportError(err, {
+        hook: 'usePost',
+        action: 'fetch',
+        slug,
+      });
     } finally {
       setLoading(false);
     }
@@ -333,7 +367,10 @@ export function useCMS() {
       const nextStats = await contentService.getStats();
       setStats(nextStats);
     } catch (error) {
-      console.error('Failed to refresh stats:', error);
+      globalErrorHandler.reportError(error, {
+        hook: 'useCMS',
+        action: 'refresh-stats',
+      });
     }
   }, [isCMSEnabled]);
 
@@ -373,7 +410,11 @@ export function useLiveContent(contentKey, fetcher, options = {}) {
       setContent(data);
     } catch (err) {
       setError(err);
-      console.error(`Failed to fetch live content ${contentKey}:`, err);
+      globalErrorHandler.reportError(err, {
+        hook: 'useLiveContent',
+        action: 'fetch',
+        contentKey,
+      });
     } finally {
       setLoading(false);
     }

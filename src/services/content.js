@@ -9,6 +9,7 @@
 import CMS_CONFIG from '../config/firebase';
 import { pages, settings, navigation, pageSchema } from '../content';
 import { translateText } from './translate';
+import globalErrorHandler from 'utils/errorHandler';
 
 // Simple in-memory cache for content
 const contentCache = new Map();
@@ -272,7 +273,11 @@ class ContentService {
             return transformFlatToNested(localeData);
           }
         } catch (error) {
-          console.warn('Firebase fetch failed, using local content:', error);
+          globalErrorHandler.reportMessage(
+            'Firebase fetch failed, using local content',
+            'warning',
+            { action: 'get-page', pageId, locale, error: error.message },
+          );
         }
       }
 
@@ -304,7 +309,11 @@ class ContentService {
             if (content) return content;
           }
         } catch (error) {
-          console.warn('Firebase fetch failed, using local content:', error);
+          globalErrorHandler.reportMessage(
+            'Firebase fetch failed, using local content',
+            'warning',
+            { action: 'get-settings', category, error: error.message },
+          );
         }
       }
 
@@ -332,7 +341,11 @@ class ContentService {
           const menuItems = items.filter((item) => item.menu === menuId);
           if (menuItems.length > 0) return menuItems.map(resolveLabel);
         } catch (error) {
-          console.warn('Firebase fetch failed, using local content:', error);
+          globalErrorHandler.reportMessage(
+            'Firebase fetch failed, using local content',
+            'warning',
+            { action: 'get-navigation', menuId, locale, error: error.message },
+          );
         }
       }
 
@@ -353,7 +366,11 @@ class ContentService {
           const posts = await fetchCollectionFromFirebase('posts');
           return posts.slice(offset, offset + limit);
         } catch (error) {
-          console.warn('Firebase fetch failed, using local content:', error);
+          globalErrorHandler.reportMessage(
+            'Firebase fetch failed, using local content',
+            'warning',
+            { action: 'get-posts', error: error.message },
+          );
         }
       }
 
@@ -374,7 +391,11 @@ class ContentService {
           const content = await fetchFromFirebase('posts', slug);
           if (content) return content;
         } catch (error) {
-          console.warn('Firebase fetch failed, using local content:', error);
+          globalErrorHandler.reportMessage(
+            'Firebase fetch failed, using local content',
+            'warning',
+            { action: 'get-post', slug, error: error.message },
+          );
         }
       }
 
@@ -424,7 +445,10 @@ class ContentService {
 
       return data;
     } catch (error) {
-      console.error('Failed to update settings:', error);
+      globalErrorHandler.reportError(error, {
+        action: 'update-settings',
+        category,
+      });
       throw error;
     }
   }
@@ -456,7 +480,10 @@ class ContentService {
 
       return items;
     } catch (error) {
-      console.error('Failed to update navigation:', error);
+      globalErrorHandler.reportError(error, {
+        action: 'update-navigation',
+        menuId,
+      });
       throw error;
     }
   }
@@ -572,7 +599,10 @@ class ContentService {
 
       return translatedContent;
     } catch (error) {
-      console.error('Translation failed:', error);
+      globalErrorHandler.reportError(error, {
+        action: 'translate-content',
+        targetLocale,
+      });
       return null;
     }
   }

@@ -13,6 +13,7 @@ import {
 } from 'firebase/auth';
 import { auth } from 'config/firebase';
 import { canManageUsers } from 'utils/roleHelpers';
+import globalErrorHandler from 'utils/errorHandler';
 
 const AuthContext = createContext(null);
 
@@ -31,8 +32,12 @@ export function AuthProvider({ children }) {
       try {
         const tokenResult = await currentUser.getIdTokenResult(forceRefresh);
         setUserRole(tokenResult.claims.role ?? null);
-      } catch {
+      } catch (error) {
         setUserRole(null);
+        globalErrorHandler.reportError(error, {
+          action: 'load-user-role',
+          uid: currentUser.uid,
+        });
       }
     },
     [],
@@ -48,6 +53,15 @@ export function AuthProvider({ children }) {
       setUser(currentUser);
       await loadUserRole(currentUser);
       setLoading(false);
+
+      if (currentUser) {
+        globalErrorHandler.setUser({
+          id: currentUser.uid,
+          email: currentUser.email,
+        });
+      } else {
+        globalErrorHandler.clearUser();
+      }
     });
 
     return unsubscribe;
