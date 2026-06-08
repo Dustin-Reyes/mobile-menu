@@ -337,6 +337,7 @@ export default function MediaTab() {
         });
 
         updateUpload(id, { state: 'done' });
+        toast.success(`${file.name} uploaded`);
         refetch();
         setTimeout(
           () => setActiveUploads((prev) => prev.filter((u) => u.id !== id)),
@@ -387,7 +388,10 @@ export default function MediaTab() {
   }, [deleteTarget, refetch]);
 
   const copyUrl = useCallback((url) => {
-    navigator.clipboard.writeText(url).then(() => toast.success('URL copied'));
+    navigator.clipboard
+      .writeText(url)
+      .then(() => toast.success('URL copied'))
+      .catch(() => toast.error('Failed to copy URL'));
   }, []);
 
   return (
