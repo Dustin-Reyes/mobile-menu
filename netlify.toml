@@ -27,7 +27,7 @@
 [context.production.headers]
   for = "/*"
   [context.production.headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com;"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
@@ -36,14 +36,14 @@
 [context.deploy-preview.headers]
   for = "/*"
   [context.deploy-preview.headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com;"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # Branch deploys
 [context.branch-deploy.headers]
   for = "/*"
   [context.branch-deploy.headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com;"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # Static file headers

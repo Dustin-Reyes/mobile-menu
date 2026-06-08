@@ -2,11 +2,14 @@
  * Browser translate service
  *
  * In production: calls /.netlify/functions/translate (CSP-safe, server-side proxy).
+ *   Requires a Firebase ID token — the caller must be signed in.
  * In development: calls MyMemory directly (no CSP restriction in dev).
  *
  * To swap translation providers, update netlify/functions/translate.js and the
  * LOCALE_MAP + dev path below.
  */
+
+import { auth } from 'config/firebase';
 
 // Maps project locale codes to MyMemory language codes (used in dev only)
 const LOCALE_MAP = { en: 'en', es: 'es' };
@@ -31,9 +34,17 @@ export async function translateText(text, targetLang, sourceLang = 'en') {
     return data.responseData.translatedText;
   }
 
+  const idToken = await auth.currentUser?.getIdToken();
+  if (!idToken) {
+    throw new Error('Not authenticated — cannot call translate function');
+  }
+
   const response = await fetch('/.netlify/functions/translate', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
+    },
     body: JSON.stringify({ text, targetLang, sourceLang }),
   });
 

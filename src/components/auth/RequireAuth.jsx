@@ -31,7 +31,7 @@ const MessageBody = styled.p`
 `;
 
 export default function RequireAuth({ children }) {
-  const { loading, isAuthAvailable, isAuthenticated } = useAuth();
+  const { loading, isAuthAvailable, isAuthenticated, userRole } = useAuth();
 
   if (!isAuthAvailable) {
     return (
@@ -57,6 +57,19 @@ export default function RequireAuth({ children }) {
 
   if (!isAuthenticated) {
     return <Login />;
+  }
+
+  if (userRole === null) {
+    return (
+      <CenteredMessage>
+        <ShieldAlert size={32} />
+        <MessageTitle>Access denied</MessageTitle>
+        <MessageBody>
+          Your account does not have a role assigned. Contact an administrator
+          to be granted access.
+        </MessageBody>
+      </CenteredMessage>
+    );
   }
 
   return children;
