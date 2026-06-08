@@ -23,6 +23,10 @@
 [functions]
   node_bundler = "esbuild"
 
+[functions."process-image-background"]
+  external_node_modules = ["sharp"]
+  included_files = ["node_modules/sharp/**", "node_modules/@img/**"]
+
 # Production CSP Headers
 [context.production.headers]
   for = "/*"
