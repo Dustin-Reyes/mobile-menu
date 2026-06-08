@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](https://github.com/TranspiledCode/transpiled-web-template/compare/v0.2.4...v0.2.5) (2026-06-08)
+
+
+### Features
+
+* **cms:** add Services section CMS editing, i18n, and custom items editor ([d8d9a04](https://github.com/TranspiledCode/transpiled-web-template/commit/d8d9a04d027e0c9548017fa4bede320091a1f29d))
+* **observability:** complete Sentry coverage audit ([24bd7eb](https://github.com/TranspiledCode/transpiled-web-template/commit/24bd7eb775ab5b16b4ebdf1e2485e3b07bd553bd))
+* **observability:** Sentry audit and console cleanup ([f27c2d4](https://github.com/TranspiledCode/transpiled-web-template/commit/f27c2d4bc43da69775f4bdbe5c822f6f84096f90)), closes [#43](https://github.com/TranspiledCode/transpiled-web-template/issues/43)
+* **rbac:** enforce role hierarchy for all user management actions ([d9b7d94](https://github.com/TranspiledCode/transpiled-web-template/commit/d9b7d943d1fa8330e15a6ab5f5d232cc84aacb6b))
+* **theme:** update color palette to Transpiled Electric Indigo brand ([194f721](https://github.com/TranspiledCode/transpiled-web-template/commit/194f7215db6bb8adad0f934e97c849f5a004f08c)), closes [#F5A623](https://github.com/TranspiledCode/transpiled-web-template/issues/F5A623) [#6366F1](https://github.com/TranspiledCode/transpiled-web-template/issues/6366F1) [#F7B733](https://github.com/TranspiledCode/transpiled-web-template/issues/F7B733) [#818CF8](https://github.com/TranspiledCode/transpiled-web-template/issues/818CF8) [#E8A000](https://github.com/TranspiledCode/transpiled-web-template/issues/E8A000) [#4F46E5](https://github.com/TranspiledCode/transpiled-web-template/issues/4F46E5) [#F5A623](https://github.com/TranspiledCode/transpiled-web-template/issues/F5A623) [#6366F1](https://github.com/TranspiledCode/transpiled-web-template/issues/6366F1) [#111111](https://github.com/TranspiledCode/transpiled-web-template/issues/111111) [#6366F1](https://github.com/TranspiledCode/transpiled-web-template/issues/6366F1) [#40](https://github.com/TranspiledCode/transpiled-web-template/issues/40)
+
+
+### Bug Fixes
+
+* **admin:** update dashboard Content card label and tab id from pages to content ([de23cf3](https://github.com/TranspiledCode/transpiled-web-template/commit/de23cf3ad52bdd8b9a3d5d1ac6099997ffcbb482))
+* **admin:** update Sidebar stale pages tab id references to content ([435cd3d](https://github.com/TranspiledCode/transpiled-web-template/commit/435cd3d4d48dc40f68986c9864720ae46d1d7bf9))
+* **cms:** fix content transform bug, add seed --force, misc improvements ([ff040df](https://github.com/TranspiledCode/transpiled-web-template/commit/ff040df1967379174c4b3487c052fe366771854b))
+* **hero:** use secondaryBackground for subtler grid overlay ([851c723](https://github.com/TranspiledCode/transpiled-web-template/commit/851c7235c7dd08d45b4c0e15a3a98809ecc1cb41)), closes [#47](https://github.com/TranspiledCode/transpiled-web-template/issues/47)
+* **security:** address 4 of 5 audit vulnerabilities ([5e69212](https://github.com/TranspiledCode/transpiled-web-template/commit/5e69212b82b07913099b0145d29f18269c4f7f10)), closes [#38](https://github.com/TranspiledCode/transpiled-web-template/issues/38)
+
 ### 0.2.4 (2026-06-07)
 
 
