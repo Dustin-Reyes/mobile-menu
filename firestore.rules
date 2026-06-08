@@ -1,0 +1,72 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helpers ──────────────────────────────────────────────────────────────
+
+    // Returns true if the requester is signed in with a valid role claim
+    function isAuthenticatedWithRole() {
+      return request.auth != null
+        && request.auth.token.role in ['admin', 'site_manager', 'content_manager'];
+    }
+
+    // Returns true if the requester has admin role
+    function isAdmin() {
+      return request.auth != null && request.auth.token.role == 'admin';
+    }
+
+    // Returns true if the requester has admin or site_manager role
+    function isAdminOrSiteManager() {
+      return request.auth != null
+        && request.auth.token.role in ['admin', 'site_manager'];
+    }
+
+    // ─── Public content ───────────────────────────────────────────────────────
+    // These collections are read by the public-facing site.
+    // Writes are restricted to authenticated users with a valid role.
+
+    match /pages/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticatedWithRole();
+    }
+
+    match /settings/{document=**} {
+      allow read: if true;
+      allow write: if isAdminOrSiteManager();
+    }
+
+    match /navigation/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticatedWithRole();
+    }
+
+    match /i18n/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticatedWithRole();
+    }
+
+    match /posts/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticatedWithRole();
+    }
+
+    match /media/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticatedWithRole();
+    }
+
+    // ─── Admin-only collections ───────────────────────────────────────────────
+    // The users collection stores admin user records and is never public.
+
+    match /users/{document=**} {
+      allow read: if isAdminOrSiteManager();
+      allow write: if isAdmin();
+    }
+
+    // ─── Deny everything else ─────────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
