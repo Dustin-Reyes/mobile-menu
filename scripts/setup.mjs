@@ -413,6 +413,7 @@ async function main() {
     writers.writeManifest(PROJECT_DIR, values);
     writers.writeRobotsTxt(PROJECT_DIR, values);
     writers.writeContentSettings(PROJECT_DIR, values);
+    writers.writeFirebaseRc(PROJECT_DIR, values);
     writers.writeTemplateState(PROJECT_DIR);
     s.stop('Configuration files written.');
   } catch (err) {

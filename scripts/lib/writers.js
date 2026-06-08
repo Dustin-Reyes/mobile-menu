@@ -271,6 +271,17 @@ export const settings = {
   fs.writeFileSync(dest, content);
 }
 
+function writeFirebaseRc(dir, values) {
+  if (!values.firebaseProjectId) return;
+  const content =
+    JSON.stringify(
+      { projects: { default: values.firebaseProjectId } },
+      null,
+      2,
+    ) + '\n';
+  fs.writeFileSync(path.join(dir, '.firebaserc'), content);
+}
+
 function writeTemplateState(dir) {
   const state = {
     setupComplete: true,
@@ -290,5 +301,6 @@ module.exports = {
   writeManifest,
   writeRobotsTxt,
   writeContentSettings,
+  writeFirebaseRc,
   writeTemplateState,
 };
