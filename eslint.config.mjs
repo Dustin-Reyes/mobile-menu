@@ -52,6 +52,7 @@ export default [
         process: 'readonly',
         AbortController: 'readonly',
         FileReader: 'readonly',
+        XMLHttpRequest: 'readonly',
         IntersectionObserver: 'readonly',
         fetch: 'readonly',
         crypto: 'readonly',
