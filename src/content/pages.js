@@ -216,10 +216,10 @@ export const pages = {
     },
   },
 
-  development: {
+  example: {
     en: {
       header: {
-        title: 'Development',
+        title: 'Example Page',
         description1:
           'A production-ready SPA starter template built with modern web technologies and best practices.',
         description2:
@@ -232,7 +232,7 @@ export const pages = {
     },
     es: {
       header: {
-        title: 'Desarrollo',
+        title: 'Página de Ejemplo',
         description1:
           'Una plantilla SPA lista para producción, construida con tecnologías web modernas y mejores prácticas.',
         description2:

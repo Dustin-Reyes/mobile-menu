@@ -77,10 +77,10 @@ const FALLBACK_FEATURES = [
   'Netlify for seamless deployment',
 ];
 
-export default function Development() {
-  const { content, loading } = usePage('development');
+export default function Example() {
+  const { content, loading } = usePage('example');
 
-  const title = content?.header?.title ?? (loading ? null : 'Development');
+  const title = content?.header?.title ?? (loading ? null : 'Example Page');
   const description1 =
     content?.header?.description1 ??
     (loading

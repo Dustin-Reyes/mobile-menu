@@ -10,7 +10,7 @@ import PageSEO from 'components/PageSEO';
 import { AuthProvider } from 'context/AuthContext';
 import RequireAuth from 'components/auth/RequireAuth';
 import Home from 'pages/Home';
-import Development from 'pages/Development';
+import Example from 'pages/Example';
 import NotFound from 'pages/NotFound';
 
 const Demo =
@@ -59,10 +59,10 @@ function App() {
               }
             />
             <Route
-              path="/development"
+              path="/example"
               element={
                 <PageTransition>
-                  <Development />
+                  <Example />
                 </PageTransition>
               }
             />
