@@ -106,6 +106,12 @@ export const pageSchema = {
         type: 'textarea',
         group: 'Gallery',
       },
+      {
+        key: 'galleryItems',
+        label: 'Gallery Items',
+        type: 'gallery-items',
+        group: 'Gallery',
+      },
       // FAQ section
       {
         key: 'faqTitle',

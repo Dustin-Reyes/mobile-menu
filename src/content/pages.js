@@ -61,6 +61,7 @@ export const pages = {
       gallery: {
         title: 'Our Work',
         subtitle: 'Explore our portfolio and see what we can create for you',
+        items: [],
       },
       faq: {
         title: 'Frequently Asked Questions',

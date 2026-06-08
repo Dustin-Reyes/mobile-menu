@@ -74,7 +74,14 @@ const GalleryItem = styled.div`
   }
 `;
 
-const GalleryImage = styled.div`
+const GalleryImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+`;
+
+const GalleryPlaceholder = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -185,7 +192,15 @@ export default function Gallery() {
       <GalleryGrid>
         {galleryItems.map((item, index) => (
           <GalleryItem key={index}>
-            <GalleryImage>{item.title}</GalleryImage>
+            {item.imageUrl ? (
+              <GalleryImage
+                src={item.imageUrl}
+                alt={item.title}
+                loading="lazy"
+              />
+            ) : (
+              <GalleryPlaceholder>{item.title}</GalleryPlaceholder>
+            )}
             <GalleryOverlay>
               <GalleryTitle>{item.title}</GalleryTitle>
               <GalleryDescription>{item.description}</GalleryDescription>
