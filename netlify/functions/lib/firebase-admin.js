@@ -15,7 +15,12 @@ function getAdminApp() {
   if (getApps().length > 0) return getApps()[0];
   const b64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
   if (!b64) throw new Error('FIREBASE_SERVICE_ACCOUNT_BASE64 is not set');
-  const serviceAccount = JSON.parse(Buffer.from(b64, 'base64').toString('utf8'));
+  let serviceAccount;
+  try {
+    serviceAccount = JSON.parse(Buffer.from(b64, 'base64').toString('utf8'));
+  } catch {
+    throw new Error('FIREBASE_SERVICE_ACCOUNT_BASE64 contains invalid JSON');
+  }
   return initializeApp({ credential: cert(serviceAccount) });
 }
 

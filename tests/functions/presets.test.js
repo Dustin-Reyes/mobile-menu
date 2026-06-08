@@ -18,14 +18,29 @@ describe('PRESETS', () => {
   });
 
   it('gallery is 1200x900 quality 80', () => {
-    expect(PRESETS.gallery).toEqual({ width: 1200, height: 900, quality: 80, fit: 'cover' });
+    expect(PRESETS.gallery).toEqual({
+      width: 1200,
+      height: 900,
+      quality: 80,
+      fit: 'cover',
+    });
   });
 
   it('thumbnail is 400x300 quality 75', () => {
-    expect(PRESETS.thumbnail).toEqual({ width: 400, height: 300, quality: 75, fit: 'cover' });
+    expect(PRESETS.thumbnail).toEqual({
+      width: 400,
+      height: 300,
+      quality: 75,
+      fit: 'cover',
+    });
   });
 
   it('hero is 2400x1350 quality 85', () => {
-    expect(PRESETS.hero).toEqual({ width: 2400, height: 1350, quality: 85, fit: 'cover' });
+    expect(PRESETS.hero).toEqual({
+      width: 2400,
+      height: 1350,
+      quality: 85,
+      fit: 'cover',
+    });
   });
 });
