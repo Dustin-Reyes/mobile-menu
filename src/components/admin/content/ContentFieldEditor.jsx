@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import Button from 'components/ui/Button';
 import Input from 'components/ui/Input';
+import MediaPicker from 'components/admin/media/MediaPicker';
 
 // ─── Shared Atoms ───────────────────────────────────────────────────────────
 
@@ -308,6 +309,155 @@ export function ServiceItemsEditor({ value, onChange, disabled, maxItems }) {
   );
 }
 
+// ─── Gallery Items Editor ─────────────────────────────────────────────────────
+
+const GalleryImagePreview = styled.div`
+  width: 64px;
+  height: 48px;
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  overflow: hidden;
+  border: 1px solid ${(p) => p.theme.colors.border};
+  flex-shrink: 0;
+  background: ${(p) => p.theme.colors.background};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const ImagePickerBtn = styled.button`
+  padding: 4px 10px;
+  border: 1px solid ${(p) => p.theme.colors.border};
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  background: transparent;
+  color: ${(p) => p.theme.colors.textSecondary};
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    border-color: ${(p) => p.theme.colors.primary}60;
+    color: ${(p) => p.theme.colors.primary};
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+`;
+
+const GalleryImageRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+`;
+
+/**
+ * Editable list of gallery items with title, description, and image assignment.
+ * @param {Object} props
+ * @param {Array<{title: string, description: string, imageUrl?: string}>} props.value
+ * @param {function} props.onChange
+ * @param {boolean} [props.disabled]
+ * @param {number} [props.maxItems]
+ */
+export function GalleryItemsEditor({ value, onChange, disabled, maxItems }) {
+  const items = Array.isArray(value) ? value : [];
+  const atLimit = maxItems != null && items.length >= maxItems;
+  const [pickerIndex, setPickerIndex] = useState(null);
+
+  const updateItem = (index, field, val) => {
+    onChange(
+      items.map((item, i) => (i === index ? { ...item, [field]: val } : item)),
+    );
+  };
+
+  const addItem = () => {
+    onChange([...items, { title: '', description: '', imageUrl: '' }]);
+  };
+
+  const removeItem = (index) => {
+    onChange(items.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div>
+      {items.map((item, index) => (
+        <FaqItemCard key={index}>
+          <FaqItemRow>
+            <FaqItemFields>
+              <GalleryImageRow>
+                <GalleryImagePreview>
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title || 'Gallery image'}
+                    />
+                  ) : null}
+                </GalleryImagePreview>
+                <ImagePickerBtn
+                  type="button"
+                  onClick={() => setPickerIndex(index)}
+                  disabled={disabled}
+                >
+                  {item.imageUrl ? 'Change image' : 'Pick image'}
+                </ImagePickerBtn>
+              </GalleryImageRow>
+              <div>
+                <FaqItemLabel>Title</FaqItemLabel>
+                <Input
+                  value={item.title ?? ''}
+                  onChange={(e) => updateItem(index, 'title', e.target.value)}
+                  disabled={disabled}
+                  placeholder="Gallery item title…"
+                />
+              </div>
+              <div>
+                <FaqItemLabel>Description</FaqItemLabel>
+                <StyledTextarea
+                  value={item.description ?? ''}
+                  onChange={(e) =>
+                    updateItem(index, 'description', e.target.value)
+                  }
+                  disabled={disabled}
+                  placeholder="Short description…"
+                  style={{ minHeight: 52 }}
+                />
+              </div>
+            </FaqItemFields>
+            <RemoveItemBtn
+              onClick={() => removeItem(index)}
+              disabled={disabled}
+              title="Remove item"
+              aria-label="Remove gallery item"
+            >
+              ×
+            </RemoveItemBtn>
+          </FaqItemRow>
+        </FaqItemCard>
+      ))}
+      <AddItemBtn onClick={addItem} disabled={disabled || atLimit}>
+        {atLimit ? `Max ${maxItems} items reached` : '＋ Add Gallery Item'}
+      </AddItemBtn>
+      <MediaPicker
+        open={pickerIndex !== null}
+        onClose={() => setPickerIndex(null)}
+        onSelect={(mediaItem) => {
+          if (pickerIndex !== null)
+            updateItem(pickerIndex, 'imageUrl', mediaItem.imageUrl);
+        }}
+      />
+    </div>
+  );
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function groupFields(fields) {
@@ -548,6 +698,13 @@ function DesktopEditor({
                     disabled={isLoading}
                     maxItems={field.maxItems}
                   />
+                ) : field.type === 'gallery-items' ? (
+                  <GalleryItemsEditor
+                    value={formValues[field.key] ?? []}
+                    onChange={(arr) => onFieldChange(field.key, arr)}
+                    disabled={isLoading}
+                    maxItems={field.maxItems}
+                  />
                 ) : field.type === 'textarea' ? (
                   <StyledTextarea
                     id={`field-${field.key}`}
@@ -744,7 +901,9 @@ function MobileFieldList({
           <FieldRowLeft>
             <FieldRowName>{field.label}</FieldRowName>
             <FieldRowPreview>
-              {field.type === 'faq-items' || field.type === 'service-items'
+              {field.type === 'faq-items' ||
+              field.type === 'service-items' ||
+              field.type === 'gallery-items'
                 ? `${(values[field.key] ?? []).length} item${(values[field.key] ?? []).length !== 1 ? 's' : ''}`
                 : (values[field.key] ?? '—')}
             </FieldRowPreview>
@@ -826,7 +985,8 @@ function MobileFieldEdit({
   const fieldDef = schema.fields.find((f) => f.key === selectedField);
   const isFaqItems = fieldDef?.type === 'faq-items';
   const isServiceItems = fieldDef?.type === 'service-items';
-  const isArrayField = isFaqItems || isServiceItems;
+  const isGalleryItems = fieldDef?.type === 'gallery-items';
+  const isArrayField = isFaqItems || isServiceItems || isGalleryItems;
   const currentSaved =
     allLocaleContent[selectedLocale]?.[selectedField] ??
     (isArrayField ? [] : '');
@@ -866,6 +1026,13 @@ function MobileFieldEdit({
           />
         ) : isServiceItems ? (
           <ServiceItemsEditor
+            value={inputValue}
+            onChange={setInputValue}
+            disabled={false}
+            maxItems={fieldDef.maxItems}
+          />
+        ) : isGalleryItems ? (
+          <GalleryItemsEditor
             value={inputValue}
             onChange={setInputValue}
             disabled={false}
