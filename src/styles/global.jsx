@@ -1,5 +1,23 @@
+/**
+ * Global CSS reset and baseline styles.
+ *
+ * Injects a modern CSS reset, base typography, body defaults, focus rings,
+ * scroll-padding, `prefers-reduced-motion` overrides, high-contrast mode
+ * support, and print styles via Emotion's `<Global />` component.
+ *
+ * Mount `<GlobalStyles />` once at the root of the component tree, inside
+ * the Emotion `<ThemeProvider>`.
+ *
+ * @module styles/global
+ */
 import { Global, css, useTheme } from '@emotion/react';
 
+/**
+ * Internal component that reads the Emotion theme and generates the global
+ * stylesheet. Rendered by the public `GlobalStyles` component.
+ *
+ * @returns {JSX.Element}
+ */
 function GlobalStylesWithTheme() {
   const theme = useTheme();
 
@@ -301,6 +319,14 @@ function GlobalStylesWithTheme() {
   return <Global styles={globalStyles} />;
 }
 
+/**
+ * Renders global styles into the document.
+ *
+ * Thin wrapper that ensures `GlobalStylesWithTheme` is always rendered inside
+ * a `ThemeProvider`. Mount this component once near the root of your app.
+ *
+ * @returns {JSX.Element}
+ */
 function GlobalStyles() {
   return <GlobalStylesWithTheme />;
 }

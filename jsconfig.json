@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "checkJs": true,
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "noImplicitAny": false,
     "plugins": [
       {
         "name": "@styled/typescript-styled-plugin",

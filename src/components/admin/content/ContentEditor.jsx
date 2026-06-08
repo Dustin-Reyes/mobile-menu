@@ -1,3 +1,10 @@
+/**
+ * Root content editor that orchestrates page selection, locale switching, field editing,
+ * and AI translation for CMS content. Renders a split-pane on desktop and a
+ * multi-screen flow on mobile.
+ * @module components/admin/content/ContentEditor
+ */
+
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from '@emotion/styled';
 import { pageSchema } from '../../../content/schema';
@@ -45,6 +52,10 @@ const Placeholder = styled.div`
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 
+/**
+ * Full-page CMS content editor with desktop split-pane and mobile multi-screen flows.
+ * @returns {JSX.Element}
+ */
 export function ContentEditor() {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { showToast } = useToast();

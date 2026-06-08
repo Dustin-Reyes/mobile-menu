@@ -1,3 +1,9 @@
+/**
+ * @module components/DemoWidget
+ * @description Self-contained demo widget that collects a user's name via a
+ * text input and displays a greeting dialog on submit. Used as a UI interaction
+ * example on the home page.
+ */
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import {
@@ -97,6 +103,9 @@ const Hint = styled.span`
 
 // ─── DemoWidget ───────────────────────────────────────────────────────────────
 
+/**
+ * @returns {JSX.Element}
+ */
 function DemoWidget() {
   const [inputValue, setInputValue] = useState('');
   const [submittedValue, setSubmittedValue] = useState('');

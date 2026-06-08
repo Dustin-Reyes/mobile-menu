@@ -1,11 +1,15 @@
+/**
+ * Hook wrapper around the project's toast utility.
+ *
+ * @module hooks/useToast
+ */
 import { useCallback } from 'react';
 import { toast } from '@/utils/toast';
 
 /**
- * Hook wrapper around the project's toast utility.
+ * Returns a stable `showToast` helper for displaying toast notifications.
  *
- * Returns a `showToast` function that accepts `{ message, type }`.
- * `type` can be 'success' | 'error' | 'info' | 'warning'.
+ * @returns {{ showToast: (options: { message: string, type?: 'success' | 'error' | 'info' | 'warning' }) => void }}
  */
 export function useToast() {
   const showToast = useCallback(({ message, type = 'info' } = {}) => {

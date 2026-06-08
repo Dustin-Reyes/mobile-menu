@@ -1,3 +1,9 @@
+/**
+ * @module components/SEOProvider
+ * @description Injects all SEO-related `<head>` tags (meta, Open Graph, Twitter
+ * Card, structured data JSON-LD, robots, and preconnect hints) via
+ * react-helmet-async. Also exports the useSEOData hook for debugging SEO values.
+ */
 import { Helmet } from 'react-helmet-async';
 import { useMemo } from 'react';
 import {
@@ -17,6 +23,7 @@ import {
  * @param {Array} props.breadcrumbs - Breadcrumb items for structured data
  * @param {Object} props.customStructuredData - Additional structured data
  * @param {boolean} props.noindex - Whether to noindex the page
+ * @returns {JSX.Element}
  */
 export function SEOProvider({
   page,

@@ -1,3 +1,9 @@
+/**
+ * @module components/ThemeProvider
+ * @description Manages light/dark theme state, persisting the selection in
+ * localStorage and syncing it across tabs. Wraps the component tree with
+ * Emotion's ThemeProvider and exposes the current theme via the useTheme hook.
+ */
 import React, {
   createContext,
   useContext,
@@ -10,6 +16,10 @@ import { lightTheme, darkTheme } from '../styles/theme';
 
 const ThemeContext = createContext();
 
+/**
+ * Returns the current theme context value.
+ * @returns {{ mode: string, theme: Object, toggleMode: Function, isDark: boolean, isLight: boolean }|undefined}
+ */
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   return context; // Return undefined if not in context instead of throwing
@@ -26,6 +36,12 @@ const getInitialMode = () => {
     : 'light';
 };
 
+/**
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Component tree to wrap with theme context.
+ * @param {string} [props._defaultMode='light'] - Default mode used in tests; overridden by stored or system preference at runtime.
+ * @returns {JSX.Element}
+ */
 export const ThemeProvider = ({ children, _defaultMode = 'light' }) => {
   const [mode, setMode] = useState(getInitialMode);
 

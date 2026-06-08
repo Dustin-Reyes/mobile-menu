@@ -1,3 +1,8 @@
+/**
+ * Styled layout components for a consistent admin page header with title and subtitle slots.
+ * @module components/admin/shared/PageHeader
+ */
+
 import styled from '@emotion/styled';
 
 export const PageHeader = styled.div`

@@ -1,3 +1,10 @@
+/**
+ * @module components/sections/About
+ * @description Displays the About section with a title, subtitle, description, and a 2×2 stats
+ * grid. Content is fetched from the CMS via `usePage('home')` and falls back to hard-coded
+ * defaults once loading has settled.
+ */
+
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
 
@@ -104,6 +111,12 @@ const PlaceholderImage = styled.div`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * About section component. Renders company history, a descriptive paragraph, and key
+ * statistics alongside a placeholder image in a two-column responsive layout.
+ *
+ * @returns {JSX.Element}
+ */
 export default function About() {
   const { content, loading } = usePage('home');
 

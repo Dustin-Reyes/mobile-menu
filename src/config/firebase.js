@@ -1,9 +1,12 @@
 /**
- * Firebase CMS Configuration
+ * Firebase CMS configuration and initialisation.
  *
- * This file handles Firebase initialization and provides configuration
- * for the optional CMS functionality. The CMS only activates when
- * properly configured via environment variables.
+ * Handles Firebase app initialisation and exports the Firestore, Storage, and
+ * Auth service instances. All exports are `null` when Firebase is not
+ * configured (i.e. the required `VITE_FIREBASE_*` env vars are absent or
+ * `VITE_CMS_ENABLED` is not `'true'`).
+ *
+ * @module config/firebase
  */
 
 import { initializeApp } from 'firebase/app';
@@ -23,7 +26,13 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Check if Firebase is properly configured
+/**
+ * Returns whether Firebase has been fully configured via environment variables
+ * and the CMS feature flag is enabled.
+ *
+ * @returns {boolean} `true` when `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_PROJECT_ID`,
+ *   and `VITE_CMS_ENABLED=true` are all present.
+ */
 export const isFirebaseConfigured = () => {
   return !!(
     firebaseConfig.apiKey &&
@@ -63,7 +72,20 @@ export { app, db, storage, auth };
 // Export configuration for reference
 export { firebaseConfig };
 
-// CMS Configuration
+/**
+ * CMS runtime configuration object.
+ *
+ * Controls which Firebase collections are used, cache behaviour, and
+ * optional CMS features (realtime updates, image uploads, versioning, drafts).
+ *
+ * @type {{
+ *   enabled: boolean,
+ *   provider: string,
+ *   collections: Record<string, string>,
+ *   cache: { ttl: number, maxSize: number },
+ *   features: { realtimeUpdates: boolean, imageUploads: boolean, versioning: boolean, drafts: boolean }
+ * }}
+ */
 export const CMS_CONFIG = {
   enabled: isFirebaseConfigured(),
   provider: 'firebase',

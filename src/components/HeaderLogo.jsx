@@ -1,3 +1,9 @@
+/**
+ * @module components/HeaderLogo
+ * @description Linked site logo that switches between light and dark image
+ * variants based on the active theme. Clicking it scrolls instantly to the top
+ * of the page and navigates to the URL configured in CMS site content.
+ */
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useTheme } from './ThemeProvider';
@@ -22,6 +28,9 @@ const LogoImage = styled.img`
   width: auto;
 `;
 
+/**
+ * @returns {JSX.Element}
+ */
 function HeaderLogo() {
   const { isDark } = useTheme();
   const { content: siteContent } = usePage('site');

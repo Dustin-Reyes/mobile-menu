@@ -1,18 +1,25 @@
+/**
+ * Scrollable area components built on Radix UI ScrollArea with themed scrollbar styling.
+ * @module components/ui/ScrollArea
+ */
 import styled from '@emotion/styled';
 import * as RadixScrollArea from '@radix-ui/react-scroll-area';
 
+/** Outer scroll container; clips overflow and applies a themed border. */
 export const ScrollAreaRoot = styled(RadixScrollArea.Root)`
   overflow: hidden;
   border-radius: ${(p) => p.theme.borderRadius.s2};
   border: 1px solid ${(p) => p.theme.colors.border};
 `;
 
+/** Inner viewport that renders the scrollable content. */
 export const ScrollAreaViewport = styled(RadixScrollArea.Viewport)`
   width: 100%;
   height: 100%;
   border-radius: inherit;
 `;
 
+/** Themed scrollbar track supporting vertical and horizontal orientations. */
 export const ScrollAreaScrollbar = styled(RadixScrollArea.Scrollbar)`
   display: flex;
   user-select: none;
@@ -35,6 +42,7 @@ export const ScrollAreaScrollbar = styled(RadixScrollArea.Scrollbar)`
   }
 `;
 
+/** Draggable scrollbar thumb with an expanded touch hit-target. */
 export const ScrollAreaThumb = styled(RadixScrollArea.Thumb)`
   flex: 1;
   background: ${(p) => p.theme.colors.textSecondary};
@@ -54,6 +62,7 @@ export const ScrollAreaThumb = styled(RadixScrollArea.Thumb)`
   }
 `;
 
+/** Corner piece filling the intersection gap when both scrollbars are visible. */
 export const ScrollAreaCorner = styled(RadixScrollArea.Corner)`
   background: ${(p) => p.theme.colors.border};
 `;

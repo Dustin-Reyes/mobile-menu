@@ -1,7 +1,11 @@
 /**
- * Content exports
+ * Centralised exports for all local content fallbacks.
  *
- * Centralized exports for all local content fallbacks.
+ * Re-exports `pages`, `settings`, and `navigation` from their respective
+ * modules so consumers can import from a single entry point. Also re-exports
+ * `pageSchema` from the schema module.
+ *
+ * @module content
  */
 
 import { pages } from './pages';

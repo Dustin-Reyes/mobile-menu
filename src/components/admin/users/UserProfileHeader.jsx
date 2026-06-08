@@ -1,3 +1,10 @@
+/**
+ * @module components/admin/users/UserProfileHeader
+ * @description Profile header card shown at the top of the user detail view.
+ * Displays the user's avatar, name, email, role badge, and an Edit button when
+ * the caller has permission to edit.
+ */
+
 import { ShieldCheck, KeyRound, Pencil } from 'lucide-react';
 import styled from '@emotion/styled';
 import { ROLE_LABELS } from 'utils/roleHelpers';
@@ -168,6 +175,19 @@ const AvatarImage = styled.img`
   object-fit: cover;
 `;
 
+/**
+ * @param {Object} props
+ * @param {Object} props.targetUser - The user whose profile is being displayed.
+ * @param {string} [props.targetUser.displayName] - The user's display name.
+ * @param {string} props.targetUser.email - The user's email address.
+ * @param {string} [props.targetUser.role] - The user's role identifier.
+ * @param {string} [props.targetUser.photoURL] - URL of the user's profile photo.
+ * @param {string[]} [props.targetUser.providers] - Auth providers linked to this account.
+ * @param {boolean} props.canEdit - Whether the current admin has permission to edit this user.
+ * @param {boolean} props.editing - Whether the edit form is currently open.
+ * @param {function} props.onEdit - Callback invoked when the Edit button is clicked.
+ * @returns {JSX.Element}
+ */
 export default function UserProfileHeader({
   targetUser,
   canEdit,

@@ -1,3 +1,8 @@
+/**
+ * Styled components for a compact empty-state placeholder with an optional icon.
+ * @module components/admin/shared/CompactEmptyState
+ */
+
 import styled from '@emotion/styled';
 
 export const CompactEmptyState = styled.div`

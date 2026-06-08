@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/users/CreateUserModal
+ * @description Modal dialog for creating a new user account. Collects display
+ * name, email, password, and role, then calls the user management API to provision the account.
+ */
+
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { UserPlus } from 'lucide-react';
@@ -320,6 +326,14 @@ const ModalActions = styled.div`
 
 // ─── Component ───────────────────────────────────────────────────────────────────
 
+/**
+ * @param {Object} props
+ * @param {boolean} props.open - Whether the modal is visible.
+ * @param {function} props.onOpenChange - Callback invoked with the new open state.
+ * @param {function} props.onCreated - Callback invoked after a user is successfully created.
+ * @param {string} props.callerRole - Role of the currently authenticated admin, used to determine assignable roles.
+ * @returns {JSX.Element}
+ */
 export default function CreateUserModal({
   open,
   onOpenChange,

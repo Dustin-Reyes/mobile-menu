@@ -1,3 +1,8 @@
+/**
+ * Sidebar list of CMS pages and their field-group sections used to navigate the content editor.
+ * @module components/admin/content/ContentPageList
+ */
+
 import React from 'react';
 import styled from '@emotion/styled';
 
@@ -109,6 +114,18 @@ const SectionList = styled.div`
   padding-bottom: 4px;
 `;
 
+/**
+ * Collapsible list of pages and sections for navigating the content editor.
+ * @param {Object} props
+ * @param {Object} props.pages - Page schema map keyed by page ID.
+ * @param {string|null} props.selectedPage - Currently selected page ID.
+ * @param {string|null} props.selectedSection - Currently selected section/group name.
+ * @param {Object} props.localeMap - Map of page IDs to arrays of available locale codes.
+ * @param {function} props.onSelectPage - Callback invoked with a page ID when a page is selected.
+ * @param {function} props.onSelectSection - Callback invoked with a section name when a section is selected.
+ * @param {boolean} props.isMobile - Whether the component is rendered in a mobile context.
+ * @returns {JSX.Element}
+ */
 export function ContentPageList({
   pages,
   selectedPage,

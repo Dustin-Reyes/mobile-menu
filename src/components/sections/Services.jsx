@@ -1,3 +1,10 @@
+/**
+ * @module components/sections/Services
+ * @description Renders a responsive grid of service cards, each containing a title and
+ * description, followed by an optional CTA button. Content is sourced from the CMS (supporting
+ * both JSON-string and array formats) with i18n fallbacks.
+ */
+
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
@@ -90,6 +97,13 @@ const CtaContainer = styled.div`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * Services section component. Displays a 1–3 column grid of service cards driven by CMS
+ * content, with an optional call-to-action button below the grid. Returns `null` until service
+ * items are resolved.
+ *
+ * @returns {JSX.Element|null}
+ */
 export default function Services() {
   const { t } = useTranslation();
   const { content, loading } = usePage('home');

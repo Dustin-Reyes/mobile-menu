@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/tabs/ProfileTab
+ * @description Admin tab showing the currently authenticated user's profile.
+ * Allows editing the display name, sending a password reset email, and signing out.
+ */
+
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
@@ -247,6 +253,9 @@ const SignOutButton = styled.button`
   }
 `;
 
+/**
+ * @returns {JSX.Element}
+ */
 export default function ProfileTab() {
   const { user, userRole, logout, reloadUser } = useAuth();
   const navigate = useNavigate();

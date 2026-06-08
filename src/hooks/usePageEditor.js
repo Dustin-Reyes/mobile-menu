@@ -1,3 +1,12 @@
+/**
+ * Page content editor hook for the admin dashboard.
+ *
+ * Manages form state, locale switching, save/cancel, and translation
+ * (single-locale and all-locales) for a CMS page. Delegates persistence to
+ * `ContentService`.
+ *
+ * @module hooks/usePageEditor
+ */
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from 'hooks/useToast';
 import * as contentService from 'services/content';
@@ -7,6 +16,27 @@ import { pageSchema } from '../content/schema';
 const AVAILABLE_LOCALES = Object.keys(availableLanguages);
 const DEFAULT_LOCALE = AVAILABLE_LOCALES[0] ?? 'en';
 
+/**
+ * Provides all state and handlers needed to edit a CMS page in the admin UI.
+ *
+ * @param {string} pageId - CMS page document ID (e.g. `'home'`).
+ * @returns {{
+ *   schema: Object | null,
+ *   formValues: Record<string, unknown>,
+ *   hasChanges: boolean,
+ *   selectedLocale: string,
+ *   availableLocales: string[],
+ *   isLoading: boolean,
+ *   isSaving: boolean,
+ *   isTranslating: boolean,
+ *   handleLocaleChange: (locale: string) => Promise<void>,
+ *   handleFieldChange: (key: string, value: unknown) => void,
+ *   handleSave: () => Promise<void>,
+ *   handleCancel: () => void,
+ *   handleTranslateAll: () => Promise<void>,
+ *   handleTranslateLocale: () => Promise<void>
+ * }}
+ */
 export function usePageEditor(pageId) {
   const { showToast } = useToast();
 

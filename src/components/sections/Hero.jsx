@@ -1,3 +1,10 @@
+/**
+ * @module components/sections/Hero
+ * @description The primary above-the-fold hero section, featuring a badge, headline, subtitle,
+ * a CTA button, and a tech-stack pill list. CMS content takes priority over i18n fallbacks;
+ * skeleton placeholders are shown while content is loading.
+ */
+
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
@@ -117,6 +124,12 @@ const StackPill = styled.span`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * Hero section component. Renders the page's main banner with animated skeleton states while
+ * CMS content loads, then transitions to a badge, heading, subtitle, CTA, and stack pills.
+ *
+ * @returns {JSX.Element}
+ */
 export default function Hero() {
   const { t } = useTranslation();
   const { content, loading } = usePage('home');

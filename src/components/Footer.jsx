@@ -1,3 +1,9 @@
+/**
+ * @module components/Footer
+ * @description Site-wide footer with three columns: brand identity with social
+ * links, quick navigation anchors driven by SECTIONS_CONFIG, and an optional
+ * CMS-powered contact column. Includes a bottom bar with copyright and legal links.
+ */
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
@@ -278,6 +284,9 @@ const LegalLink = styled(Link)`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * @returns {JSX.Element}
+ */
 function Footer() {
   const { t } = useTranslation();
   const { isDark } = useTheme();

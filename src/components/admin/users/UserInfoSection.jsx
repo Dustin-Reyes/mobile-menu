@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/users/UserInfoSection
+ * @description Desktop-only sidebar panel within the user detail view. Displays
+ * account metadata including join date, last login, and a copyable user ID.
+ */
+
 import { Copy, Calendar, LogIn, CreditCard } from 'lucide-react';
 import styled from '@emotion/styled';
 import { formatDate } from 'utils/formatDate';
@@ -91,6 +97,15 @@ const CopyIcon = styled.span`
   flex-shrink: 0;
 `;
 
+/**
+ * @param {Object} props
+ * @param {Object} props.targetUser - The user whose account details are displayed.
+ * @param {string} [props.targetUser.createdAt] - ISO timestamp of when the account was created.
+ * @param {string} [props.targetUser.lastLoginAt] - ISO timestamp of the user's last sign-in.
+ * @param {string} props.targetUser.uid - The user's Firebase UID.
+ * @param {function} props.onCopyUid - Callback invoked when the user ID copy button is clicked.
+ * @returns {JSX.Element}
+ */
 export default function UserInfoSection({ targetUser, onCopyUid }) {
   return (
     <DetailSection>

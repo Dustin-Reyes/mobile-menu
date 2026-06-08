@@ -1,3 +1,10 @@
+/**
+ * @module components/auth/Login
+ * @description Full-page admin login screen that authenticates users via Firebase email/password
+ * through the `AuthContext`. Displays a centered card with email and password fields, an inline
+ * error message on failure, and a loading state on the submit button during sign-in.
+ */
+
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
@@ -114,6 +121,12 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
+/**
+ * AdminLogin component. Renders a full-page centered login card for the admin dashboard,
+ * handling form state, submission, and error display.
+ *
+ * @returns {JSX.Element}
+ */
 export default function AdminLogin() {
   const { t } = useTranslation();
   const { signIn } = useAuth();

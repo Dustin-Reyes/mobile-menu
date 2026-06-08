@@ -1,3 +1,12 @@
+/**
+ * Home page — renders all enabled sections in the configured order.
+ *
+ * Reads `SECTIONS_CONFIG` to determine visibility and order. The Hero section
+ * is rendered directly (no `AnimatedSection` wrapper); all others are wrapped
+ * in `AnimatedSection` with staggered entrance delays.
+ *
+ * @returns {JSX.Element}
+ */
 import Hero from 'components/sections/Hero';
 import Services from 'components/sections/Services';
 import About from 'components/sections/About';

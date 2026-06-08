@@ -1,3 +1,9 @@
+/**
+ * @module components/HeaderDesktopNav
+ * @description Desktop-only horizontal navigation bar that renders a button for
+ * each nav item and applies an active underline to the currently visible section.
+ * Hidden below the desktop breakpoint via CSS.
+ */
 import styled from '@emotion/styled';
 
 const DesktopNav = styled.nav`
@@ -36,6 +42,14 @@ const NavBtn = styled.button`
   }
 `;
 
+/**
+ * @param {Object} props
+ * @param {Array<Object>} props.navItems - Navigation item definitions with `id`, `sectionId`, and `labels` fields.
+ * @param {string} props.activeId - ID of the currently active section.
+ * @param {string} props.lang - Current language code used to resolve item labels.
+ * @param {Function} props.onNavigate - Callback invoked with the section ID when an item is clicked.
+ * @returns {JSX.Element}
+ */
 function HeaderDesktopNav({ navItems, activeId, lang, onNavigate }) {
   return (
     <DesktopNav aria-label="Main navigation">

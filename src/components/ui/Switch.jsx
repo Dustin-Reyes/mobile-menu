@@ -1,6 +1,11 @@
+/**
+ * Toggle switch components built on Radix UI Switch with themed styling.
+ * @module components/ui/Switch
+ */
 import styled from '@emotion/styled';
 import * as RadixSwitch from '@radix-ui/react-switch';
 
+/** Outer toggle track; highlights the border on hover and when checked. */
 export const SwitchRoot = styled(RadixSwitch.Root)`
   position: relative;
   width: 60px;
@@ -28,6 +33,7 @@ export const SwitchRoot = styled(RadixSwitch.Root)`
   }
 `;
 
+/** Sliding thumb that moves across the track; uses a gradient fill when checked. */
 export const SwitchThumb = styled(RadixSwitch.Thumb)`
   position: absolute;
   top: 2px;

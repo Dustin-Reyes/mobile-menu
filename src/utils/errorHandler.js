@@ -1,10 +1,20 @@
+/**
+ * Global error handler — Sentry integration and unhandled error capture.
+ *
+ * Sentry is initialised in `main.jsx` with `enabled: !!VITE_SENTRY_DSN`.
+ * All `Sentry.*` calls here are safe to make unconditionally because Sentry
+ * no-ops when the DSN is absent.
+ *
+ * Exports a singleton `globalErrorHandler` instance that is imported by
+ * hooks, services, and the context layer.
+ *
+ * @module utils/errorHandler
+ */
 import * as Sentry from '@sentry/react';
 
 /**
- * Global error handler for unhandled promise rejections and errors.
- * Sentry is already initialised in main.jsx with `enabled: !!VITE_SENTRY_DSN`,
- * so all capture calls are safe to make unconditionally — Sentry no-ops when
- * disabled.
+ * Captures unhandled promise rejections and uncaught errors, and exposes
+ * helpers for manual error and message reporting.
  */
 class GlobalErrorHandler {
   constructor() {
@@ -55,6 +65,12 @@ class GlobalErrorHandler {
     }
   }
 
+  /**
+   * Manually reports an error to Sentry with optional extra context.
+   *
+   * @param {Error} error - The error to report.
+   * @param {Record<string, unknown>} [context={}] - Additional key-value context attached as Sentry extras.
+   */
   reportError(error, context = {}) {
     Sentry.captureException(error, { extra: context });
 
@@ -64,6 +80,13 @@ class GlobalErrorHandler {
     }
   }
 
+  /**
+   * Sends a custom message event to Sentry.
+   *
+   * @param {string} message - The message to capture.
+   * @param {'fatal'|'error'|'warning'|'info'|'debug'} [level='info'] - Sentry severity level.
+   * @param {Record<string, unknown>} [context={}] - Extra context.
+   */
   reportMessage(message, level = 'info', context = {}) {
     Sentry.captureMessage(message, { level, extra: context });
 
@@ -77,14 +100,25 @@ class GlobalErrorHandler {
     }
   }
 
+  /**
+   * Associates a user with subsequent Sentry events.
+   *
+   * @param {{ id: string, email?: string }} user
+   */
   setUser(user) {
     Sentry.setUser(user);
   }
 
+  /** Clears the active Sentry user context. */
   clearUser() {
     Sentry.setUser(null);
   }
 
+  /**
+   * Appends a breadcrumb to the Sentry event trail.
+   *
+   * @param {import('@sentry/react').Breadcrumb} breadcrumb
+   */
   addBreadcrumb(breadcrumb) {
     Sentry.addBreadcrumb(breadcrumb);
   }

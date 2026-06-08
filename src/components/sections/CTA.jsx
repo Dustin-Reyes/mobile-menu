@@ -1,3 +1,10 @@
+/**
+ * @module components/sections/CTA
+ * @description Renders a full-width Call-to-Action banner with a headline, supporting subtitle,
+ * and up to two action buttons (primary and optional secondary). Content is fetched from the CMS
+ * and falls back to static defaults once loading has settled.
+ */
+
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
 import Button from 'components/ui/Button';
@@ -44,6 +51,12 @@ const CtaRow = styled.div`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * CTA section component. Displays a centered headline, subtitle, and a row of call-to-action
+ * buttons driven by CMS content.
+ *
+ * @returns {JSX.Element}
+ */
 export default function CTA() {
   const { content, loading } = usePage('home');
 

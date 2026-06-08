@@ -1,3 +1,11 @@
+/**
+ * @module components/auth/RequireAuth
+ * @description A route-guard wrapper that conditionally renders its children based on the
+ * current authentication state from `AuthContext`. Handles four states: auth unavailable
+ * (Firebase not configured), loading, unauthenticated (redirects to the Login page), and
+ * access denied (user has no assigned role).
+ */
+
 import styled from '@emotion/styled';
 import { ShieldAlert } from 'lucide-react';
 import { useAuth } from 'context/AuthContext';
@@ -30,6 +38,15 @@ const MessageBody = styled.p`
   line-height: ${(p) => p.theme.typography.lineHeights.relaxed};
 `;
 
+/**
+ * RequireAuth route-guard component. Wraps protected routes and renders the appropriate UI
+ * based on auth state: a config-error message, a loading spinner, the Login page, an
+ * access-denied message, or the protected `children`.
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - The protected content to render when authenticated.
+ * @returns {JSX.Element}
+ */
 export default function RequireAuth({ children }) {
   const { loading, isAuthAvailable, isAuthenticated, userRole } = useAuth();
 

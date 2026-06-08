@@ -1,3 +1,13 @@
+/**
+ * 404 Not Found page.
+ *
+ * Displayed for any unmatched route. Shows a large "404" error code, a
+ * translated title and message, and a link back to the home page. All
+ * elements use Framer Motion entrance animations that respect
+ * `prefers-reduced-motion`.
+ *
+ * @returns {JSX.Element}
+ */
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';

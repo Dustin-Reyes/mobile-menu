@@ -1,3 +1,10 @@
+/**
+ * @module components/sections/Contact
+ * @description Renders the Contact section as a two-panel layout: a left info panel showing
+ * email, phone, and address pulled from site configuration, and a right panel housing the
+ * embedded {@link ContactForm}. Section heading content comes from the home CMS page.
+ */
+
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
 import { useTranslation } from 'react-i18next';
@@ -170,6 +177,12 @@ const FormPanel = styled.div`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * Contact section component. Combines a contact-info panel (email, phone, address) with the
+ * `ContactForm` in a responsive two-column grid.
+ *
+ * @returns {JSX.Element}
+ */
 export default function Contact() {
   const { t } = useTranslation();
   const { content: homeContent, loading: homeLoading } = usePage('home');

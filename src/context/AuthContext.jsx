@@ -1,3 +1,15 @@
+/**
+ * Authentication context and provider.
+ *
+ * Wraps the application in a Firebase Auth listener and exposes the current
+ * user, their custom-claim role, and helper methods (signIn, logout,
+ * refreshUserRole, reloadUser) via the `useAuth` hook.
+ *
+ * When Firebase Auth is not configured (`auth === null`) all async methods
+ * resolve/reject gracefully and `loading` is set to `false` immediately.
+ *
+ * @module context/AuthContext
+ */
 import {
   createContext,
   useCallback,
@@ -17,6 +29,13 @@ import globalErrorHandler from 'utils/errorHandler';
 
 const AuthContext = createContext(null);
 
+/**
+ * Provides authentication state to all descendant components.
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Child components that gain access to auth context.
+ * @returns {JSX.Element}
+ */
 export function AuthProvider({ children }) {
   const isAuthAvailable = !!auth;
   const [user, setUser] = useState(null);
@@ -131,6 +150,25 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+/**
+ * Consumes the authentication context.
+ *
+ * Must be called inside an `<AuthProvider>` tree. Throws if used outside one.
+ *
+ * @returns {{
+ *   user: import('firebase/auth').User | null,
+ *   userRole: string | null,
+ *   loading: boolean,
+ *   isAuthAvailable: boolean,
+ *   isAuthenticated: boolean,
+ *   isAdmin: boolean,
+ *   canManageUsers: boolean,
+ *   signIn: (email: string, password: string) => Promise<import('firebase/auth').User>,
+ *   logout: () => Promise<void>,
+ *   refreshUserRole: () => Promise<void>,
+ *   reloadUser: () => Promise<void>
+ * }}
+ */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === null) {

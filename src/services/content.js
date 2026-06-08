@@ -1,9 +1,12 @@
 /**
- * Content Service - Abstraction layer for content management
+ * Content service — abstraction layer for CMS content management.
  *
- * This service provides a unified interface for content retrieval
- * from Firebase CMS or local fallbacks, making the template work
- * seamlessly with or without Firebase configuration.
+ * Provides a unified interface for fetching and updating pages, settings,
+ * and navigation from Firebase Firestore (when CMS is enabled) or local
+ * content fallbacks. Includes an in-memory TTL cache and helper functions
+ * for flat ↔ nested field transformation and content translation.
+ *
+ * @module services/content
  */
 
 import CMS_CONFIG from '../config/firebase';
@@ -614,18 +617,36 @@ class ContentService {
   }
 }
 
-// Export singleton instance
+/**
+ * Singleton `ContentService` instance shared across the application.
+ *
+ * @type {ContentService}
+ */
 export const contentService = new ContentService();
 export default contentService;
 
 // Named function exports for easy mocking and direct imports
 export { transformNestedToFlat };
+
+/** @param {...unknown} args @returns {Promise<Object|null>} */
 export const getPage = (...args) => contentService.getPage(...args);
+
+/** @param {...unknown} args @returns {Promise<Object>} */
 export const updatePage = (...args) => contentService.updatePage(...args);
+
+/** @param {...unknown} args @returns {boolean} */
 export const hasLocaleContent = (...args) =>
   contentService.hasLocaleContent(...args);
+
+/** @param {...unknown} args @returns {Promise<Object|null>} */
 export const translateContent = (...args) =>
   contentService.translateContent(...args);
+
+/** @param {...unknown} args @returns {Promise<Object|null>} */
 export const getSettings = (...args) => contentService.getSettings(...args);
+
+/** @param {...unknown} args @returns {Promise<Array<Object>>} */
 export const getNavigation = (...args) => contentService.getNavigation(...args);
+
+/** @param {...unknown} args @returns {Promise<Object>} */
 export const getStats = (...args) => contentService.getStats(...args);

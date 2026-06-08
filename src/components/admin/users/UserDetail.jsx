@@ -1,3 +1,10 @@
+/**
+ * @module components/admin/users/UserDetail
+ * @description Detailed view for a single user record. Combines the profile
+ * header, action bar, and inline edit form; handles enable/disable, password
+ * reset, and deletion with confirmation dialogs.
+ */
+
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
@@ -47,6 +54,15 @@ const motionProps = {
 
 // ─── Component ───────────────────────────────────────────────────────────────────
 
+/**
+ * @param {Object} props
+ * @param {Object} props.targetUser - The user object being viewed.
+ * @param {string} props.callerRole - Role of the currently authenticated admin.
+ * @param {function} props.onBack - Callback invoked to return to the user list.
+ * @param {function} props.onUpdated - Callback invoked after any mutation to refresh data.
+ * @param {function} props.onDeleted - Callback invoked after the user is deleted.
+ * @returns {JSX.Element}
+ */
 export default function UserDetail({
   targetUser,
   callerRole,

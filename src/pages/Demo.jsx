@@ -1,3 +1,12 @@
+/**
+ * Component demo page (development only).
+ *
+ * Lazy-loaded and only registered as a route in non-production builds.
+ * Renders all design-token and component sections inside `DemoLayout`
+ * with a scrollspy sidebar for navigation.
+ *
+ * @returns {JSX.Element}
+ */
 import DemoLayout from '../dev/demo/DemoLayout';
 import ColorsSection from '../dev/demo/sections/ColorsSection';
 import TypographySection from '../dev/demo/sections/TypographySection';

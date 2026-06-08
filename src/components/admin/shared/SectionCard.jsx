@@ -1,3 +1,8 @@
+/**
+ * Styled card components for grouping related content within admin sections.
+ * @module components/admin/shared/SectionCard
+ */
+
 import styled from '@emotion/styled';
 
 export const SectionCard = styled.div`

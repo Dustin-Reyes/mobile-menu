@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/tabs/SettingsTab
+ * @description Admin tab for viewing and editing site-wide settings such as
+ * title, description, author, and URL.
+ */
+
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
@@ -108,6 +114,16 @@ const motionProps = {
   transition: { duration: 0.2 },
 };
 
+/**
+ * @param {Object} props
+ * @param {Object} props.settings - Current site settings values.
+ * @param {string} [props.settings.title] - Site title.
+ * @param {string} [props.settings.description] - Site description.
+ * @param {string} [props.settings.author] - Site author.
+ * @param {string} [props.settings.url] - Site URL.
+ * @param {function} props.updateSettings - Async callback invoked with the updated settings object.
+ * @returns {JSX.Element}
+ */
 export default function SettingsTab({ settings, updateSettings }) {
   const [editingSettings, setEditingSettings] = useState(false);
   const [loading, setLoading] = useState(false);

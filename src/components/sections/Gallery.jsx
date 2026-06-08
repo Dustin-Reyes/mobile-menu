@@ -1,3 +1,10 @@
+/**
+ * @module components/sections/Gallery
+ * @description Renders a responsive grid of portfolio/project items, each with a hover overlay
+ * showing a title and description. Items are loaded from the CMS and fall back to built-in
+ * sample projects; the component renders nothing until items are available.
+ */
+
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
 
@@ -112,6 +119,12 @@ const GalleryDescription = styled.p`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * Gallery section component. Displays a 1–3 column responsive grid of project cards with
+ * animated hover overlays. Returns `null` when no gallery items are present.
+ *
+ * @returns {JSX.Element|null}
+ */
 export default function Gallery() {
   const { content, loading } = usePage('home');
 

@@ -1,3 +1,7 @@
+/**
+ * Search input with icon prefix, focus styling, and animated clear button.
+ * @module components/ui/SearchInput
+ */
 import React, { useRef, useId } from 'react';
 import styled from '@emotion/styled';
 import { Search, X } from 'lucide-react';
@@ -99,9 +103,14 @@ const ClearButton = styled.button`
 
 /**
  * Admin-styled search input with icon prefix and animated clear button.
- * Accepts all standard input props plus:
- *   - size: 'sm' | 'md' (default 'md')
- *   - onClear: callback when the clear button is clicked
+ * Accepts all standard input props plus the ones listed below.
+ * @param {Object} props
+ * @param {'sm'|'md'} [props.size='md'] - Controls input height and font size.
+ * @param {string} [props.value] - Controlled value; renders the clear button when non-empty.
+ * @param {React.ChangeEventHandler<HTMLInputElement>} [props.onChange]
+ * @param {function} [props.onClear] - Called when the clear button is clicked.
+ * @param {string} [props.placeholder='Search…']
+ * @returns {JSX.Element}
  */
 const SearchInput = React.forwardRef(
   (

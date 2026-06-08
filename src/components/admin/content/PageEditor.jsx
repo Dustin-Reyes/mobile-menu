@@ -1,3 +1,8 @@
+/**
+ * Full-featured CMS page editor with section tabs, locale switching, and AI translation.
+ * @module components/admin/content/PageEditor
+ */
+
 import { useState, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
@@ -386,6 +391,12 @@ const Spinner = styled.span`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * Renders fields for a single CMS page with locale tabs and section navigation.
+ * @param {Object} props
+ * @param {string} props.pageId - The ID of the page to edit.
+ * @returns {JSX.Element}
+ */
 export default function PageEditor({ pageId }) {
   const {
     schema,

@@ -1,6 +1,14 @@
+/**
+ * Thin horizontal or vertical rule built on Radix UI Separator.
+ * @module components/ui/Separator
+ */
 import styled from '@emotion/styled';
 import * as RadixSeparator from '@radix-ui/react-separator';
 
+/**
+ * Themed separator line. Set `orientation="vertical"` for a vertical rule.
+ * @type {import('@emotion/styled').StyledComponent}
+ */
 const Separator = styled(RadixSeparator.Root)`
   background: ${(p) => p.theme.colors.border};
 

@@ -1,3 +1,20 @@
+/**
+ * Core design tokens: spacing, borders, z-index, shadows, transitions,
+ * animations, opacity, and font-family constants.
+ *
+ * All tokens are consumed by `createTheme()` via the `designTokens` aggregate
+ * export, which is spread into the Emotion theme object.
+ *
+ * Token scale nomenclature: `s0` → smallest, `s10` → largest.
+ *
+ * @module styles/designTokens
+ */
+
+/**
+ * Spacing scale (rem values).
+ *
+ * @type {Record<string, string>}
+ */
 export const spacing = {
   s0: '0.25rem',
   s1: '0.5rem',
@@ -12,6 +29,11 @@ export const spacing = {
   s10: '12rem',
 };
 
+/**
+ * Border-radius scale.
+ *
+ * @type {Record<string, string>}
+ */
 export const borderRadius = {
   s0: '0.25rem',
   s1: '0.5rem',
@@ -21,6 +43,11 @@ export const borderRadius = {
   s100: '9999px',
 };
 
+/**
+ * Z-index scale for layered UI elements.
+ *
+ * @type {Record<string, number>}
+ */
 export const zIndex = {
   hide: -1,
   base: 0,
@@ -32,6 +59,11 @@ export const zIndex = {
   toast: 60,
 };
 
+/**
+ * Box-shadow scale.
+ *
+ * @type {Record<string, string>}
+ */
 export const shadows = {
   s0: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
   s1: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
@@ -40,12 +72,22 @@ export const shadows = {
   s4: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
 };
 
+/**
+ * CSS transition shorthand values.
+ *
+ * @type {{ fast: string, base: string, slow: string }}
+ */
 export const transitions = {
   fast: '150ms ease-in-out',
   base: '200ms ease-in-out',
   slow: '300ms ease-in-out',
 };
 
+/**
+ * CSS animation duration and timing-function presets.
+ *
+ * @type {Record<string, string>}
+ */
 export const animations = {
   fast: '150ms ease-in-out',
   base: '200ms ease-in-out',
@@ -57,6 +99,11 @@ export const animations = {
   fadeOut: '0.2s ease-out',
 };
 
+/**
+ * Opacity constants for interactive states.
+ *
+ * @type {Record<string, string>}
+ */
 export const opacity = {
   transparent: '0',
   disabled: '0.5',
@@ -66,12 +113,22 @@ export const opacity = {
   solid: '1',
 };
 
+/**
+ * Font-family stacks for heading and body text.
+ *
+ * @type {{ heading: string, body: string }}
+ */
 export const fonts = {
   heading:
     "'Bebas Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
   body: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
 };
 
+/**
+ * Aggregate design tokens object spread into the Emotion theme.
+ *
+ * @type {{ spacing: typeof spacing, borderRadius: typeof borderRadius, zIndex: typeof zIndex, shadows: typeof shadows, transitions: typeof transitions, animations: typeof animations, opacity: typeof opacity, fonts: typeof fonts }}
+ */
 export const designTokens = {
   spacing,
   borderRadius,

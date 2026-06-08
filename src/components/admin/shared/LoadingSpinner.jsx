@@ -1,3 +1,8 @@
+/**
+ * Styled spinning indicator for loading states across the admin panel.
+ * @module components/admin/shared/LoadingSpinner
+ */
+
 import styled from '@emotion/styled';
 
 export const LoadingSpinner = styled.div`

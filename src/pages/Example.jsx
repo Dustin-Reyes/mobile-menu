@@ -1,3 +1,15 @@
+/**
+ * Example Page — a disposable placeholder demonstrating a second CMS-driven route.
+ *
+ * This page is included in the template to show how a second route with
+ * Firebase CMS content works. When scaffolding a new project, delete this
+ * page or repurpose it entirely.
+ *
+ * Content is loaded via `usePage('example')` and falls back to hardcoded
+ * strings when the CMS is unavailable.
+ *
+ * @returns {JSX.Element}
+ */
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
 

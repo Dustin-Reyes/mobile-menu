@@ -1,8 +1,19 @@
+/**
+ * @module components/ToastProvider
+ * @description Mounts the react-hot-toast Toaster with theme-aware styles
+ * (colors, borders, shadows, typography). Syncs the active Emotion theme colors
+ * into the global toast utility so programmatic toasts use the correct palette.
+ */
 import { useEffect } from 'react';
 import { useTheme } from '@emotion/react';
 import { Toaster } from 'react-hot-toast';
 import { _setThemeColors } from '@/utils/toast';
 
+/**
+ * @param {Object} props
+ * @param {string} [props.position='top-center'] - Screen position for toast notifications.
+ * @returns {JSX.Element}
+ */
 export function ToastProvider({ position = 'top-center' }) {
   const theme = useTheme();
 

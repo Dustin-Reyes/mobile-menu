@@ -1,6 +1,18 @@
+/**
+ * @module components/AnimatedSection
+ * @description Wraps content in a Framer Motion `div` that fades and slides into
+ * view when it enters the viewport. Respects the user's reduced-motion preference
+ * by disabling animation offset and duration when `prefersReduced` is true.
+ */
 import { motion } from 'framer-motion';
 import useAnimationConfig from 'hooks/useAnimationConfig';
 
+/**
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Content to animate into view.
+ * @param {number} [props.delay=0] - Entrance animation delay in seconds.
+ * @returns {JSX.Element}
+ */
 function AnimatedSection({ children, delay = 0, ...props }) {
   const { prefersReduced } = useAnimationConfig();
 

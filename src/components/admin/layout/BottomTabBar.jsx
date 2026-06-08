@@ -1,3 +1,8 @@
+/**
+ * Mobile-only fixed bottom navigation bar for the admin panel.
+ * @module components/admin/layout/BottomTabBar
+ */
+
 import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { BOTTOM_TAB_IDS, getAdminTab } from '../tabs/adminTabsConfig';
@@ -42,6 +47,14 @@ const BottomTab = styled.button`
   }
 `;
 
+/**
+ * Fixed bottom tab bar rendered only on mobile, showing role-filtered admin navigation tabs.
+ * @param {Object} props
+ * @param {string} props.activeTab - ID of the currently active tab.
+ * @param {function} props.onTabChange - Callback invoked with the new tab ID when a tab is pressed.
+ * @param {string} props.userRole - Current user's role, used to filter visible tabs.
+ * @returns {JSX.Element}
+ */
 export default function BottomTabBar({ activeTab, onTabChange, userRole }) {
   const visibleTabs = useMemo(
     () =>

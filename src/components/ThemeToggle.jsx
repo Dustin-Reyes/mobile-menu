@@ -1,3 +1,9 @@
+/**
+ * @module components/ThemeToggle
+ * @description Accessible switch control that toggles between light and dark
+ * theme modes. Renders a sun or moon icon inside the switch thumb to indicate
+ * the currently active mode. Returns null when ThemeContext is unavailable.
+ */
 import styled from '@emotion/styled';
 import { Sun, Moon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +18,10 @@ const IconWrapper = styled.span`
   line-height: ${(props) => props.theme.typography.lineHeights.tight};
 `;
 
+/**
+ * @param {Object} props - Additional props forwarded to the underlying SwitchRoot.
+ * @returns {JSX.Element|null} Renders null when the ThemeContext is unavailable.
+ */
 export const ThemeToggle = ({ ...props }) => {
   const themeContext = useTheme();
   const { t } = useTranslation();

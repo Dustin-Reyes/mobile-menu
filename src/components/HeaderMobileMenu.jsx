@@ -1,3 +1,9 @@
+/**
+ * @module components/HeaderMobileMenu
+ * @description Slide-in mobile navigation panel with section nav links, language
+ * flag buttons, a theme toggle switch, a phone link, and a CTA button. Rendered
+ * as a fixed overlay; hidden on desktop breakpoints via CSS.
+ */
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { Phone, Sun, Moon, ArrowRight } from 'lucide-react';
@@ -169,6 +175,16 @@ const MobileCTAButton = styled.button`
   }
 `;
 
+/**
+ * @param {Object} props
+ * @param {boolean} props.open - Whether the mobile menu panel is visible.
+ * @param {Array<Object>} props.navItems - Navigation item definitions with `id`, `sectionId`, and `labels` fields.
+ * @param {string} props.activeId - ID of the currently active section.
+ * @param {string} props.lang - Current language code used to resolve item labels.
+ * @param {Function} props.onNavigate - Callback invoked with the section ID when an item is clicked.
+ * @param {Function} props.onClose - Callback to close the menu.
+ * @returns {JSX.Element}
+ */
 function HeaderMobileMenu({
   open,
   navItems,

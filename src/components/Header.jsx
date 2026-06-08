@@ -1,3 +1,9 @@
+/**
+ * @module components/Header
+ * @description Sticky site header containing the logo, desktop section-anchor
+ * navigation, a theme toggle, a language switcher, and an authenticated user
+ * menu. On mobile viewports the desktop nav and controls are replaced by MobileMenu.
+ */
 import styled from '@emotion/styled';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Sun, Moon } from 'lucide-react';
@@ -102,6 +108,9 @@ const ThemeBtn = styled.button`
   }
 `;
 
+/**
+ * @returns {JSX.Element}
+ */
 function Header() {
   const { t } = useTranslation();
   const { isDark, toggleMode } = useTheme();

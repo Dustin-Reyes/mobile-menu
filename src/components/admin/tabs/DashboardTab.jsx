@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/tabs/DashboardTab
+ * @description Admin overview dashboard tab. Displays the site identity card,
+ * a CMS connection status indicator, and quick-access cards for all major admin sections.
+ */
+
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { Settings, Image } from 'lucide-react';
@@ -154,6 +160,21 @@ const Skeleton = styled.div`
   border-radius: 4px;
 `;
 
+/**
+ * @param {Object} props
+ * @param {boolean} props.isCMSEnabled - Whether the CMS database connection is active.
+ * @param {Object} props.stats - Aggregate content counts shown on the dashboard cards.
+ * @param {number} props.stats.pages - Number of content pages.
+ * @param {number} props.stats.posts - Number of blog posts.
+ * @param {number} [props.stats.users] - Number of registered users.
+ * @param {Object} props.settings - Site settings object.
+ * @param {string} [props.settings.title] - Site title.
+ * @param {string} [props.settings.url] - Site URL.
+ * @param {boolean} props.postsEnabled - Whether the Posts section is enabled.
+ * @param {function} props.onTabChange - Callback invoked with a tab ID to navigate to another tab.
+ * @param {boolean} [props.loading=false] - When true, stat cards render skeleton placeholders.
+ * @returns {JSX.Element}
+ */
 export default function DashboardTab({
   isCMSEnabled,
   stats,

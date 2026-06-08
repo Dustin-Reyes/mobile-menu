@@ -1,3 +1,17 @@
+/**
+ * Colour design tokens for light and dark themes.
+ *
+ * Exports `lightColors`, `darkColors`, and a combined `colors` object used
+ * by `createTheme()` in `styles/theme.js`.
+ *
+ * @module styles/colors
+ */
+
+/**
+ * Semantic colour tokens for the light theme.
+ *
+ * @type {Record<string, string>}
+ */
 export const lightColors = {
   // Brand palette
   primary: '#6366F1', // electric indigo — main CTA + accents
@@ -34,6 +48,11 @@ export const lightColors = {
   overlay: 'rgba(0, 0, 0, 0.55)',
 };
 
+/**
+ * Semantic colour tokens for the dark theme.
+ *
+ * @type {Record<string, string>}
+ */
 export const darkColors = {
   // Brand palette
   primary: '#818CF8', // soft indigo for dark backgrounds
@@ -70,4 +89,9 @@ export const darkColors = {
   overlay: 'rgba(0, 0, 0, 0.65)',
 };
 
+/**
+ * Combined colour map keyed by theme mode.
+ *
+ * @type {{ light: typeof lightColors, dark: typeof darkColors }}
+ */
 export const colors = { light: lightColors, dark: darkColors };

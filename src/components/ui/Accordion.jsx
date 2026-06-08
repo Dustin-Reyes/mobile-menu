@@ -1,7 +1,12 @@
+/**
+ * Accordion components built on Radix UI with themed styling and animated open/close transitions.
+ * @module components/ui/Accordion
+ */
 import styled from '@emotion/styled';
 import * as RadixAccordion from '@radix-ui/react-accordion';
 import { ChevronDown } from 'lucide-react';
 
+/** Outer container wrapping all accordion items; applies border and rounded corners. */
 export const AccordionRoot = styled(RadixAccordion.Root)`
   width: 100%;
   border-radius: ${(p) => p.theme.borderRadius.s2};
@@ -9,6 +14,7 @@ export const AccordionRoot = styled(RadixAccordion.Root)`
   overflow: hidden;
 `;
 
+/** Single collapsible panel row with a bottom divider (removed on the last item). */
 export const AccordionItem = styled(RadixAccordion.Item)`
   border-bottom: 1px solid ${(p) => p.theme.colors.border};
 
@@ -17,6 +23,7 @@ export const AccordionItem = styled(RadixAccordion.Item)`
   }
 `;
 
+/** Toggle button that spans the full row width, shows the panel title, and hosts the animated chevron. */
 export const AccordionTrigger = styled(RadixAccordion.Trigger)`
   display: flex;
   align-items: center;
@@ -52,6 +59,7 @@ export const AccordionTrigger = styled(RadixAccordion.Trigger)`
   }
 `;
 
+/** Animated panel body; slides down on open and up on close via CSS keyframes. */
 export const AccordionContent = styled(RadixAccordion.Content)`
   overflow: hidden;
   font-size: ${(p) => p.theme.typography.fontSizes.s4};
@@ -90,6 +98,10 @@ export const AccordionContent = styled(RadixAccordion.Content)`
   }
 `;
 
+/**
+ * Chevron icon used inside {@link AccordionTrigger}; rotates 180° when the panel is open.
+ * @returns {JSX.Element}
+ */
 export function AccordionChevron() {
   return <ChevronDown size={16} className="accordion-chevron" aria-hidden />;
 }

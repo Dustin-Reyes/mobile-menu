@@ -1,3 +1,9 @@
+/**
+ * @module components/ErrorTrigger
+ * @description Development/test-only component that throws a deliberate error
+ * when the "Trigger Error" button is clicked, allowing end-to-end tests to
+ * exercise the ErrorBoundary fallback UI.
+ */
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
@@ -18,6 +24,9 @@ const TriggerButton = styled.button`
 
 // Test-only component for triggering errors in e2e tests
 // This component should only be available in development/test mode
+/**
+ * @returns {JSX.Element}
+ */
 const ErrorTrigger = () => {
   const [shouldThrow, setShouldThrow] = useState(false);
 

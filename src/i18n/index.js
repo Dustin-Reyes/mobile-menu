@@ -1,3 +1,15 @@
+/**
+ * i18next initialisation and language constants.
+ *
+ * Configures i18next with the LanguageDetector and react-i18next plugins,
+ * registers the English and Spanish translation resources, and exports
+ * `AVAILABLE_LANGUAGES` and `DEFAULT_LANGUAGE` for use elsewhere.
+ *
+ * This module is imported once (side-effect) in `src/main.jsx` via
+ * `import './i18n/index'`.
+ *
+ * @module i18n
+ */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
@@ -6,7 +18,11 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import en from './locales/en.json';
 import es from './locales/es.json';
 
-// Available languages configuration
+/**
+ * Map of supported language codes to display metadata.
+ *
+ * @type {Record<string, { name: string, nativeName: string, flag: string }>}
+ */
 export const AVAILABLE_LANGUAGES = {
   en: {
     name: 'English',
@@ -20,7 +36,11 @@ export const AVAILABLE_LANGUAGES = {
   },
 };
 
-// Default language
+/**
+ * BCP 47 language code used as the i18next fallback language.
+ *
+ * @type {string}
+ */
 export const DEFAULT_LANGUAGE = 'en';
 
 // Resources object

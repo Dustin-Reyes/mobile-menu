@@ -1,3 +1,8 @@
+/**
+ * Fixed left sidebar navigation for the admin panel with role-filtered tab groups.
+ * @module components/admin/layout/Sidebar
+ */
+
 import { Fragment, useMemo } from 'react';
 import styled from '@emotion/styled';
 import * as RadixSeparator from '@radix-ui/react-separator';
@@ -97,6 +102,16 @@ const ChevronWrap = styled.span`
   transition: transform 0.15s;
 `;
 
+/**
+ * Renders grouped admin navigation items, with an expandable sub-list for content pages.
+ * @param {Object} props
+ * @param {string} props.activeTab - ID of the currently active tab.
+ * @param {function} props.onTabChange - Callback invoked with the new tab ID on navigation.
+ * @param {string} props.selectedPage - Currently selected content page ID.
+ * @param {function} props.onPageChange - Callback invoked with a page ID when a page sub-item is selected.
+ * @param {string} props.userRole - Current user's role, used to determine visible tab groups.
+ * @returns {JSX.Element}
+ */
 export default function Sidebar({
   activeTab,
   onTabChange,

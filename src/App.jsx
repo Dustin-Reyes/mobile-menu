@@ -1,3 +1,15 @@
+/**
+ * Root application component.
+ *
+ * Declares all client-side routes, wraps them in page transition animations,
+ * handles post-navigation scroll restoration (including anchor-link scrolling),
+ * and conditionally renders the Footer on non-admin routes.
+ *
+ * The Demo route is only registered in non-production builds.
+ * The Dashboard route is lazy-loaded and protected by RequireAuth.
+ *
+ * @returns {JSX.Element}
+ */
 import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';

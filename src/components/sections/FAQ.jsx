@@ -1,3 +1,10 @@
+/**
+ * @module components/sections/FAQ
+ * @description Renders the FAQ section as a list of accordion-style items where each question
+ * can be toggled to reveal its answer. Content is fetched from the CMS; the component renders
+ * nothing until FAQ items are available.
+ */
+
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
@@ -95,6 +102,12 @@ const IconWrapper = styled.div`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * FAQ section component. Displays an accordion list of frequently asked questions sourced from
+ * the CMS. Returns `null` when no FAQ items are present.
+ *
+ * @returns {JSX.Element|null}
+ */
 export default function FAQ() {
   const { content, loading } = usePage('home');
   const [openIndex, setOpenIndex] = useState(null);

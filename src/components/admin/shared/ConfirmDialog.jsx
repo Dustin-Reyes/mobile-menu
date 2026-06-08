@@ -1,3 +1,9 @@
+/**
+ * Reusable confirmation dialog built on Radix UI Dialog, with optional destructive styling.
+ * Adapts to a bottom sheet on mobile.
+ * @module components/admin/shared/ConfirmDialog
+ */
+
 import styled from '@emotion/styled';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import Button from 'components/ui/Button';
@@ -102,6 +108,19 @@ const DestructiveButton = styled(Button)`
   }
 `;
 
+/**
+ * Modal confirmation dialog with customizable title, description, and action labels.
+ * @param {Object} props
+ * @param {boolean} props.open - Controls whether the dialog is visible.
+ * @param {function} props.onOpenChange - Callback invoked when the open state changes.
+ * @param {string} [props.title='Are you sure?'] - Dialog heading text.
+ * @param {string} [props.description] - Optional body text describing the action.
+ * @param {string} [props.confirmLabel='Confirm'] - Label for the confirm button.
+ * @param {string} [props.cancelLabel='Cancel'] - Label for the cancel button.
+ * @param {boolean} [props.destructive=false] - When true, styles the confirm button as destructive.
+ * @param {function} [props.onConfirm] - Callback invoked when the confirm button is clicked.
+ * @returns {JSX.Element}
+ */
 export default function ConfirmDialog({
   open,
   onOpenChange,

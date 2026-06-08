@@ -1,3 +1,9 @@
+/**
+ * @module components/ElementBuilder
+ * @description Interactive component playground that renders a live preview and
+ * auto-generated JSX code snippet as the user toggles attribute pills. Supports
+ * exclusive attribute groups and boolean toggles.
+ */
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import Pill from 'components/ui/Pill';
@@ -65,6 +71,9 @@ function buildCodeString(componentName, defaultChildren, activeProps) {
  *   value       — value to apply
  *   group       — exclusive group name (null for boolean toggle)
  *   pillVariant — Pill color variant when active
+ * @param {Object} props
+ * @param {Object} props.config - Builder configuration object (see shape above).
+ * @returns {JSX.Element}
  */
 const ElementBuilder = ({ config }) => {
   const {

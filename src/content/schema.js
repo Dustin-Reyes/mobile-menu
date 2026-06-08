@@ -1,20 +1,28 @@
 /**
- * Field schema for CMS content editor
+ * CMS field schema — single source of truth for the content editor.
  *
- * Single source of truth for which fields exist per page, their labels, types,
- * and display metadata. Each page object defines the editable fields that appear
- * in the admin dashboard content editor.
+ * Defines which fields exist per page, their labels, types (`text`,
+ * `textarea`, `url`, `email`, `array`), and the group they belong to in the
+ * admin UI. Fields use section-prefixed keys (e.g. `heroTitle`) to mirror the
+ * nested structure in `pages.js` while staying flat for the editor.
  *
- * Note: Fields are organized with section prefixes (e.g., heroTitle, servicesSubtitle)
- * to match the nested structure in pages.js, but remain flat for the admin UI.
- *
- * To add a new section field:
- *   1. Add the field definition here with section prefix (key, label, type)
- *   2. Add the corresponding field value in `src/content/pages.js` under the section object
+ * To add a new field:
+ *   1. Add the field definition here with a section prefix (`key`, `label`, `type`, `group`)
+ *   2. Add the corresponding value in `src/content/pages.js` under the section object
  *   3. Run `yarn seed` to push the new content to Firestore
  *   4. Update the component that renders the field
+ *
+ * @module content/schema
  */
 
+/**
+ * Page schema keyed by page ID.
+ *
+ * Each page entry contains a `label`, optional `emoji`, and a `fields` array
+ * of field descriptor objects.
+ *
+ * @type {Record<string, { label: string, emoji?: string, fields: Array<{ key: string, label: string, type: string, group: string }> }>}
+ */
 export const pageSchema = {
   home: {
     label: 'Home',

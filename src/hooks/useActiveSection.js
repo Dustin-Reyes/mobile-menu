@@ -1,3 +1,13 @@
+/**
+ * Tracks which page section is currently in the viewport using IntersectionObserver.
+ *
+ * Returns the `id` of the section whose element is currently intersecting the
+ * centre of the viewport. Defaults to `'home'` on mount.
+ *
+ * @param {string[]} sectionIds - Ordered list of section element IDs to observe.
+ * @returns {[string, React.Dispatch<React.SetStateAction<string>>]}
+ *   Tuple of `[activeSection, setActiveSection]`.
+ */
 import { useState, useEffect } from 'react';
 
 function useActiveSection(sectionIds) {

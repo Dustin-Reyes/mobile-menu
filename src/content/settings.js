@@ -1,10 +1,17 @@
 /**
- * Local settings fallbacks
+ * Local settings fallbacks.
  *
- * These are the default settings used when Firebase CMS is not configured.
- * Run yarn setup to populate these with your project values.
+ * Default site and SEO settings used when Firebase CMS is not configured.
+ * Run `yarn setup` to populate these with your real project values.
+ *
+ * @module content/settings
  */
 
+/**
+ * Site-wide settings object.
+ *
+ * @type {{ site: { title: string, description: string, author: string, url: string }, seo: { defaultTitle: string, defaultDescription: string, keywords: string[] } }}
+ */
 export const settings = {
   site: {
     title: 'Your App',

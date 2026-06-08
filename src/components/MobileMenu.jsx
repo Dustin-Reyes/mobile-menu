@@ -1,3 +1,9 @@
+/**
+ * @module components/MobileMenu
+ * @description Full-screen slide-in mobile navigation dialog built on Radix UI.
+ * Renders a hamburger trigger and a panel containing main nav, section anchors,
+ * admin shortcuts, theme toggle, language switcher, and sign-in/sign-out controls.
+ */
 import styled from '@emotion/styled';
 import { Menu, X, LogIn, Sun, Moon, ChevronRight } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -284,6 +290,9 @@ const SignOutButtonWrapper = styled(RadixDialog.Close)`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * @returns {JSX.Element}
+ */
 export default function MobileMenu() {
   const { t } = useTranslation();
   const { user, isAuthenticated, logout } = useAuth();

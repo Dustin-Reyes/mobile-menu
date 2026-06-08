@@ -1,3 +1,9 @@
+/**
+ * @module components/ErrorBoundary
+ * @description React class-based error boundary that catches uncaught JavaScript
+ * errors anywhere in the child tree, reports them to Sentry, and renders a
+ * localised fallback UI with retry and reload actions instead of crashing the app.
+ */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
@@ -105,6 +111,13 @@ const Footer = styled.p`
 
 // ─── ErrorFallback ────────────────────────────────────────────────────────────
 
+/**
+ * @param {Object} props
+ * @param {Error|null} props.error - The caught error object.
+ * @param {React.ErrorInfo|null} props.errorInfo - React component stack information.
+ * @param {Function} props.onRetry - Callback to reset the error boundary state.
+ * @returns {JSX.Element}
+ */
 function ErrorFallback({ error, errorInfo, onRetry }) {
   const { t } = useTranslation();
 
@@ -147,6 +160,9 @@ function ErrorFallback({ error, errorInfo, onRetry }) {
  * Props:
  *   fallback  — optional React element to render instead of the default UI
  *   children  — the component subtree to protect
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - The component subtree to protect.
+ * @param {React.ReactElement} [props.fallback] - Custom fallback element to render on error.
  */
 class ErrorBoundary extends React.Component {
   constructor(props) {

@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/users/EditRoleModal
+ * @description Modal dialog for changing a user's role. Presents a dropdown of
+ * roles assignable by the current caller and persists the selection via the user management API.
+ */
+
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useAuth } from 'context/AuthContext';
@@ -74,6 +80,18 @@ const EmailDescription = styled.p`
 
 // ─── Component ───────────────────────────────────────────────────────────────────
 
+/**
+ * @param {Object} props
+ * @param {boolean} props.open - Whether the modal is visible.
+ * @param {function} props.onOpenChange - Callback invoked with the new open state.
+ * @param {Object} props.targetUser - The user whose role is being edited.
+ * @param {string} props.targetUser.uid - The target user's Firebase UID.
+ * @param {string} props.targetUser.email - The target user's email address.
+ * @param {string} [props.targetUser.role] - The target user's current role.
+ * @param {function} props.onUpdated - Callback invoked after the role is successfully updated.
+ * @param {string} props.callerRole - Role of the currently authenticated admin.
+ * @returns {JSX.Element}
+ */
 export default function EditRoleModal({
   open,
   onOpenChange,

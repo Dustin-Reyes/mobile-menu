@@ -1,11 +1,22 @@
 import { useReducedMotion } from 'framer-motion';
 
 /**
- * Central accessibility bridge for Framer Motion animations.
- * All animated components should call this hook to get prefers-reduced-motion-aware configs.
+ * Central accessibility bridge for all Framer Motion animations.
  *
- * When prefersReduced is true: instant transitions (duration: 0, no movement)
- * When prefersReduced is false: standard eased transitions
+ * Every animated component should call this hook to obtain
+ * `prefers-reduced-motion`-aware variant configs. When `prefersReduced` is
+ * `true` all `y`/`scale` values are zeroed and `duration` is `0`; opacity
+ * transitions are always preserved.
+ *
+ * @returns {{
+ *   fadeIn: Object,
+ *   slideUp: Object,
+ *   slideDown: Object,
+ *   scaleIn: Object,
+ *   staggerContainer: Object,
+ *   buttonPress: Object,
+ *   prefersReduced: boolean
+ * }}
  */
 function useAnimationConfig() {
   const prefersReduced = useReducedMotion();

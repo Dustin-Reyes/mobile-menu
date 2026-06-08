@@ -1,3 +1,13 @@
+/**
+ * Generic HTTP client built on the Fetch API.
+ *
+ * Features: request/response/error interceptors, automatic retry with
+ * exponential back-off, configurable timeout via `AbortController`, JSON
+ * serialisation/deserialisation, query-parameter building, and Sentry
+ * breadcrumb integration via `globalErrorHandler`.
+ *
+ * @module services/ApiClient
+ */
 import ApiError from './ApiError';
 import { delay, exponentialBackoffDelay } from './retry';
 import globalErrorHandler from 'utils/errorHandler';
@@ -107,7 +117,23 @@ function mergeRetryConfig(base, override = {}) {
   };
 }
 
+/**
+ * HTTP client with interceptors, retry logic, and timeout support.
+ *
+ * @example
+ * const client = new ApiClient({ baseURL: 'https://api.example.com' });
+ * const data = await client.get('/users');
+ */
 class ApiClient {
+  /**
+   * @param {Object} [options={}]
+   * @param {string} [options.baseURL] - Base URL prepended to all relative paths. Defaults to `VITE_API_BASE_URL`.
+   * @param {Record<string, string>} [options.defaultHeaders] - Headers included on every request.
+   * @param {number} [options.timeout=15000] - Request timeout in milliseconds.
+   * @param {Object} [options.retry] - Retry configuration overrides.
+   * @param {Function} [options.fetchImplementation] - Custom fetch function (useful for testing).
+   * @param {RequestCredentials} [options.credentials] - Default credentials mode.
+   */
   constructor(options = {}) {
     const {
       baseURL = import.meta.env.VITE_API_BASE_URL || '',
@@ -143,6 +169,12 @@ class ApiClient {
     }
   }
 
+  /**
+   * Registers a request interceptor. Returns a function that removes it.
+   *
+   * @param {Function} interceptor - Receives `(requestConfig, options)` and returns the (optionally modified) config.
+   * @returns {() => void} Cleanup function that removes the interceptor.
+   */
   addRequestInterceptor(interceptor) {
     this.interceptors.request.push(interceptor);
     return () => {
@@ -152,6 +184,12 @@ class ApiClient {
     };
   }
 
+  /**
+   * Registers a response interceptor. Returns a function that removes it.
+   *
+   * @param {Function} interceptor - Receives `(result, options)` and returns the (optionally modified) result.
+   * @returns {() => void} Cleanup function that removes the interceptor.
+   */
   addResponseInterceptor(interceptor) {
     this.interceptors.response.push(interceptor);
     return () => {
@@ -161,6 +199,12 @@ class ApiClient {
     };
   }
 
+  /**
+   * Registers an error interceptor. Returns a function that removes it.
+   *
+   * @param {Function} interceptor - Receives `(error, context, options)` and returns the (optionally modified) error.
+   * @returns {() => void} Cleanup function that removes the interceptor.
+   */
   addErrorInterceptor(interceptor) {
     this.interceptors.error.push(interceptor);
     return () => {
@@ -170,6 +214,15 @@ class ApiClient {
     };
   }
 
+  /**
+   * Core request method. Handles retries, interceptors, and error normalisation.
+   *
+   * @param {string} method - HTTP method (e.g. `'GET'`, `'POST'`).
+   * @param {string} path - URL path or absolute URL.
+   * @param {Object} [options={}] - Request options.
+   * @returns {Promise<unknown>} Parsed response body (or full result when `options.raw` is true).
+   * @throws {ApiError} On non-2xx responses or unrecoverable network errors.
+   */
   async request(method, path, options = {}) {
     const requestContext = await this.prepareRequest(method, path, options);
     const retryConfig = mergeRetryConfig(this.retryConfig, options.retry);
@@ -261,26 +314,69 @@ class ApiClient {
     );
   }
 
+  /**
+   * Sends a GET request and returns the parsed response body.
+   *
+   * @param {string} path - URL path.
+   * @param {Object} [options] - Request options.
+   * @returns {Promise<unknown>}
+   * @throws {ApiError}
+   */
   async get(path, options) {
     const result = await this.request('GET', path, options);
     return options && options.raw ? result : result.data;
   }
 
+  /**
+   * Sends a DELETE request and returns the parsed response body.
+   *
+   * @param {string} path - URL path.
+   * @param {Object} [options] - Request options.
+   * @returns {Promise<unknown>}
+   * @throws {ApiError}
+   */
   async delete(path, options) {
     const result = await this.request('DELETE', path, options);
     return options && options.raw ? result : result.data;
   }
 
+  /**
+   * Sends a POST request with `data` as the body and returns the parsed response.
+   *
+   * @param {string} path - URL path.
+   * @param {unknown} data - Request body.
+   * @param {Object} [options={}] - Request options.
+   * @returns {Promise<unknown>}
+   * @throws {ApiError}
+   */
   async post(path, data, options = {}) {
     const result = await this.request('POST', path, { ...options, data });
     return options && options.raw ? result : result.data;
   }
 
+  /**
+   * Sends a PUT request with `data` as the body and returns the parsed response.
+   *
+   * @param {string} path - URL path.
+   * @param {unknown} data - Request body.
+   * @param {Object} [options={}] - Request options.
+   * @returns {Promise<unknown>}
+   * @throws {ApiError}
+   */
   async put(path, data, options = {}) {
     const result = await this.request('PUT', path, { ...options, data });
     return options && options.raw ? result : result.data;
   }
 
+  /**
+   * Sends a PATCH request with `data` as the body and returns the parsed response.
+   *
+   * @param {string} path - URL path.
+   * @param {unknown} data - Request body.
+   * @param {Object} [options={}] - Request options.
+   * @returns {Promise<unknown>}
+   * @throws {ApiError}
+   */
   async patch(path, data, options = {}) {
     const result = await this.request('PATCH', path, { ...options, data });
     return options && options.raw ? result : result.data;

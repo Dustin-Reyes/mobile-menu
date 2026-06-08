@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/users/UserEditSection
+ * @description Inline edit form within the user detail view. Allows updating a
+ * user's display name and role; submits only the changed fields to the management API.
+ */
+
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useAuth } from 'context/AuthContext';
@@ -80,6 +86,17 @@ const FormActions = styled.div`
   padding-top: 4px;
 `;
 
+/**
+ * @param {Object} props
+ * @param {Object} props.targetUser - The user record being edited.
+ * @param {string} [props.targetUser.displayName] - Current display name.
+ * @param {string} [props.targetUser.role] - Current role identifier.
+ * @param {string} props.targetUser.uid - The user's Firebase UID.
+ * @param {string} props.callerRole - Role of the currently authenticated admin, used to determine assignable roles.
+ * @param {function} props.onCancel - Callback invoked when editing is cancelled.
+ * @param {function} props.onSaved - Callback invoked after changes are saved successfully.
+ * @returns {JSX.Element}
+ */
 export default function UserEditSection({
   targetUser,
   callerRole,

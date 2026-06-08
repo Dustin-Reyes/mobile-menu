@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/tabs/MediaTab
+ * @description Admin tab for the media library. Currently renders a placeholder
+ * indicating that media management is coming soon.
+ */
+
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { Image } from 'lucide-react';
@@ -34,6 +40,9 @@ const CompactEmptyIcon = styled.div`
   margin-bottom: 2px;
 `;
 
+/**
+ * @returns {JSX.Element}
+ */
 export default function MediaTab() {
   return (
     <motion.div key="media" {...motionProps}>

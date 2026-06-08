@@ -1,3 +1,9 @@
+/**
+ * @module components/HeaderControls
+ * @description Right-side header control group containing the language switcher,
+ * theme toggle button, a desktop-only CTA button, and a mobile hamburger toggle.
+ * Desktop-only elements are hidden below the desktop breakpoint.
+ */
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { Menu, X, Sun, Moon, ArrowRight } from 'lucide-react';
@@ -95,6 +101,13 @@ const HamburgerBtn = styled.button`
   }
 `;
 
+/**
+ * @param {Object} props
+ * @param {boolean} props.menuOpen - Whether the mobile menu is currently open.
+ * @param {Function} props.onMenuToggle - Callback to toggle the mobile menu open/closed.
+ * @param {Function} props.onNavigate - Callback to scroll/navigate to a section by ID.
+ * @returns {JSX.Element}
+ */
 function HeaderControls({ menuOpen, onMenuToggle, onNavigate }) {
   const { isDark, toggleMode } = useTheme();
   const { t } = useTranslation();

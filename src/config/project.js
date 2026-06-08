@@ -1,6 +1,20 @@
-// Project Configuration
-// Run `yarn setup` to populate this file with your project values.
+/**
+ * Project-wide configuration constants.
+ *
+ * Contains branding, URLs, SEO defaults, per-page metadata, analytics IDs,
+ * and feature/security/performance flags. Values are merged with
+ * environment-specific overrides returned by `getEnvOverrides()`.
+ *
+ * Run `yarn setup` to populate this file with real project values.
+ *
+ * @module config/project
+ */
 
+/**
+ * Master project configuration object.
+ *
+ * @type {Object}
+ */
 export const PROJECT_CONFIG = {
   name: 'your-project-name',
   description: 'Your project description.',
@@ -173,6 +187,17 @@ function getEnvOverrides() {
   }
 }
 
+/**
+ * Returns the active project configuration for the current environment.
+ *
+ * @returns {typeof PROJECT_CONFIG} The merged project configuration object.
+ */
 export const getEnvConfig = () => PROJECT_CONFIG;
+
+/**
+ * React-friendly alias for `getEnvConfig`. Returns the project configuration.
+ *
+ * @returns {typeof PROJECT_CONFIG} The merged project configuration object.
+ */
 export const useProjectConfig = () => getEnvConfig();
 export default PROJECT_CONFIG;

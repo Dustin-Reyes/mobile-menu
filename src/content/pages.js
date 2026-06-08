@@ -1,20 +1,26 @@
 /**
- * Local page content
+ * Local page content fallbacks.
  *
- * All content is organized by page, then by locale, then by section.
- * Add a new locale key to each page to support additional languages.
- * If a requested locale is missing, the content service falls back to 'en'.
+ * All content is organised by page → locale → section. If a requested locale
+ * is missing, `ContentService` falls back to `'en'`.
+ *
+ * When Firebase CMS is enabled these values serve as defaults until an admin
+ * updates the content via the `/admin` dashboard. Run `yarn seed` to push
+ * this content to Firestore.
  *
  * To add a new language:
- *   1. Add the locale key here (e.g., `de: { hero: { title: '...' } }`)
- *   2. Add the locale to `src/config/i18n.js` availableLanguages
- *   3. Add a locale JSON file at `src/i18n/locales/de.json` for UI strings
+ *   1. Add the locale key here (e.g. `de: { hero: { title: '...' } }`)
+ *   2. Register the locale in `src/config/i18n.js` → `availableLanguages`
+ *   3. Add a locale JSON file at `src/i18n/locales/de.json`
  *
- * When Firebase CMS is enabled, these values serve as defaults until
- * an admin updates the content via the /admin dashboard.
- * Run `yarn seed` to push this content to Firestore.
+ * @module content/pages
  */
 
+/**
+ * Page content keyed by page ID → locale → section → field.
+ *
+ * @type {Record<string, Record<string, Record<string, unknown>>>}
+ */
 export const pages = {
   home: {
     en: {

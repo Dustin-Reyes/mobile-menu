@@ -1,3 +1,10 @@
+/**
+ * @module components/admin/users/UsersTab
+ * @description Admin tab for managing all users. Shows a searchable list of users
+ * and navigates to a detail view on row selection. Admins with sufficient permissions
+ * can create new users via a modal.
+ */
+
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
@@ -230,6 +237,9 @@ const UsersIcon = styled(Users)`
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
+/**
+ * @returns {JSX.Element}
+ */
 export default function UsersTab() {
   const { user, userRole } = useAuth();
   const [users, setUsers] = useState([]);

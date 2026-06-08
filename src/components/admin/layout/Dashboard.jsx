@@ -1,3 +1,8 @@
+/**
+ * Top-level admin dashboard that composes the sidebar, content area, and all admin tab views.
+ * @module components/admin/layout/Dashboard
+ */
+
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
@@ -53,6 +58,10 @@ const TabContent = styled('div', {
   }
 `;
 
+/**
+ * Admin dashboard shell that manages active tab state and renders the appropriate tab content.
+ * @returns {JSX.Element}
+ */
 export default function Dashboard() {
   const location = useLocation();
   const { user, userRole } = useAuth();

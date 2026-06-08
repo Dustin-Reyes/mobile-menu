@@ -1,3 +1,7 @@
+/**
+ * Themed button with four variants and optional Framer Motion press animations.
+ * @module components/ui/Button
+ */
 import React from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
@@ -74,6 +78,11 @@ const MotionButton = motion(StyledButton);
 /**
  * Button component with optional Framer Motion micro-interactions.
  * Set `motion={true}` to enable animations. Respects prefers-reduced-motion.
+ * @param {Object} props
+ * @param {'primary'|'secondary'|'outline'|'ghost'} [props.variant='primary'] - Visual style variant.
+ * @param {boolean} [props.motion=false] - Enable Framer Motion press animation.
+ * @param {React.ReactNode} props.children
+ * @returns {JSX.Element}
  */
 const Button = React.forwardRef(
   ({ motion: enableMotion = false, children, ...props }, ref) => {

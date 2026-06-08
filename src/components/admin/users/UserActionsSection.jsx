@@ -1,3 +1,10 @@
+/**
+ * @module components/admin/users/UserActionsSection
+ * @description Renders the action controls for a user record, including password
+ * reset, account enable/disable toggle, and permanent deletion. Displays a
+ * horizontal bar on desktop and a stacked card layout on mobile.
+ */
+
 import { KeyRound, Ban, CircleCheck, Trash2, ChevronRight } from 'lucide-react';
 import styled from '@emotion/styled';
 import { SwitchRoot, SwitchThumb } from 'components/ui/Switch';
@@ -214,6 +221,16 @@ const ChevronIconSpan = styled.span`
   flex-shrink: 0;
 `;
 
+/**
+ * @param {Object} props
+ * @param {Object} props.targetUser - The user being acted upon.
+ * @param {boolean} props.targetUser.disabled - Whether the user account is currently disabled.
+ * @param {string[]} [props.targetUser.providers] - Auth providers linked to the account (e.g. `'password'`, `'google.com'`).
+ * @param {function} props.onResetPassword - Callback invoked when the reset password action is triggered.
+ * @param {function} props.onToggleDisabled - Callback invoked when the enable/disable toggle is changed.
+ * @param {function} props.onDelete - Callback invoked when the delete action is triggered.
+ * @returns {JSX.Element}
+ */
 export default function UserActionsSection({
   targetUser,
   onResetPassword,

@@ -1,4 +1,30 @@
+/**
+ * Structured error class for HTTP and network failures.
+ *
+ * Thrown by `ApiClient` on non-2xx responses and network errors.
+ * Carries the HTTP status code, parsed response body, original request
+ * context, and a flag distinguishing network failures from HTTP errors.
+ *
+ * @module services/ApiError
+ */
+
+/**
+ * Represents an API request failure.
+ *
+ * @extends {Error}
+ */
 class ApiError extends Error {
+  /**
+   * @param {string} message - Human-readable error description.
+   * @param {Object} [options={}]
+   * @param {number | null} [options.status] - HTTP status code.
+   * @param {string} [options.statusText] - HTTP status text.
+   * @param {unknown} [options.data] - Parsed response body.
+   * @param {Object | null} [options.request] - Original request context.
+   * @param {Response | null} [options.response] - Raw Fetch `Response`.
+   * @param {boolean} [options.isNetworkError=false] - `true` for network-level failures.
+   * @param {number} [options.retries=0] - Number of retries attempted.
+   */
   constructor(message, options = {}) {
     super(message);
 
@@ -22,6 +48,15 @@ class ApiError extends Error {
     this.retries = retries;
   }
 
+  /**
+   * Constructs an `ApiError` from a non-2xx `Response`.
+   * Attempts to parse the body as JSON; falls back to text.
+   *
+   * @param {Response} response - The failed Fetch response.
+   * @param {Object} request - Original request context.
+   * @param {number} [retries=0] - Number of retries that were attempted.
+   * @returns {Promise<ApiError>}
+   */
   static async fromResponse(response, request, retries = 0) {
     let payload = null;
 
@@ -54,6 +89,14 @@ class ApiError extends Error {
     });
   }
 
+  /**
+   * Constructs an `ApiError` from a network-level error (e.g. no connection, AbortError).
+   *
+   * @param {Error} error - The original network error.
+   * @param {Object} request - Original request context.
+   * @param {number} [retries=0] - Number of retries that were attempted.
+   * @returns {ApiError}
+   */
   static fromNetworkError(error, request, retries = 0) {
     return new ApiError(error.message, {
       request,

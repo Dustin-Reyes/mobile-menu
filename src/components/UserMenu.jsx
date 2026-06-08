@@ -1,3 +1,9 @@
+/**
+ * @module components/UserMenu
+ * @description Authenticated user menu rendered as a pill-shaped avatar trigger
+ * that opens a dropdown with profile info, navigation shortcuts, admin links,
+ * and a sign-out action. Returns null when no user session is active.
+ */
 import styled from '@emotion/styled';
 import {
   LogOut,
@@ -202,6 +208,9 @@ const DestructiveItem = styled(MenuItem)`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * @returns {JSX.Element|null} Renders null when no authenticated user is present.
+ */
 export default function UserMenu() {
   const { t } = useTranslation();
   const { user, userRole, logout } = useAuth();

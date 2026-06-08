@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/tabs/ContentTab
+ * @description Admin tab for managing site page content. Renders a mobile page
+ * picker dropdown and a full PageEditor for the currently selected page.
+ */
+
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { pageSchema } from '../../../content/schema';
@@ -44,6 +50,12 @@ const PageSelect = styled.select`
 
 const pages = Object.entries(pageSchema);
 
+/**
+ * @param {Object} props
+ * @param {string} props.selectedPage - The ID of the currently selected page.
+ * @param {function} props.onPageChange - Callback invoked with the new page ID when the selection changes.
+ * @returns {JSX.Element}
+ */
 export default function PagesTab({ selectedPage, onPageChange }) {
   return (
     <motion.div key="pages" {...motionProps}>

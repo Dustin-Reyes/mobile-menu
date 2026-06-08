@@ -1,3 +1,9 @@
+/**
+ * @module components/CodeBlock
+ * @description Themed code display block with a copy-to-clipboard button,
+ * a language label pill, and an optional description header. Styling is
+ * driven by the active Emotion theme.
+ */
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { CopyIcon } from 'lucide-react';
@@ -77,6 +83,12 @@ const CodeBlockContent = styled.pre`
 /**
  * Lightweight code block component with copy functionality.
  * Supports language labeling, descriptions, and theme-aware styling.
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Code content to display.
+ * @param {string} [props.language='jsx'] - Language label shown in the header pill.
+ * @param {string} [props.description] - Description shown in the header alongside the language pill.
+ * @param {boolean} [props.showCopy=true] - Whether to render the copy-to-clipboard button.
+ * @returns {JSX.Element}
  */
 const CodeBlock = ({
   children,

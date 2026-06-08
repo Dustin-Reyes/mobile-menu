@@ -1,7 +1,27 @@
-// Section Configuration
-// This file controls which sections are enabled on the home page
-// Sections can be toggled on/off without code changes
+/**
+ * Home-page section configuration.
+ *
+ * Controls which sections are visible on the home page and which anchor links
+ * appear in the header navigation. Toggle a section off by setting its flag to
+ * `false` — no code changes required elsewhere.
+ *
+ * @module config/sections
+ */
 
+/**
+ * Section visibility and navigation configuration.
+ *
+ * @type {{
+ *   hero: boolean,
+ *   services: boolean,
+ *   about: boolean,
+ *   gallery: boolean,
+ *   faq: boolean,
+ *   contact: boolean,
+ *   cta: boolean,
+ *   navigation: Array<{ id: string, enabled: boolean }>
+ * }}
+ */
 export const SECTIONS_CONFIG = {
   // Section visibility flags
   // Set to false to hide a section, true to show it

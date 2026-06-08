@@ -1,3 +1,10 @@
+/**
+ * @module components/sections/ContactForm
+ * @description A self-contained contact form with client-side validation for name, email,
+ * subject, and message fields. Manages submission state (idle → submitting → success) and
+ * displays inline field errors and a success banner. All labels and messages are i18n-aware.
+ */
+
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
@@ -207,6 +214,12 @@ const SpinnerIcon = styled(Loader2)`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/**
+ * Contact form component. Renders validated input fields for name, email, subject, and message,
+ * with a loading spinner during submission and a success banner on completion.
+ *
+ * @returns {JSX.Element}
+ */
 export default function ContactForm() {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({

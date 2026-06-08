@@ -1,8 +1,15 @@
+/**
+ * @module components/PageSEO
+ * @description Route-aware SEO component that resolves the current page key and
+ * breadcrumb trail from the active URL and delegates head-tag injection to
+ * SEOProvider.
+ */
 import { useLocation } from 'react-router-dom';
 import { SEOProvider } from './SEOProvider';
 
 /**
- * Page SEO component that automatically handles SEO based on current route
+ * Page SEO component that automatically handles SEO based on current route.
+ * @returns {JSX.Element}
  */
 export function PageSEO() {
   const location = useLocation();

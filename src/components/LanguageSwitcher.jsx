@@ -1,3 +1,9 @@
+/**
+ * @module components/LanguageSwitcher
+ * @description Dropdown menu for switching the application language. Displays
+ * the current language flag as the trigger. In compact mode only the flag is
+ * shown; otherwise the language name is also displayed alongside it.
+ */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
@@ -54,7 +60,11 @@ const StyledDropdownMenuItem = styled(DropdownMenuItem)`
 `;
 
 /**
- * LanguageSwitcher component for changing application language
+ * LanguageSwitcher component for changing application language.
+ * @param {Object} props
+ * @param {boolean} [props.showNativeName=false] - When true, shows the native name of the language instead of the English name.
+ * @param {boolean} [props.compact=false] - When true, shows only the flag emoji in the trigger button.
+ * @returns {JSX.Element}
  */
 const LanguageSwitcher = ({ showNativeName = false, compact = false }) => {
   const { i18n, t } = useTranslation();

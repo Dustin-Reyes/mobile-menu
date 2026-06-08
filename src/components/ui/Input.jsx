@@ -1,5 +1,13 @@
+/**
+ * Themed text input with focus ring and disabled state styling.
+ * @module components/ui/Input
+ */
 import styled from '@emotion/styled';
 
+/**
+ * Full-width styled text input with focus ring and disabled state.
+ * @type {import('@emotion/styled').StyledComponent}
+ */
 const Input = styled.input`
   width: 100%;
   padding: 0.75rem 1rem;

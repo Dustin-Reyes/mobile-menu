@@ -1,3 +1,7 @@
+/**
+ * Compact label/tag component with semantic color variants and optional dismiss action.
+ * @module components/ui/Pill
+ */
 import styled from '@emotion/styled';
 
 // ─── Variant color config ──────────────────────────────────────────────────────
@@ -210,11 +214,13 @@ const DismissButton = styled.button`
 /**
  * Pill — a compact label/tag component.
  *
+ * @param {Object} props
  * @prop {string}   [variant]       — Color semantic: default | primary | secondary | success | warning | error
  * @prop {string}   [styleVariant]  — Fill mode: solid (default) | subtle | outline
  * @prop {string}   [size]          — sm | (default) | lg
  * @prop {function} [onDismiss]     — When provided, renders a dismiss (×) button at the right edge
  * @prop {string}   [dismissLabel]  — aria-label for the dismiss button (defaults to "Remove")
+ * @returns {JSX.Element}
  */
 const Pill = ({
   variant,

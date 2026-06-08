@@ -1,3 +1,12 @@
+/**
+ * SEO utility functions.
+ *
+ * Generates meta tags, Open Graph tags, Twitter Card tags, JSON-LD structured
+ * data, breadcrumb data, robots directives, and URL slugs from the centralised
+ * SEO config in `src/config/seo`.
+ *
+ * @module utils/seo
+ */
 import { SEO_DEFAULTS, PAGE_SEO, STRUCTURED_DATA } from '@/config/seo';
 
 /**

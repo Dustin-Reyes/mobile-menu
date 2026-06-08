@@ -1,3 +1,10 @@
+/**
+ * Application entry point.
+ *
+ * Initialises Sentry error/performance monitoring, loads web fonts, bootstraps
+ * i18n, and mounts the React application into `#root` wrapped in
+ * StrictMode, HelmetProvider, BrowserRouter, and ThemeProvider.
+ */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

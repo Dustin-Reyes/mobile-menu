@@ -1,3 +1,9 @@
+/**
+ * Field-level editing components for CMS content, covering desktop and mobile modes,
+ * FAQ items, and service items.
+ * @module components/admin/content/ContentFieldEditor
+ */
+
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
@@ -152,6 +158,15 @@ const AddItemBtn = styled.button`
   }
 `;
 
+/**
+ * Editable list of FAQ question-and-answer pairs.
+ * @param {Object} props
+ * @param {Array<{question: string, answer: string}>} props.value - Current array of FAQ items.
+ * @param {function} props.onChange - Callback invoked with the updated items array.
+ * @param {boolean} [props.disabled] - Disables all inputs and buttons when true.
+ * @param {number} [props.maxItems] - Maximum number of items allowed.
+ * @returns {JSX.Element}
+ */
 export function FaqItemsEditor({ value, onChange, disabled, maxItems }) {
   const items = Array.isArray(value) ? value : [];
   const atLimit = maxItems != null && items.length >= maxItems;
@@ -219,6 +234,15 @@ export function FaqItemsEditor({ value, onChange, disabled, maxItems }) {
 
 // ─── Service Items Editor ─────────────────────────────────────────────────────
 
+/**
+ * Editable list of service title-and-description pairs.
+ * @param {Object} props
+ * @param {Array<{title: string, description: string}>} props.value - Current array of service items.
+ * @param {function} props.onChange - Callback invoked with the updated items array.
+ * @param {boolean} [props.disabled] - Disables all inputs and buttons when true.
+ * @param {number} [props.maxItems] - Maximum number of items allowed.
+ * @returns {JSX.Element}
+ */
 export function ServiceItemsEditor({ value, onChange, disabled, maxItems }) {
   const items = Array.isArray(value) ? value : [];
   const atLimit = maxItems != null && items.length >= maxItems;
@@ -894,6 +918,13 @@ function MobileFieldEdit({
 
 // ─── Public Export ───────────────────────────────────────────────────────────
 
+/**
+ * Public content field editor that delegates to the appropriate sub-component based on mode.
+ * @param {Object} props
+ * @param {'editor'|'fields'|'field-edit'} props.mode - Rendering mode: 'editor' for desktop,
+ *   'fields' for mobile field list, 'field-edit' for single-field mobile edit.
+ * @returns {JSX.Element}
+ */
 export function ContentFieldEditor({ mode, ...props }) {
   if (mode === 'fields') return <MobileFieldList {...props} />;
   if (mode === 'field-edit') return <MobileFieldEdit {...props} />;

@@ -1,3 +1,9 @@
+/**
+ * @module components/admin/tabs/PostsTab
+ * @description Admin tab for managing blog posts and articles. Currently renders
+ * a placeholder indicating that post management is coming soon.
+ */
+
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { Newspaper } from 'lucide-react';
@@ -34,6 +40,9 @@ const CompactEmptyIcon = styled.div`
   margin-bottom: 2px;
 `;
 
+/**
+ * @returns {JSX.Element}
+ */
 export default function PostsTab() {
   return (
     <motion.div key="posts" {...motionProps}>

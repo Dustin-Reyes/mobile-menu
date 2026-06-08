@@ -1,8 +1,11 @@
 /**
- * React hooks for content management
+ * React hooks for consuming CMS content.
  *
- * These hooks provide easy-to-use interfaces for consuming content
- * from the CMS service with proper loading states and error handling.
+ * All hooks manage their own loading/error state and delegate to
+ * `ContentService`. They work whether Firebase CMS is enabled or not —
+ * when CMS is disabled the service falls back to local content files.
+ *
+ * @module hooks/useContent
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -11,7 +14,21 @@ import contentService from '../services/content';
 import globalErrorHandler from 'utils/errorHandler';
 
 /**
- * Hook for fetching page content
+ * Fetches and manages CMS content for a single page.
+ *
+ * Automatically re-fetches when `pageId` or the active i18n locale changes.
+ *
+ * @param {string} pageId - Firestore page document ID (e.g. `'home'`, `'example'`).
+ * @param {{ locale?: string, enabled?: boolean }} [options]
+ * @param {string} [options.locale='en'] - Fallback locale when i18n is unavailable.
+ * @param {boolean} [options.enabled=true] - Set to `false` to skip fetching.
+ * @returns {{
+ *   content: Object | null,
+ *   loading: boolean,
+ *   error: Error | null,
+ *   refetch: () => Promise<void>,
+ *   updatePage: (data: Object) => Promise<Object>
+ * }}
  */
 export function usePage(pageId, options = {}) {
   const { locale: fallbackLocale = 'en', enabled = true } = options;
@@ -87,7 +104,18 @@ export function usePage(pageId, options = {}) {
 }
 
 /**
- * Hook for fetching site settings
+ * Fetches and manages site settings from the CMS.
+ *
+ * @param {string | null} [category=null] - Settings category key (e.g. `'site'`, `'seo'`). Pass `null` to fetch all settings.
+ * @param {{ enabled?: boolean }} [options]
+ * @param {boolean} [options.enabled=true] - Set to `false` to skip fetching.
+ * @returns {{
+ *   settings: Object | null,
+ *   loading: boolean,
+ *   error: Error | null,
+ *   refetch: () => Promise<void>,
+ *   updateSettings: (data: Object) => Promise<Object>
+ * }}
  */
 export function useSettings(category = null, options = {}) {
   const { enabled = true } = options;
@@ -162,7 +190,18 @@ export function useSettings(category = null, options = {}) {
 }
 
 /**
- * Hook for fetching navigation items
+ * Fetches and manages navigation items for a named menu.
+ *
+ * @param {string} [menuId='main'] - Menu identifier (e.g. `'main'`, `'footer'`).
+ * @param {{ enabled?: boolean }} [options]
+ * @param {boolean} [options.enabled=true] - Set to `false` to skip fetching.
+ * @returns {{
+ *   navigation: Array<Object>,
+ *   loading: boolean,
+ *   error: Error | null,
+ *   refetch: () => Promise<void>,
+ *   updateNavigation: (items: Array<Object>) => Promise<Array<Object>>
+ * }}
  */
 export function useNavigation(menuId = 'main', options = {}) {
   const { enabled = true } = options;
@@ -240,7 +279,19 @@ export function useNavigation(menuId = 'main', options = {}) {
 }
 
 /**
- * Hook for fetching blog posts
+ * Fetches a paginated list of blog posts.
+ *
+ * @param {{ limit?: number, offset?: number, enabled?: boolean }} [options]
+ * @param {number} [options.limit=10] - Maximum number of posts to fetch.
+ * @param {number} [options.offset=0] - Number of posts to skip (pagination).
+ * @param {boolean} [options.enabled=true] - Set to `false` to skip fetching.
+ * @returns {{
+ *   posts: Array<Object>,
+ *   loading: boolean,
+ *   error: Error | null,
+ *   hasMore: boolean,
+ *   refetch: () => Promise<void>
+ * }}
  */
 export function usePosts(options = {}) {
   const { limit = 10, offset = 0, enabled = true } = options;
@@ -287,7 +338,17 @@ export function usePosts(options = {}) {
 }
 
 /**
- * Hook for fetching a single post
+ * Fetches a single blog post by its URL slug.
+ *
+ * @param {string} slug - URL slug of the post to fetch.
+ * @param {{ enabled?: boolean }} [options]
+ * @param {boolean} [options.enabled=true] - Set to `false` to skip fetching.
+ * @returns {{
+ *   post: Object | null,
+ *   loading: boolean,
+ *   error: Error | null,
+ *   refetch: () => Promise<void>
+ * }}
  */
 export function usePost(slug, options = {}) {
   const { enabled = true } = options;
@@ -332,7 +393,15 @@ export function usePost(slug, options = {}) {
 }
 
 /**
- * Hook for CMS status and utilities
+ * Exposes CMS availability status and cache management utilities.
+ *
+ * @returns {{
+ *   isCMSEnabled: boolean,
+ *   checking: boolean,
+ *   clearCache: () => void,
+ *   stats: { pages: number, posts: number, navItems: number, cacheSize: number },
+ *   refreshStats: () => Promise<void>
+ * }}
  */
 export function useCMS() {
   const [isCMSEnabled, setIsCMSEnabled] = useState(false);
@@ -388,7 +457,23 @@ export function useCMS() {
 }
 
 /**
- * Hook for content with real-time updates (when CMS is enabled)
+ * Fetches content via a custom fetcher function with optional polling.
+ *
+ * When `refreshInterval` is set the fetcher is called on that cadence as long
+ * as the component is mounted. Useful for dashboard widgets that need periodic
+ * refreshes without a full realtime subscription.
+ *
+ * @param {string} contentKey - Unique identifier for the content (used in error reporting).
+ * @param {() => Promise<unknown>} fetcher - Async function that returns the content.
+ * @param {{ enabled?: boolean, refreshInterval?: number | null }} [options]
+ * @param {boolean} [options.enabled=true] - Set to `false` to skip fetching.
+ * @param {number | null} [options.refreshInterval=null] - Polling interval in ms, or `null` to disable.
+ * @returns {{
+ *   content: unknown,
+ *   loading: boolean,
+ *   error: Error | null,
+ *   refetch: () => Promise<void>
+ * }}
  */
 export function useLiveContent(contentKey, fetcher, options = {}) {
   const { enabled = true, refreshInterval = null } = options;
