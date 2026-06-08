@@ -422,6 +422,22 @@ async function main() {
     process.exit(1);
   }
 
+  if (values.firebaseProjectId) {
+    p.note(
+      [
+        '1. Deploy Firestore security rules:',
+        '     yarn firebase:deploy:rules',
+        '',
+        '2. Restrict your Firebase API key to your production domain:',
+        '     Google Cloud Console → APIs & Services → Credentials',
+        '     → click your Browser key → Application restrictions → Websites',
+        '',
+        'See docs/FIREBASE_CMS_SETUP.md for full details.',
+      ].join('\n'),
+      'Firebase security — action required before going to production',
+    );
+  }
+
   // Update git remote if a repo URL was provided
   if (values.repoUrl) {
     try {

@@ -163,40 +163,39 @@ i18n/es {
 
 ### Security Rules
 
-For production, update your Firestore security rules:
+The template ships with a production-ready `firestore.rules` file at the repo root. It enforces:
 
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Public read access for published content
-    match /pages/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    
-    match /settings/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    
-    match /navigation/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    
-    match /posts/{document} {
-      allow read: if resource.data.published == true;
-      allow write: if request.auth != null;
-    }
-    
-    match /i18n/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-  }
-}
+- **Public read** on `pages`, `settings`, `navigation`, `i18n`, `posts`, `media`
+- **Role-based write** — only users with a `role` custom claim (`admin`, `site_manager`, `content_manager`) can write
+- **Admin-only** read/write on the `users` collection
+- **Deny-all fallback** for any unlisted collection
+
+Deploy the rules with:
+
+```bash
+yarn firebase:deploy:rules
 ```
+
+> You must have the Firebase CLI installed (`npm install -g firebase-tools`) and be authenticated (`firebase login`). The `.firebaserc` file in the repo root points to your project — it is populated automatically when you run `yarn setup`.
+
+**Do not leave Firestore in test mode in production.** Test mode allows anyone with your project ID to read and write all data.
+
+### Restrict your Firebase API key
+
+Firebase API keys are not secret — they are intentionally public and embedded in your client-side bundle. The protection against abuse is restricting which domains the key works from.
+
+**Without a restriction**, anyone who copies your API key can use it from their own site to hit your Firebase Auth and Firestore quota.
+
+**To restrict the key:**
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com) → select your project
+2. Navigate to **APIs & Services → Credentials**
+3. Click the **Browser key** used for `VITE_FIREBASE_API_KEY`
+4. Under **Application restrictions** select **Websites**
+5. Add your production domain (e.g. `https://yourdomain.com/*`)
+6. Click **Save**
+
+This is a one-time manual step that cannot be automated — complete it before going to production.
 
 ### Storage Security Rules
 
