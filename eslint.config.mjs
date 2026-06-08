@@ -166,6 +166,7 @@ export default [
         HTMLButtonElement: 'readonly',
         HTMLInputElement: 'readonly',
         Blob: 'readonly',
+        File: 'readonly',
         getComputedStyle: 'readonly',
       },
     },
