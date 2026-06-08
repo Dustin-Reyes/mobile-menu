@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "transpiled-sandbox"
+    "default": "YOUR_FIREBASE_PROJECT_ID"
   }
 }
