@@ -101,9 +101,22 @@ describe('process-image-background', () => {
     expect(res.statusCode).toBe(405);
   });
 
+  it('returns 401 when no auth header', async () => {
+    const res = await handler({ httpMethod: 'POST', headers: {}, body: '{}' });
+    expect(res.statusCode).toBe(401);
+  });
+
   it('returns 400 when key or docId is missing', async () => {
     const res = await handler(makeEvent({ key: 'raw/abc.jpg' }));
     expect(res.statusCode).toBe(400);
+  });
+
+  it('returns 404 when media doc not found', async () => {
+    mockDocGet.mockResolvedValueOnce({ exists: false });
+    const res = await handler(
+      makeEvent({ key: 'raw/abc.jpg', docId: 'missing' }),
+    );
+    expect(res.statusCode).toBe(404);
   });
 
   it('processes image with gallery preset dimensions', async () => {
@@ -114,6 +127,9 @@ describe('process-image-background', () => {
     });
     expect(mockSharpInstance.webp).toHaveBeenCalledWith({ quality: 80 });
     expect(mockSharpInstance.withMetadata).toHaveBeenCalledWith(false);
+    expect(mockSharpInstance.toBuffer).toHaveBeenCalledWith({
+      resolveWithObject: true,
+    });
   });
 
   it('uploads processed image to R2 at media/<docId>.webp', async () => {
