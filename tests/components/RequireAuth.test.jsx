@@ -18,7 +18,6 @@ jest.mock('components/auth/Login', () => {
 
 // Replace LoadingSpinner with a sentinel
 jest.mock('components/admin/shared/LoadingSpinner', () => ({
-  // eslint-disable-next-line react/display-name
   LoadingSpinner: () => <div>Loading...</div>,
 }));
 
