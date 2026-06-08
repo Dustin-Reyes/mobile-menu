@@ -28,10 +28,13 @@
   included_files = ["node_modules/sharp/**", "node_modules/@img/**"]
 
 # Production CSP Headers
+# R2_PUBLIC_URL = the Cloudflare R2 public domain (e.g. https://pub-xxx.r2.dev or custom domain)
+# R2_ENDPOINT   = https://<account-id>.r2.cloudflarestorage.com  (needed for presigned PUT uploads)
+# Replace REPLACE_WITH_R2_PUBLIC_URL and REPLACE_WITH_R2_ENDPOINT below with real values.
 [context.production.headers]
   for = "/*"
   [context.production.headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: REPLACE_WITH_R2_PUBLIC_URL; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com REPLACE_WITH_R2_PUBLIC_URL REPLACE_WITH_R2_ENDPOINT;"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
@@ -40,14 +43,14 @@
 [context.deploy-preview.headers]
   for = "/*"
   [context.deploy-preview.headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: REPLACE_WITH_R2_PUBLIC_URL; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com REPLACE_WITH_R2_PUBLIC_URL REPLACE_WITH_R2_ENDPOINT;"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # Branch deploys
 [context.branch-deploy.headers]
   for = "/*"
   [context.branch-deploy.headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: REPLACE_WITH_R2_PUBLIC_URL; font-src 'self' data:; connect-src 'self' https://sentry.io https://o*.ingest.sentry.io https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com REPLACE_WITH_R2_PUBLIC_URL REPLACE_WITH_R2_ENDPOINT;"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # Static file headers
