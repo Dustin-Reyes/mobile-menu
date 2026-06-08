@@ -318,7 +318,7 @@ export default function MobileMenu() {
 
   const mainNavItems = [
     { label: t('nav.home'), path: '/' },
-    { label: t('nav.development'), path: '/development' },
+    { label: t('nav.example'), path: '/example' },
   ];
 
   const sectionNavItems = SECTIONS_CONFIG.navigation

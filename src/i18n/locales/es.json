@@ -61,7 +61,7 @@
   "nav": {
     "getAQuote": "Obtener Cotización",
     "home": "Inicio",
-    "development": "Desarrollo",
+    "example": "Página de Ejemplo",
     "adminDashboard": "Panel de Administración",
     "goToAdminDashboard": "Ir al Panel de Administración",
     "signOut": "Cerrar Sesión",
@@ -75,7 +75,7 @@
     "analytics": "Analítica",
     "menuTitle": "Navegación",
     "homeSubtitle": "Ver tu sitio",
-    "developmentSubtitle": "Ver información del sitio",
+    "exampleSubtitle": "Ver la página de ejemplo",
     "goToAdminDashboardSubtitle": "Administrar el contenido de tu sitio",
     "signOutSubtitle": "Cerrar sesión de tu cuenta",
     "settings": "Configuración",
@@ -88,7 +88,7 @@
     "copyright": "© 2026 Your Company. Todos los derechos reservados.",
     "links": {
       "home": "Inicio",
-      "development": "Desarrollo",
+      "example": "Página de Ejemplo",
       "services": "Servicios",
       "why": "Por Qué Nosotros",
       "faq": "Preguntas",

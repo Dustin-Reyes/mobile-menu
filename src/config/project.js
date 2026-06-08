@@ -52,11 +52,11 @@ export const PROJECT_CONFIG = {
       keywords: [],
       image: 'https://yourproject.com/og-image.png',
     },
-    development: {
-      title: 'Development | your-project-name',
+    example: {
+      title: 'Example Page | your-project-name',
       description:
-        'Development information and tech stack for your-project-name.',
-      keywords: ['development', 'tech stack', 'technologies'],
+        'Example page demonstrating a second route with CMS content for your-project-name.',
+      keywords: ['example', 'template', 'placeholder'],
       image: 'https://yourproject.com/og-image.png',
     },
     demo: {

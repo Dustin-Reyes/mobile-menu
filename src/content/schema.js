@@ -228,8 +228,8 @@ export const pageSchema = {
     ],
   },
 
-  development: {
-    label: 'Development',
+  example: {
+    label: 'Example Page',
     emoji: '💻',
     fields: [
       // Header section

@@ -267,13 +267,13 @@ export default function UserMenu() {
           </MenuItem>
         )}
 
-        <MenuItem onClick={() => navigate('/development')}>
+        <MenuItem onClick={() => navigate('/example')}>
           <MenuIcon>
             <Info size={15} />
           </MenuIcon>
           <MenuText>
-            <MenuLabel>{t('nav.development')}</MenuLabel>
-            <MenuSubtitle>{t('nav.developmentSubtitle')}</MenuSubtitle>
+            <MenuLabel>{t('nav.example')}</MenuLabel>
+            <MenuSubtitle>{t('nav.exampleSubtitle')}</MenuSubtitle>
           </MenuText>
           <MenuChevron>
             <ChevronRight size={14} />
