@@ -1,3 +1,15 @@
+/**
+ * Netlify Function: delete-media
+ *
+ * Deletes a media asset from Cloudflare R2 and removes its Firestore document.
+ * R2 404 (NoSuchKey) is treated as success for idempotency.
+ *
+ * POST /.netlify/functions/delete-media
+ * Authorization: Bearer <Firebase ID token>
+ * Body: { docId: string }
+ * Response: { ok: true }
+ */
+
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { verifyMediaCaller } from './lib/auth.js';
 import { getR2Client, getBucketName } from './lib/r2.js';
