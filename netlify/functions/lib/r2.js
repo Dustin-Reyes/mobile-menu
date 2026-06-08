@@ -29,5 +29,12 @@ export function getR2Client() {
   return _client;
 }
 
-export const getBucketName = () => process.env.R2_BUCKET_NAME;
-export const getPublicUrl = () => process.env.R2_PUBLIC_URL;
+export const getBucketName = () => {
+  if (!process.env.R2_BUCKET_NAME) throw new Error('R2_BUCKET_NAME is not set');
+  return process.env.R2_BUCKET_NAME;
+};
+
+export const getPublicUrl = () => {
+  if (!process.env.R2_PUBLIC_URL) throw new Error('R2_PUBLIC_URL is not set');
+  return process.env.R2_PUBLIC_URL;
+};

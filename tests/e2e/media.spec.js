@@ -64,7 +64,10 @@ test.describe('Media Library', () => {
     await page.click('text=Pick image');
     // MediaPicker opens
     await page.waitForSelector('text=Select Image');
-    await page.locator('.media-picker-grid button').first().click();
+    await page
+      .locator('[data-testid="media-picker-grid"] button')
+      .first()
+      .click();
 
     // Verify imageUrl is set (image preview appears)
     await expect(

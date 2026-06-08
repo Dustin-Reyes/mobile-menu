@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '../utils/test-utils';
-import { FaqItemsEditor } from 'components/admin/AdminContentFieldEditor';
+import { FaqItemsEditor } from 'components/admin/content/ContentFieldEditor';
 
 const ITEMS = [
   { question: 'What do you do?', answer: 'We build things.' },

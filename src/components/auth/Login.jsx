@@ -161,6 +161,7 @@ export default function AdminLogin() {
             <FormLabel>{t('admin.login.email')}</FormLabel>
             <Input
               type="email"
+              data-testid="email-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t('admin.login.emailPlaceholder')}
@@ -172,6 +173,7 @@ export default function AdminLogin() {
             <FormLabel>{t('admin.login.password')}</FormLabel>
             <Input
               type="password"
+              data-testid="password-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t('admin.login.passwordPlaceholder')}
@@ -180,7 +182,11 @@ export default function AdminLogin() {
             />
           </FormGroup>
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <Button type="submit" disabled={submitting}>
+          <Button
+            type="submit"
+            data-testid="login-button"
+            disabled={submitting}
+          >
             {submitting ? t('admin.login.signingIn') : t('admin.login.signIn')}
           </Button>
         </Form>

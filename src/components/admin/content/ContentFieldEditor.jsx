@@ -399,6 +399,7 @@ export function GalleryItemsEditor({ value, onChange, disabled, maxItems }) {
                     <img
                       src={item.imageUrl}
                       alt={item.title || 'Gallery image'}
+                      aria-label="Gallery image"
                     />
                   ) : null}
                 </GalleryImagePreview>
@@ -446,14 +447,16 @@ export function GalleryItemsEditor({ value, onChange, disabled, maxItems }) {
       <AddItemBtn onClick={addItem} disabled={disabled || atLimit}>
         {atLimit ? `Max ${maxItems} items reached` : '＋ Add Gallery Item'}
       </AddItemBtn>
-      <MediaPicker
-        open={pickerIndex !== null}
-        onClose={() => setPickerIndex(null)}
-        onSelect={(mediaItem) => {
-          if (pickerIndex !== null)
-            updateItem(pickerIndex, 'imageUrl', mediaItem.imageUrl);
-        }}
-      />
+      {pickerIndex !== null && (
+        <MediaPicker
+          open={pickerIndex !== null}
+          onClose={() => setPickerIndex(null)}
+          onSelect={(mediaItem) => {
+            if (pickerIndex !== null)
+              updateItem(pickerIndex, 'imageUrl', mediaItem.imageUrl);
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -74,6 +74,7 @@ export default function BottomTabBar({ activeTab, onTabChange, userRole }) {
           <BottomTab
             key={tab.id}
             active={activeTab === tab.id}
+            data-testid={`${tab.id}-tab`}
             onClick={() => onTabChange(tab.id)}
           >
             <Icon size={16} />

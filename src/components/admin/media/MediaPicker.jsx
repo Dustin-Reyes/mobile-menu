@@ -112,7 +112,7 @@ export default function MediaPicker({ open, onClose, onSelect }) {
               No images yet — upload some in the Media tab first.
             </EmptyState>
           ) : (
-            <Grid>
+            <Grid data-testid="media-picker-grid">
               {readyItems.map((item) => (
                 <ImageCard
                   key={item.id}

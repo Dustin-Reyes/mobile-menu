@@ -141,6 +141,7 @@ export default function Sidebar({
               <Fragment key={tab.id}>
                 <SidebarItem
                   active={isActive}
+                  data-testid={`${tab.id}-tab`}
                   onClick={() => onTabChange(tab.id)}
                 >
                   <Icon size={14} />

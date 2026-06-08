@@ -58,16 +58,34 @@ export const handler = async (event) => {
     };
   }
 
-  const r2 = getR2Client();
-  const key = `media/${docId}.webp`;
+  const { originalName } = snap.data();
+  const ext = originalName?.split('.').pop()?.toLowerCase();
 
+  const r2 = getR2Client();
+  const bucket = getBucketName();
+
+  // Delete processed file (may not exist for error-state docs — NoSuchKey is fine)
   try {
     await r2.send(
-      new DeleteObjectCommand({ Bucket: getBucketName(), Key: key }),
+      new DeleteObjectCommand({ Bucket: bucket, Key: `media/${docId}.webp` }),
     );
   } catch (e) {
     if (e.name !== 'NoSuchKey') {
       return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    }
+  }
+
+  // Delete raw file if it exists (may exist for error/pending-state docs)
+  if (ext) {
+    try {
+      await r2.send(
+        new DeleteObjectCommand({ Bucket: bucket, Key: `raw/${docId}.${ext}` }),
+      );
+    } catch (e) {
+      if (e.name !== 'NoSuchKey') {
+        // Log but don't fail — processed file is already deleted
+        console.error('Failed to delete raw file:', e.message);
+      }
     }
   }
 
