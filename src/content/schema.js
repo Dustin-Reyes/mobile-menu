@@ -1,3 +1,5 @@
+import { MEDIA_CONFIG } from 'config/media';
+
 /**
  * CMS field schema — single source of truth for the content editor.
  *
@@ -93,6 +95,12 @@ export const pageSchema = {
         type: 'textarea',
         group: 'About',
       },
+      {
+        key: 'aboutImage',
+        label: 'About Section Image',
+        type: 'image',
+        group: 'About',
+      },
       // Gallery section
       {
         key: 'galleryTitle',
@@ -107,9 +115,10 @@ export const pageSchema = {
         group: 'Gallery',
       },
       {
-        key: 'galleryItems',
-        label: 'Gallery Items',
-        type: 'gallery-items',
+        key: 'galleryImages',
+        label: 'Gallery Images',
+        type: 'image-list',
+        maxItems: MEDIA_CONFIG.gallery.maxImages,
         group: 'Gallery',
       },
       // FAQ section

@@ -107,7 +107,7 @@ if [ -f .env ]; then
   source .env
   set +a
 fi
-netlify functions:serve --port $FUNCTIONS_PORT > /dev/null 2>&1 &
+./node_modules/.bin/netlify functions:serve --port $FUNCTIONS_PORT > /dev/null 2>&1 &
 FUNCTIONS_PID=$!
 
 echo ""

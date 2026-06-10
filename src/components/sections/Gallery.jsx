@@ -1,12 +1,14 @@
 /**
  * @module components/sections/Gallery
- * @description Renders a responsive grid of portfolio/project items, each with a hover overlay
- * showing a title and description. Items are loaded from the CMS and fall back to built-in
- * sample projects; the component renders nothing until items are available.
+ * @description Renders a responsive 3-column grid of gallery images sourced from the CMS
+ * media library. When no images are assigned, shows placeholder boxes equal to the configured
+ * max (MEDIA_CONFIG.gallery.maxImages). Items are `{ id, url, name }` objects.
  */
 
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
+import { MEDIA_CONFIG } from 'config/media';
+import placeholderSrc from 'assets/placeholder-image.svg';
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
@@ -45,6 +47,7 @@ const GalleryGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 
@@ -81,54 +84,12 @@ const GalleryImage = styled.img`
   display: block;
 `;
 
-const GalleryPlaceholder = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
-  text-align: center;
-  padding: 1rem;
-`;
-
-const GalleryOverlay = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1.5rem;
-  background: linear-gradient(
-    to top,
-    ${({ theme }) => theme.colors.overlay},
-    transparent
-  );
-  opacity: 0;
-  transition: opacity ${({ theme }) => theme.transitions.fast};
-
-  ${GalleryItem}:hover & {
-    opacity: 1;
-  }
-`;
-
-const GalleryTitle = styled.h3`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
-  font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.onDark};
-  margin-bottom: 0.25rem;
-`;
-
-const GalleryDescription = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
-  color: ${({ theme }) => theme.colors.onDark};
-`;
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 /**
- * Gallery section component. Displays a 1–3 column responsive grid of project cards with
- * animated hover overlays. Returns `null` when no gallery items are present.
+ * Gallery section component. Displays a responsive image grid populated from CMS
+ * gallery.images (array of `{ id, url, name }`). When no images are assigned, renders
+ * MEDIA_CONFIG.gallery.maxImages placeholder boxes instead.
  *
  * @returns {JSX.Element|null}
  */
@@ -139,38 +100,11 @@ export default function Gallery() {
   const subtitle =
     content?.gallery?.subtitle ??
     (loading ? null : 'A showcase of our latest projects');
-  const galleryItems =
-    content?.gallery?.items ??
-    (loading
-      ? null
-      : [
-          {
-            title: 'Project Alpha',
-            description: 'Brand identity and web design',
-          },
-          {
-            title: 'Project Beta',
-            description: 'E-commerce platform',
-          },
-          {
-            title: 'Project Gamma',
-            description: 'Mobile application',
-          },
-          {
-            title: 'Project Delta',
-            description: 'Marketing campaign',
-          },
-          {
-            title: 'Project Epsilon',
-            description: 'Corporate rebrand',
-          },
-          {
-            title: 'Project Zeta',
-            description: 'Product photography',
-          },
-        ]);
+  const images = content?.gallery?.images ?? (loading ? null : []);
 
-  if (!galleryItems) return null;
+  if (images === null) return null;
+
+  const hasImages = images.length > 0;
 
   return (
     <Wrapper id="gallery">
@@ -190,23 +124,26 @@ export default function Gallery() {
       </SectionHeader>
 
       <GalleryGrid>
-        {galleryItems.map((item, index) => (
-          <GalleryItem key={index}>
-            {item.imageUrl ? (
-              <GalleryImage
-                src={item.imageUrl}
-                alt={item.title}
-                loading="lazy"
-              />
-            ) : (
-              <GalleryPlaceholder>{item.title}</GalleryPlaceholder>
+        {hasImages
+          ? images.map((img) => (
+              <GalleryItem key={img.id}>
+                <GalleryImage
+                  src={img.url}
+                  alt={img.name ?? ''}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = placeholderSrc;
+                  }}
+                />
+              </GalleryItem>
+            ))
+          : Array.from({ length: MEDIA_CONFIG.gallery.maxImages }).map(
+              (_, i) => (
+                <GalleryItem key={i}>
+                  <GalleryImage src={placeholderSrc} alt="" />
+                </GalleryItem>
+              ),
             )}
-            <GalleryOverlay>
-              <GalleryTitle>{item.title}</GalleryTitle>
-              <GalleryDescription>{item.description}</GalleryDescription>
-            </GalleryOverlay>
-          </GalleryItem>
-        ))}
       </GalleryGrid>
     </Wrapper>
   );

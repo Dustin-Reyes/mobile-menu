@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import {
@@ -8,6 +8,9 @@ import {
   Trash2,
   CheckCircle,
   AlertCircle,
+  Pencil,
+  Check,
+  X,
 } from 'lucide-react';
 import { PageHeader, PageTitle, PageSubtitle } from '../shared/PageHeader';
 import {
@@ -17,11 +20,13 @@ import {
 } from '../shared/SectionCard';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { useMediaLibrary } from 'hooks/useMedia';
+import { MEDIA_CONFIG } from 'config/media';
 import {
   getUploadUrl,
   uploadToR2,
   triggerProcessing,
   deleteMedia,
+  renameMedia,
   watchMediaDoc,
 } from 'services/media';
 import globalErrorHandler from 'utils/errorHandler';
@@ -42,7 +47,6 @@ const ACCEPTED_TYPES = [
   'image/gif',
 ];
 const MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB
-const PRESET_OPTIONS = ['gallery', 'thumbnail', 'hero'];
 
 // ─── Upload Zone ─────────────────────────────────────────────────────────────
 
@@ -78,56 +82,127 @@ const UploadZoneText = styled.p`
 `;
 
 const UploadZoneHint = styled.p`
-  margin: 0 0 14px;
+  margin: 0;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   color: ${(p) => p.theme.colors.textMuted};
 `;
 
-const PresetSelect = styled.select`
-  padding: 6px 10px;
-  border: 1px solid ${(p) => p.theme.colors.border};
-  border-radius: ${(p) => p.theme.borderRadius.s1};
+// ─── Staged Preview ───────────────────────────────────────────────────────────
+
+const StagedCard = styled.div`
+  display: flex;
+  gap: 16px;
+  padding: 16px;
   background: ${(p) => p.theme.colors.surface};
-  color: ${(p) => p.theme.colors.text};
-  font-size: ${(p) => p.theme.typography.fontSizes.s3};
-  font-family: inherit;
-  cursor: pointer;
+  border: 1px solid ${(p) => p.theme.colors.border};
+  border-radius: ${(p) => p.theme.borderRadius.s2};
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 
-// ─── Active Uploads ───────────────────────────────────────────────────────────
+const StagedThumb = styled.div`
+  width: 120px;
+  height: 90px;
+  flex-shrink: 0;
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  overflow: hidden;
+  background: ${(p) => p.theme.colors.background};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-const UploadList = styled.div`
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: 160px;
+  }
+`;
+
+const StagedInfo = styled.div`
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 12px;
 `;
 
-const UploadItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  background: ${(p) => p.theme.colors.surface};
+const NameInput = styled.input`
+  width: 100%;
+  padding: 6px 8px;
   border: 1px solid ${(p) => p.theme.colors.border};
   border-radius: ${(p) => p.theme.borderRadius.s1};
+  background: ${(p) => p.theme.colors.background};
+  color: ${(p) => p.theme.colors.text};
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-family: inherit;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: ${(p) => p.theme.colors.primary};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
 
-const UploadItemName = styled.span`
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: ${(p) => p.theme.colors.text};
+const FileMeta = styled.span`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: ${(p) => p.theme.colors.textMuted};
+`;
+
+const StagedActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+`;
+
+const ActionBtn = styled.button`
+  padding: 6px 14px;
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+  font-family: inherit;
+  font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid;
+
+  ${(p) =>
+    p.primary
+      ? `
+    background: ${p.theme.colors.primary};
+    border-color: ${p.theme.colors.primary};
+    color: #fff;
+    &:hover:not(:disabled) { opacity: 0.88; }
+  `
+      : `
+    background: transparent;
+    border-color: ${p.theme.colors.border};
+    color: ${p.theme.colors.text};
+    &:hover:not(:disabled) { background: ${p.theme.colors.background}; }
+  `}
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 `;
 
 const ProgressBar = styled.div`
   height: 4px;
   border-radius: 2px;
   background: ${(p) => p.theme.colors.border};
-  width: 100px;
-  flex-shrink: 0;
   overflow: hidden;
 `;
 
@@ -139,10 +214,12 @@ const ProgressFill = styled.div`
   transition: width 0.1s linear;
 `;
 
-const UploadError = styled.span`
+const UploadStatus = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
-  color: ${(p) => p.theme.colors.error};
-  flex: 1;
+  color: ${(p) => p.theme.colors.textMuted};
 `;
 
 // ─── Media Grid ───────────────────────────────────────────────────────────────
@@ -167,6 +244,9 @@ const MediaThumb = styled.div`
   aspect-ratio: 4 / 3;
   background: ${(p) => p.theme.colors.background};
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   img {
     width: 100%;
@@ -184,6 +264,23 @@ const MediaMeta = styled.div`
   flex: 1;
 `;
 
+const RenameInput = styled.input`
+  width: 100%;
+  padding: 2px 5px;
+  border: 1px solid ${(p) => p.theme.colors.primary};
+  border-radius: ${(p) => p.theme.borderRadius.s1};
+  background: ${(p) => p.theme.colors.background};
+  color: ${(p) => p.theme.colors.text};
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  font-family: inherit;
+  font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 const MediaFileName = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s2};
   font-weight: ${(p) => p.theme.typography.fontWeights.semibold};
@@ -196,19 +293,6 @@ const MediaFileName = styled.span`
 const MediaInfo = styled.span`
   font-size: ${(p) => p.theme.typography.fontSizes.s1};
   color: ${(p) => p.theme.colors.textMuted};
-`;
-
-const PresetBadge = styled.span`
-  display: inline-block;
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-size: ${(p) => p.theme.typography.fontSizes.s0};
-  font-weight: ${(p) => p.theme.typography.fontWeights.bold};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: ${(p) => p.theme.colors.primary}20;
-  color: ${(p) => p.theme.colors.primary};
-  width: fit-content;
 `;
 
 const MediaActions = styled.div`
@@ -254,6 +338,15 @@ const EmptyState = styled.div`
   font-size: ${(p) => p.theme.typography.fontSizes.s3};
 `;
 
+const LibraryFullBanner = styled.div`
+  padding: 20px;
+  text-align: center;
+  border: 2px dashed ${(p) => p.theme.colors.border};
+  border-radius: ${(p) => p.theme.borderRadius.s2};
+  color: ${(p) => p.theme.colors.textMuted};
+  font-size: ${(p) => p.theme.typography.fontSizes.s3};
+`;
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function formatBytes(bytes) {
@@ -268,106 +361,110 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString();
 }
 
-// ─── Active upload entry shape:
-// { id, file, preset, state: 'uploading'|'processing'|'done'|'error', progress, error }
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function MediaTab() {
   const [dragging, setDragging] = useState(false);
-  const [preset, setPreset] = useState('gallery');
-  const [activeUploads, setActiveUploads] = useState([]);
+  // staged: { file: File, name: string, previewUrl: string } | null
+  const [staged, setStaged] = useState(null);
+  // upload: { state: 'uploading'|'processing'|'done'|'error', progress: number, error: string|null } | null
+  const [upload, setUpload] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  // renaming: { id: string, name: string } | null
+  const [renaming, setRenaming] = useState(null);
   const fileInputRef = useRef(null);
+  const objectUrlRef = useRef(null);
   const { items, refetch } = useMediaLibrary();
 
-  const updateUpload = useCallback((id, patch) => {
-    setActiveUploads((prev) =>
-      prev.map((u) => (u.id === id ? { ...u, ...patch } : u)),
-    );
+  useEffect(() => {
+    return () => {
+      if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    };
   }, []);
 
-  const startUpload = useCallback(
-    async (file, selectedPreset) => {
-      if (!ACCEPTED_TYPES.includes(file.type)) {
-        toast.error(`Unsupported file type: ${file.type}`);
-        return;
-      }
-      if (file.size > MAX_SIZE_BYTES) {
-        toast.error(`File too large (max 50 MB): ${file.name}`);
-        return;
-      }
-      const id = `${Date.now()}-${file.name}`;
-      setActiveUploads((prev) => [
-        ...prev,
-        {
-          id,
-          file,
-          preset: selectedPreset,
-          state: 'uploading',
-          progress: 0,
-          error: null,
-        },
-      ]);
+  const stageFile = useCallback((file) => {
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      toast.error(`Unsupported file type: ${file.type}`);
+      return;
+    }
+    if (file.size > MAX_SIZE_BYTES) {
+      toast.error(`File too large (max 50 MB): ${file.name}`);
+      return;
+    }
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    const previewUrl = URL.createObjectURL(file);
+    objectUrlRef.current = previewUrl;
+    setStaged({ file, name: file.name, previewUrl });
+    setUpload(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  }, []);
 
-      try {
-        const { uploadUrl, key, docId } = await getUploadUrl(
-          file.name,
-          selectedPreset,
-          file.type,
-        );
+  const cancelStaged = useCallback(() => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+    setStaged(null);
+    setUpload(null);
+  }, []);
 
-        await uploadToR2(uploadUrl, file, (progress) =>
-          updateUpload(id, { progress }),
-        );
-        updateUpload(id, { state: 'processing', progress: 100 });
+  const processStaged = useCallback(async () => {
+    if (!staged) return;
+    setUpload({ state: 'uploading', progress: 0, error: null });
 
-        await triggerProcessing(key, docId);
+    try {
+      const { uploadUrl, key, docId } = await getUploadUrl(
+        staged.name,
+        staged.file.type,
+      );
 
-        await new Promise((resolve, reject) => {
-          const unsub = watchMediaDoc(docId, (mediaDoc) => {
-            if (mediaDoc.status === 'ready') {
-              unsub();
-              resolve();
-            } else if (mediaDoc.status === 'error') {
-              unsub();
-              reject(new Error(mediaDoc.errorMessage ?? 'Processing failed'));
-            }
-          });
+      await uploadToR2(uploadUrl, staged.file, (progress) =>
+        setUpload((prev) => ({ ...prev, progress })),
+      );
+      setUpload({ state: 'processing', progress: 100, error: null });
+
+      await triggerProcessing(key, docId);
+
+      await new Promise((resolve, reject) => {
+        const unsub = watchMediaDoc(docId, (mediaDoc) => {
+          if (mediaDoc.status === 'ready') {
+            unsub();
+            resolve();
+          } else if (mediaDoc.status === 'error') {
+            unsub();
+            reject(new Error(mediaDoc.errorMessage ?? 'Processing failed'));
+          }
         });
+      });
 
-        updateUpload(id, { state: 'done' });
-        toast.success(`${file.name} uploaded`);
-        refetch();
-        setTimeout(
-          () => setActiveUploads((prev) => prev.filter((u) => u.id !== id)),
-          2000,
-        );
-      } catch (e) {
-        updateUpload(id, { state: 'error', error: e.message });
-        globalErrorHandler.reportError(e, {
-          action: 'media-upload',
-          file: file.name,
-        });
-      }
-    },
-    [updateUpload, refetch],
-  );
-
-  const handleFiles = useCallback(
-    (files) => {
-      Array.from(files).forEach((file) => startUpload(file, preset));
-    },
-    [preset, startUpload],
-  );
+      setUpload({ state: 'done', progress: 100, error: null });
+      toast.success(`${staged.name} uploaded`);
+      refetch();
+      setTimeout(() => {
+        if (objectUrlRef.current) {
+          URL.revokeObjectURL(objectUrlRef.current);
+          objectUrlRef.current = null;
+        }
+        setStaged(null);
+        setUpload(null);
+      }, 1500);
+    } catch (e) {
+      setUpload({ state: 'error', progress: 0, error: e.message });
+      globalErrorHandler.reportError(e, {
+        action: 'media-upload',
+        file: staged.file.name,
+      });
+    }
+  }, [staged, refetch]);
 
   const handleDrop = useCallback(
     (e) => {
       e.preventDefault();
       setDragging(false);
-      handleFiles(e.dataTransfer.files);
+      const file = e.dataTransfer.files[0];
+      if (file) stageFile(file);
     },
-    [handleFiles],
+    [stageFile],
   );
 
   const handleDelete = useCallback(async () => {
@@ -394,6 +491,25 @@ export default function MediaTab() {
       .catch(() => toast.error('Failed to copy URL'));
   }, []);
 
+  const commitRename = useCallback(async () => {
+    if (!renaming?.name.trim()) return;
+    try {
+      await renameMedia(renaming.id, renaming.name.trim());
+      setRenaming(null);
+      refetch();
+    } catch (e) {
+      toast.error('Rename failed');
+      globalErrorHandler.reportError(e, {
+        action: 'media-rename',
+        docId: renaming.id,
+      });
+    }
+  }, [renaming, refetch]);
+
+  const isProcessing =
+    upload?.state === 'uploading' || upload?.state === 'processing';
+  const libraryFull = items.length >= MEDIA_CONFIG.maxUploads;
+
   return (
     <motion.div key="media" {...motionProps}>
       <PageHeader>
@@ -415,92 +531,106 @@ export default function MediaTab() {
           ref={fileInputRef}
           type="file"
           accept={ACCEPTED_TYPES.join(',')}
-          multiple
           style={{ display: 'none' }}
-          onChange={(e) => handleFiles(e.target.files)}
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) stageFile(file);
+          }}
         />
 
-        <UploadZone
-          dragging={dragging}
-          onClick={() => fileInputRef.current?.click()}
-          onDragEnter={(e) => {
-            e.preventDefault();
-            setDragging(true);
-          }}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setDragging(true);
-          }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={handleDrop}
-        >
-          <UploadZoneIcon>
-            <Upload size={28} />
-          </UploadZoneIcon>
-          <UploadZoneText>Drag & drop or click to upload</UploadZoneText>
-          <UploadZoneHint>JPG, PNG, WebP, AVIF, GIF · max 50 MB</UploadZoneHint>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
+        {libraryFull && !staged ? (
+          <LibraryFullBanner>
+            Library full ({items.length}/{MEDIA_CONFIG.maxUploads}) — delete an
+            image to upload more
+          </LibraryFullBanner>
+        ) : !staged ? (
+          <UploadZone
+            dragging={dragging}
+            onClick={() => fileInputRef.current?.click()}
+            onDragEnter={(e) => {
+              e.preventDefault();
+              setDragging(true);
             }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={handleDrop}
           >
-            <span style={{ fontSize: '0.8rem' }}>Preset:</span>
-            <PresetSelect
-              value={preset}
-              onChange={(e) => {
-                e.stopPropagation();
-                setPreset(e.target.value);
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {PRESET_OPTIONS.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </PresetSelect>
-          </div>
-        </UploadZone>
+            <UploadZoneIcon>
+              <Upload size={28} />
+            </UploadZoneIcon>
+            <UploadZoneText>Drag & drop or click to upload</UploadZoneText>
+            <UploadZoneHint>
+              JPG, PNG, WebP, AVIF, GIF · max 50 MB
+            </UploadZoneHint>
+          </UploadZone>
+        ) : (
+          <StagedCard>
+            <StagedThumb>
+              <img src={staged.previewUrl} alt={staged.name} />
+            </StagedThumb>
 
-        {activeUploads.length > 0 && (
-          <UploadList>
-            {activeUploads.map((u) => (
-              <UploadItem key={u.id}>
-                {u.state === 'done' ? (
-                  <CheckCircle
-                    size={14}
-                    color="currentColor"
-                    style={{
-                      color: 'var(--color-success, #22c55e)',
-                      flexShrink: 0,
-                    }}
-                  />
-                ) : u.state === 'error' ? (
-                  <AlertCircle
-                    size={14}
-                    style={{ color: 'var(--color-error)', flexShrink: 0 }}
-                  />
-                ) : (
-                  <Upload size={14} style={{ flexShrink: 0 }} />
-                )}
-                <UploadItemName>{u.file.name}</UploadItemName>
-                {u.state === 'uploading' && (
+            <StagedInfo>
+              <NameInput
+                value={staged.name}
+                disabled={isProcessing || upload?.state === 'done'}
+                onChange={(e) =>
+                  setStaged((prev) => ({ ...prev, name: e.target.value }))
+                }
+              />
+              <FileMeta>
+                {formatBytes(staged.file.size)} · {staged.file.type}
+              </FileMeta>
+
+              {!upload && (
+                <StagedActions>
+                  <ActionBtn onClick={cancelStaged}>Cancel</ActionBtn>
+                  <ActionBtn primary onClick={processStaged}>
+                    Process
+                  </ActionBtn>
+                </StagedActions>
+              )}
+
+              {upload?.state === 'uploading' && (
+                <>
                   <ProgressBar>
-                    <ProgressFill value={u.progress} />
+                    <ProgressFill value={upload.progress} />
                   </ProgressBar>
-                )}
-                {u.state === 'processing' && (
-                  <span style={{ fontSize: '0.75rem', color: 'inherit' }}>
-                    Processing…
-                  </span>
-                )}
-                {u.state === 'error' && <UploadError>{u.error}</UploadError>}
-              </UploadItem>
-            ))}
-          </UploadList>
+                  <UploadStatus>Uploading… {upload.progress}%</UploadStatus>
+                </>
+              )}
+
+              {upload?.state === 'processing' && (
+                <UploadStatus>Processing…</UploadStatus>
+              )}
+
+              {upload?.state === 'done' && (
+                <UploadStatus
+                  style={{ color: 'var(--color-success, #22c55e)' }}
+                >
+                  <CheckCircle size={13} />
+                  Done
+                </UploadStatus>
+              )}
+
+              {upload?.state === 'error' && (
+                <>
+                  <UploadStatus style={{ color: 'var(--color-error)' }}>
+                    <AlertCircle size={13} />
+                    {upload.error}
+                  </UploadStatus>
+                  <StagedActions>
+                    <ActionBtn onClick={cancelStaged}>Cancel</ActionBtn>
+                    <ActionBtn primary onClick={processStaged}>
+                      Retry
+                    </ActionBtn>
+                  </StagedActions>
+                </>
+              )}
+            </StagedInfo>
+          </StagedCard>
         )}
       </SectionCard>
 
@@ -508,7 +638,7 @@ export default function MediaTab() {
         <SectionCardHeader>
           <SectionCardTitle>
             <Image size={12} />
-            Library ({items.length})
+            Library ({items.length}/{MEDIA_CONFIG.maxUploads})
           </SectionCardTitle>
         </SectionCardHeader>
 
@@ -519,44 +649,87 @@ export default function MediaTab() {
           </EmptyState>
         ) : (
           <MediaGrid>
-            {items.map((item) => (
-              <MediaCard key={item.id}>
-                <MediaThumb>
-                  {item.imageUrl && (
-                    <img
-                      src={item.imageUrl}
-                      alt={item.originalName}
-                      loading="lazy"
-                    />
-                  )}
-                </MediaThumb>
-                <MediaMeta>
-                  <MediaFileName>{item.originalName}</MediaFileName>
-                  <PresetBadge>{item.preset}</PresetBadge>
-                  {item.width && item.height && (
-                    <MediaInfo>
-                      {item.width}×{item.height} · {formatBytes(item.sizeBytes)}
-                    </MediaInfo>
-                  )}
-                  <MediaInfo>{formatDate(item.createdAt)}</MediaInfo>
-                </MediaMeta>
-                <MediaActions>
-                  <IconBtn
-                    title="Copy URL"
-                    onClick={() => copyUrl(item.imageUrl)}
-                  >
-                    <Copy size={12} />
-                  </IconBtn>
-                  <IconBtn
-                    className="destructive"
-                    title="Delete"
-                    onClick={() => setDeleteTarget(item)}
-                  >
-                    <Trash2 size={12} />
-                  </IconBtn>
-                </MediaActions>
-              </MediaCard>
-            ))}
+            {items.map((item) => {
+              const displayUrl = item.urls?.gallery ?? item.imageUrl;
+              return (
+                <MediaCard key={item.id}>
+                  <MediaThumb>
+                    {displayUrl && (
+                      <img
+                        src={displayUrl}
+                        alt={item.originalName}
+                        loading="lazy"
+                      />
+                    )}
+                  </MediaThumb>
+                  <MediaMeta>
+                    {renaming?.id === item.id ? (
+                      <RenameInput
+                        value={renaming.name}
+                        autoFocus
+                        onChange={(e) =>
+                          setRenaming((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') commitRename();
+                          if (e.key === 'Escape') setRenaming(null);
+                        }}
+                      />
+                    ) : (
+                      <MediaFileName>{item.originalName}</MediaFileName>
+                    )}
+                    <MediaInfo>{formatDate(item.createdAt)}</MediaInfo>
+                  </MediaMeta>
+                  <MediaActions>
+                    {renaming?.id === item.id ? (
+                      <>
+                        <IconBtn title="Save" onClick={commitRename}>
+                          <Check size={12} />
+                        </IconBtn>
+                        <IconBtn
+                          title="Cancel"
+                          onClick={() => setRenaming(null)}
+                        >
+                          <X size={12} />
+                        </IconBtn>
+                      </>
+                    ) : (
+                      <>
+                        {displayUrl && (
+                          <IconBtn
+                            title="Copy URL"
+                            onClick={() => copyUrl(displayUrl)}
+                          >
+                            <Copy size={12} />
+                          </IconBtn>
+                        )}
+                        <IconBtn
+                          title="Rename"
+                          onClick={() =>
+                            setRenaming({
+                              id: item.id,
+                              name: item.originalName,
+                            })
+                          }
+                        >
+                          <Pencil size={12} />
+                        </IconBtn>
+                        <IconBtn
+                          className="destructive"
+                          title="Delete"
+                          onClick={() => setDeleteTarget(item)}
+                        >
+                          <Trash2 size={12} />
+                        </IconBtn>
+                      </>
+                    )}
+                  </MediaActions>
+                </MediaCard>
+              );
+            })}
           </MediaGrid>
         )}
       </SectionCard>

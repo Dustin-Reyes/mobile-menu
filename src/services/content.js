@@ -593,8 +593,16 @@ class ContentService {
               if (typeof item !== 'object' || item === null) return item;
               const translatedItem = {};
               for (const [field, fieldValue] of Object.entries(item)) {
+                const isImageRef =
+                  field === 'id' ||
+                  field === 'url' ||
+                  field === 'name' ||
+                  (typeof fieldValue === 'string' &&
+                    fieldValue.startsWith('http'));
                 translatedItem[field] =
-                  typeof fieldValue === 'string' && fieldValue.trim()
+                  !isImageRef &&
+                  typeof fieldValue === 'string' &&
+                  fieldValue.trim()
                     ? await translateString(fieldValue)
                     : fieldValue;
               }

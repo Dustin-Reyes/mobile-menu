@@ -21,6 +21,10 @@ export function getR2Client() {
   _client = new S3Client({
     region: 'auto',
     endpoint: `https://${process.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    forcePathStyle: true,
+    // R2 does not support the CRC32 checksums that AWS SDK v3 adds by default
+    requestChecksumCalculation: 'WHEN_REQUIRED',
+    responseChecksumValidation: 'WHEN_REQUIRED',
     credentials: {
       accessKeyId: process.env.R2_ACCESS_KEY_ID,
       secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
@@ -38,3 +42,7 @@ export const getPublicUrl = () => {
   if (!process.env.R2_PUBLIC_URL) throw new Error('R2_PUBLIC_URL is not set');
   return process.env.R2_PUBLIC_URL;
 };
+
+// Optional prefix applied to all R2 keys (e.g. "production/images/my-site/").
+// Defaults to empty string — no prefix. Must end with "/" if set.
+export const getKeyPrefix = () => process.env.R2_KEY_PREFIX ?? '';

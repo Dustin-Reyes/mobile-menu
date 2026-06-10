@@ -7,7 +7,7 @@
  *
  * POST /api/get-upload-url
  * Authorization: Bearer <Firebase ID token>
- * Body: { filename: string, preset: string, mimeType: string }
+ * Body: { displayName: string, mimeType: string }
  * Response: { uploadUrl: string, key: string, docId: string }
  */
 
@@ -15,9 +15,8 @@ import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { randomUUID } from 'crypto';
 import { verifyMediaCaller } from './lib/auth.js';
-import { getR2Client, getBucketName } from './lib/r2.js';
+import { getR2Client, getBucketName, getKeyPrefix } from './lib/r2.js';
 import { adminDb } from './lib/firebase-admin.js';
-import { VALID_PRESETS } from './lib/presets.js';
 
 const VALID_MIME_TYPES = new Set([
   'image/jpeg',
@@ -26,6 +25,14 @@ const VALID_MIME_TYPES = new Set([
   'image/avif',
   'image/gif',
 ]);
+
+const EXT_FROM_MIME = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/avif': 'avif',
+  'image/gif': 'gif',
+};
 
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -52,20 +59,12 @@ export const handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
   }
 
-  const { filename, preset, mimeType } = body;
+  const { displayName, mimeType } = body;
 
-  if (!filename) {
+  if (!displayName) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'filename is required' }),
-    };
-  }
-  if (!VALID_PRESETS.includes(preset)) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error: `preset must be one of: ${VALID_PRESETS.join(', ')}`,
-      }),
+      body: JSON.stringify({ error: 'displayName is required' }),
     };
   }
   if (!VALID_MIME_TYPES.has(mimeType)) {
@@ -79,8 +78,8 @@ export const handler = async (event) => {
   }
 
   const docId = randomUUID();
-  const ext = filename.split('.').pop().toLowerCase();
-  const key = `raw/${docId}.${ext}`;
+  const ext = EXT_FROM_MIME[mimeType];
+  const key = `${getKeyPrefix()}raw/${docId}.${ext}`;
 
   try {
     const r2 = getR2Client();
@@ -94,9 +93,9 @@ export const handler = async (event) => {
     const db = adminDb();
     await db.collection('media').doc(docId).set({
       status: 'pending',
-      preset,
-      originalName: filename,
+      originalName: displayName,
       mimeType,
+      rawExt: ext,
       uploadedBy: caller.uid,
       createdAt: new Date().toISOString(),
     });

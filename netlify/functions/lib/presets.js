@@ -10,5 +10,3 @@ export const PRESETS = {
   thumbnail: { width: 400, height: 300, quality: 75, fit: 'cover' },
   hero: { width: 2400, height: 1350, quality: 85, fit: 'cover' },
 };
-
-export const VALID_PRESETS = Object.keys(PRESETS);

@@ -1,13 +1,13 @@
 /** @jest-environment node */
-import { PRESETS, VALID_PRESETS } from '../../netlify/functions/lib/presets.js';
+import { PRESETS } from '../../netlify/functions/lib/presets.js';
 
 describe('PRESETS', () => {
   it('defines gallery, thumbnail, hero', () => {
-    expect(VALID_PRESETS).toEqual(['gallery', 'thumbnail', 'hero']);
+    expect(Object.keys(PRESETS).sort()).toEqual(['gallery', 'hero', 'thumbnail']);
   });
 
   it('each preset has width, height, quality, fit', () => {
-    for (const preset of VALID_PRESETS) {
+    for (const preset of Object.keys(PRESETS)) {
       expect(PRESETS[preset]).toMatchObject({
         width: expect.any(Number),
         height: expect.any(Number),

@@ -12,6 +12,7 @@ import { auth, db } from 'config/firebase';
 import {
   collection,
   getDocs,
+  getDocFromServer,
   query,
   orderBy,
   onSnapshot,
@@ -36,7 +37,8 @@ async function callFunction(name, body) {
     headers: { 'Content-Type': 'application/json', ...headers },
     body: JSON.stringify(body),
   });
-  const data = await res.json();
+  const text = await res.text();
+  const data = text ? JSON.parse(text) : {};
   if (!res.ok) throw new Error(data.error ?? `${name} failed`);
   return data;
 }
@@ -44,13 +46,12 @@ async function callFunction(name, body) {
 /**
  * Requests a pre-signed upload URL from the get-upload-url Netlify function.
  *
- * @param {string} filename - Original file name.
- * @param {string} preset - Upload preset (e.g. 'gallery').
+ * @param {string} displayName - Display name for the image (stored as originalName).
  * @param {string} mimeType - MIME type of the file.
  * @returns {Promise<{ uploadUrl: string, key: string, docId: string }>}
  */
-export function getUploadUrl(filename, preset, mimeType) {
-  return callFunction('get-upload-url', { filename, preset, mimeType });
+export function getUploadUrl(displayName, mimeType) {
+  return callFunction('get-upload-url', { displayName, mimeType });
 }
 
 /**
@@ -102,6 +103,17 @@ export function deleteMedia(docId) {
 }
 
 /**
+ * Renames a media item via the rename-media Netlify function.
+ *
+ * @param {string} docId - Firestore document ID of the media record.
+ * @param {string} name - New display name.
+ * @returns {Promise<object>}
+ */
+export function renameMedia(docId, name) {
+  return callFunction('rename-media', { docId, name });
+}
+
+/**
  * Fetches all media items for the current user, filtering out stale pending docs.
  *
  * Stale pending docs (older than one hour) are deleted from Firestore automatically.
@@ -147,6 +159,11 @@ export async function getMediaLibrary() {
 export function watchMediaDoc(docId, callback) {
   if (!db) return () => {};
   const docRef = doc(db, 'media', docId);
+  // Bypass local cache: in dev, the background fn completes before the listener
+  // is set up, leaving a stale 'pending' in the cache. onSnapshot handles prod.
+  getDocFromServer(docRef).then((snap) => {
+    if (snap.exists()) callback({ id: snap.id, ...snap.data() });
+  });
   return onSnapshot(docRef, (snap) => {
     if (snap.exists()) callback({ id: snap.id, ...snap.data() });
   });

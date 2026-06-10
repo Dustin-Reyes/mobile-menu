@@ -51,10 +51,12 @@ function makeEvent(body, token = 'valid-token') {
 beforeEach(() => {
   jest.clearAllMocks();
   mockVerifyIdToken.mockResolvedValue({ uid: 'user-1', role: 'admin' });
+  // No rawExt or originalName — raw deletion will be skipped
   mockDocGet.mockResolvedValue({
     exists: true,
     data: () => ({ status: 'ready' }),
   });
+  mockSend.mockResolvedValue({});
 });
 
 describe('delete-media', () => {
@@ -80,14 +82,32 @@ describe('delete-media', () => {
     expect(res.statusCode).toBe(404);
   });
 
-  it('deletes R2 object and Firestore doc', async () => {
+  it('deletes all R2 variants and Firestore doc', async () => {
     const res = await handler(makeEvent({ docId: 'doc-123' }));
     expect(res.statusCode).toBe(200);
-    expect(mockSend).toHaveBeenCalledTimes(1);
+    // 3 size variants + 1 backwards-compat single-file = 4 calls (no rawExt so raw skipped)
+    expect(mockSend).toHaveBeenCalledTimes(4);
+    const keys = mockSend.mock.calls.map((c) => c[0].Key).sort();
+    expect(keys).toEqual([
+      'media/doc-123.webp',
+      'media/doc-123/gallery.webp',
+      'media/doc-123/hero.webp',
+      'media/doc-123/thumbnail.webp',
+    ]);
     expect(mockDocDelete).toHaveBeenCalledTimes(1);
-    const r2Call = mockSend.mock.calls[0][0];
-    expect(r2Call.Key).toBe('media/doc-123.webp');
-    expect(r2Call.Bucket).toBe('test-bucket');
+  });
+
+  it('also deletes raw file when rawExt is present', async () => {
+    mockDocGet.mockResolvedValue({
+      exists: true,
+      data: () => ({ status: 'ready', rawExt: 'jpg' }),
+    });
+    const res = await handler(makeEvent({ docId: 'doc-456' }));
+    expect(res.statusCode).toBe(200);
+    // 3 size variants + 1 backwards-compat + 1 raw = 5 calls
+    expect(mockSend).toHaveBeenCalledTimes(5);
+    const keys = mockSend.mock.calls.map((c) => c[0].Key);
+    expect(keys).toContain('raw/doc-456.jpg');
   });
 
   it('treats R2 NoSuchKey as success (idempotent)', async () => {

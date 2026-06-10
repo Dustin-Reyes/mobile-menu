@@ -75,53 +75,27 @@ describe('get-upload-url', () => {
   it('returns 403 when token has no role', async () => {
     mockVerifyIdToken.mockResolvedValue({ uid: 'user-1', role: undefined });
     const res = await handler(
-      makeEvent({
-        filename: 'a.jpg',
-        preset: 'gallery',
-        mimeType: 'image/jpeg',
-      }),
+      makeEvent({ displayName: 'a.jpg', mimeType: 'image/jpeg' }),
     );
     expect(res.statusCode).toBe(403);
   });
 
-  it('returns 400 when preset is invalid', async () => {
-    const res = await handler(
-      makeEvent({
-        filename: 'a.jpg',
-        preset: 'invalid',
-        mimeType: 'image/jpeg',
-      }),
-    );
-    expect(res.statusCode).toBe(400);
-    expect(JSON.parse(res.body).error).toMatch(/preset/);
-  });
-
   it('returns 400 when mimeType is not an image', async () => {
     const res = await handler(
-      makeEvent({
-        filename: 'a.pdf',
-        preset: 'gallery',
-        mimeType: 'application/pdf',
-      }),
+      makeEvent({ displayName: 'a.pdf', mimeType: 'application/pdf' }),
     );
     expect(res.statusCode).toBe(400);
     expect(JSON.parse(res.body).error).toMatch(/mimeType/);
   });
 
-  it('returns 400 when filename is missing', async () => {
-    const res = await handler(
-      makeEvent({ preset: 'gallery', mimeType: 'image/jpeg' }),
-    );
+  it('returns 400 when displayName is missing', async () => {
+    const res = await handler(makeEvent({ mimeType: 'image/jpeg' }));
     expect(res.statusCode).toBe(400);
   });
 
   it('returns uploadUrl, key, docId on valid input', async () => {
     const res = await handler(
-      makeEvent({
-        filename: 'photo.jpg',
-        preset: 'gallery',
-        mimeType: 'image/jpeg',
-      }),
+      makeEvent({ displayName: 'photo.jpg', mimeType: 'image/jpeg' }),
     );
     expect(res.statusCode).toBe(200);
     const body = JSON.parse(res.body);
@@ -133,18 +107,14 @@ describe('get-upload-url', () => {
 
   it('creates Firestore doc with status pending', async () => {
     await handler(
-      makeEvent({
-        filename: 'photo.jpg',
-        preset: 'thumbnail',
-        mimeType: 'image/jpeg',
-      }),
+      makeEvent({ displayName: 'photo.jpg', mimeType: 'image/jpeg' }),
     );
     expect(mockSet).toHaveBeenCalledWith(
       expect.objectContaining({
         status: 'pending',
-        preset: 'thumbnail',
         originalName: 'photo.jpg',
         mimeType: 'image/jpeg',
+        rawExt: 'jpg',
         uploadedBy: 'user-1',
       }),
     );
@@ -160,7 +130,7 @@ describe('get-upload-url', () => {
     ];
     for (const mimeType of types) {
       const res = await handler(
-        makeEvent({ filename: 'img.png', preset: 'gallery', mimeType }),
+        makeEvent({ displayName: 'img.png', mimeType }),
       );
       expect(res.statusCode).toBe(200);
     }

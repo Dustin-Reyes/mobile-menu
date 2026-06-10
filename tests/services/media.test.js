@@ -10,6 +10,11 @@ jest.mock('firebase/firestore', () => ({
   onSnapshot: jest.fn(),
   deleteDoc: jest.fn().mockResolvedValue({}),
   doc: jest.fn(),
+  getDocFromServer: jest.fn().mockResolvedValue({
+    exists: () => false,
+    id: '',
+    data: () => ({}),
+  }),
 }));
 jest.mock('utils/errorHandler', () => ({
   reportError: jest.fn(),
@@ -29,9 +34,11 @@ import {
 const mockUser = { getIdToken: jest.fn().mockResolvedValue('test-token') };
 
 function mockFetchResponse(body, ok = true) {
+  const text = JSON.stringify(body);
   global.fetch = jest.fn().mockResolvedValue({
     ok,
     status: ok ? 200 : 400,
+    text: async () => text,
     json: async () => body,
   });
 }
@@ -48,7 +55,7 @@ describe('getUploadUrl', () => {
       key: 'raw/id.jpg',
       docId: 'id-1',
     });
-    const result = await getUploadUrl('photo.jpg', 'gallery', 'image/jpeg');
+    const result = await getUploadUrl('photo.jpg', 'image/jpeg');
     expect(result).toEqual({
       uploadUrl: 'https://r2.example.com/put',
       key: 'raw/id.jpg',
@@ -58,24 +65,23 @@ describe('getUploadUrl', () => {
     expect(url).toBe('/.netlify/functions/get-upload-url');
     expect(options.headers['Authorization']).toBe('Bearer test-token');
     expect(JSON.parse(options.body)).toEqual({
-      filename: 'photo.jpg',
-      preset: 'gallery',
+      displayName: 'photo.jpg',
       mimeType: 'image/jpeg',
     });
   });
 
   it('throws when not authenticated', async () => {
     auth.currentUser = null;
-    await expect(
-      getUploadUrl('photo.jpg', 'gallery', 'image/jpeg'),
-    ).rejects.toThrow('Not authenticated');
+    await expect(getUploadUrl('photo.jpg', 'image/jpeg')).rejects.toThrow(
+      'Not authenticated',
+    );
   });
 
   it('throws when function returns error', async () => {
-    mockFetchResponse({ error: 'Invalid preset' }, false);
-    await expect(
-      getUploadUrl('photo.jpg', 'bad', 'image/jpeg'),
-    ).rejects.toThrow('Invalid preset');
+    mockFetchResponse({ error: 'Unsupported file type' }, false);
+    await expect(getUploadUrl('photo.jpg', 'image/jpeg')).rejects.toThrow(
+      'Unsupported file type',
+    );
   });
 });
 

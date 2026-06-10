@@ -7,6 +7,7 @@
 
 import styled from '@emotion/styled';
 import { usePage } from 'hooks/useContent';
+import placeholderSrc from 'assets/placeholder-image.svg';
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
@@ -97,16 +98,12 @@ const StatLabel = styled.div`
   letter-spacing: 0.1em;
 `;
 
-const PlaceholderImage = styled.div`
+const AboutImage = styled.img`
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: ${({ theme }) => theme.colors.surface};
+  object-fit: cover;
   border-radius: ${({ theme }) => theme.borderRadius.s2};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  display: block;
 `;
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -129,6 +126,8 @@ export default function About() {
     (loading
       ? null
       : 'We are a dedicated team passionate about delivering exceptional results. With years of experience and a commitment to excellence, we help businesses achieve their goals through innovative solutions and personalized service.');
+  const image = content?.about?.image ?? null;
+
   const stats =
     content?.about?.stats ??
     (loading
@@ -183,7 +182,14 @@ export default function About() {
           )}
         </Content>
         <ImageContainer>
-          <PlaceholderImage>About Us Image</PlaceholderImage>
+          <AboutImage
+            src={image?.url ?? placeholderSrc}
+            alt={image?.name ?? ''}
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.src = placeholderSrc;
+            }}
+          />
         </ImageContainer>
       </Container>
     </Wrapper>

@@ -27,7 +27,13 @@ import {
 import Button from 'components/ui/Button';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { usePageEditor } from 'hooks/usePageEditor';
-import { FaqItemsEditor, ServiceItemsEditor } from './ContentFieldEditor';
+import {
+  FaqItemsEditor,
+  ServiceItemsEditor,
+  GalleryItemsEditor,
+  ImageFieldEditor,
+  ImageListEditor,
+} from './ContentFieldEditor';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -543,6 +549,26 @@ export default function PageEditor({ pageId }) {
                     />
                   ) : field.type === 'service-items' ? (
                     <ServiceItemsEditor
+                      value={formValues[field.key] ?? []}
+                      onChange={(arr) => handleFieldChange(field.key, arr)}
+                      disabled={busy}
+                      maxItems={field.maxItems}
+                    />
+                  ) : field.type === 'gallery-items' ? (
+                    <GalleryItemsEditor
+                      value={formValues[field.key] ?? []}
+                      onChange={(arr) => handleFieldChange(field.key, arr)}
+                      disabled={busy}
+                      maxItems={field.maxItems}
+                    />
+                  ) : field.type === 'image' ? (
+                    <ImageFieldEditor
+                      value={formValues[field.key] ?? null}
+                      onChange={(val) => handleFieldChange(field.key, val)}
+                      disabled={busy}
+                    />
+                  ) : field.type === 'image-list' ? (
+                    <ImageListEditor
                       value={formValues[field.key] ?? []}
                       onChange={(arr) => handleFieldChange(field.key, arr)}
                       disabled={busy}

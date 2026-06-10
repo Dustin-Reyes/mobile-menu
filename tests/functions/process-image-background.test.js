@@ -79,7 +79,7 @@ beforeEach(() => {
   });
   mockDocGet.mockResolvedValue({
     exists: true,
-    data: () => ({ preset: 'gallery', status: 'pending' }),
+    data: () => ({ status: 'pending' }),
   });
   mockSend.mockImplementation((cmd) => {
     if (cmd._type === 'Get') {
@@ -119,24 +119,34 @@ describe('process-image-background', () => {
     expect(res.statusCode).toBe(404);
   });
 
-  it('processes image with gallery preset dimensions', async () => {
+  it('processes all three size presets', async () => {
     await handler(makeEvent({ key: 'raw/abc.jpg', docId: 'doc-1' }));
+    expect(mockSharpInstance.resize).toHaveBeenCalledWith(400, 300, {
+      fit: 'cover',
+      position: 'center',
+    });
     expect(mockSharpInstance.resize).toHaveBeenCalledWith(1200, 900, {
       fit: 'cover',
       position: 'center',
     });
-    expect(mockSharpInstance.webp).toHaveBeenCalledWith({ quality: 80 });
-    expect(mockSharpInstance.withMetadata).toHaveBeenCalledWith(false);
-    expect(mockSharpInstance.toBuffer).toHaveBeenCalledWith({
-      resolveWithObject: true,
+    expect(mockSharpInstance.resize).toHaveBeenCalledWith(2400, 1350, {
+      fit: 'cover',
+      position: 'center',
     });
+    expect(mockSharpInstance.toBuffer).toHaveBeenCalledTimes(3);
   });
 
-  it('uploads processed image to R2 at media/<docId>.webp', async () => {
+  it('uploads all three size variants to R2', async () => {
     await handler(makeEvent({ key: 'raw/abc.jpg', docId: 'doc-1' }));
-    const putCall = mockSend.mock.calls.find((c) => c[0]._type === 'Put');
-    expect(putCall[0].Key).toBe('media/doc-1.webp');
-    expect(putCall[0].ContentType).toBe('image/webp');
+    const putCalls = mockSend.mock.calls.filter((c) => c[0]._type === 'Put');
+    expect(putCalls).toHaveLength(3);
+    const keys = putCalls.map((c) => c[0].Key).sort();
+    expect(keys).toEqual([
+      'media/doc-1/gallery.webp',
+      'media/doc-1/hero.webp',
+      'media/doc-1/thumbnail.webp',
+    ]);
+    expect(putCalls.every((c) => c[0].ContentType === 'image/webp')).toBe(true);
   });
 
   it('deletes raw file from R2 after processing', async () => {
@@ -145,15 +155,16 @@ describe('process-image-background', () => {
     expect(delCall[0].Key).toBe('raw/abc.jpg');
   });
 
-  it('updates Firestore doc with status ready', async () => {
+  it('updates Firestore doc with status ready and urls map', async () => {
     await handler(makeEvent({ key: 'raw/abc.jpg', docId: 'doc-1' }));
     expect(mockDocUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         status: 'ready',
-        imageUrl: 'https://cdn.example.com/media/doc-1.webp',
-        width: 1200,
-        height: 900,
-        sizeBytes: 102400,
+        urls: {
+          thumbnail: 'https://cdn.example.com/media/doc-1/thumbnail.webp',
+          gallery: 'https://cdn.example.com/media/doc-1/gallery.webp',
+          hero: 'https://cdn.example.com/media/doc-1/hero.webp',
+        },
       }),
     );
   });

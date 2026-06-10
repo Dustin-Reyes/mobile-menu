@@ -1,14 +1,15 @@
 /**
  * Netlify Background Function: process-image-background
  *
- * Downloads the raw image from R2, processes it with Sharp (resize/WebP/strip EXIF),
- * uploads the result to R2, deletes the raw file, and updates the Firestore doc.
- * On error, sets status: "error" on the Firestore doc so the UI can surface it.
+ * Downloads the raw image from R2, generates thumbnail/gallery/hero WebP
+ * variants, uploads them to media/<docId>/<size>.webp, deletes the raw file,
+ * and updates the Firestore doc with status "ready" and a urls map.
+ * On error, sets status: "error" so the UI can surface it.
  *
  * POST /.netlify/functions/process-image-background
  * Authorization: Bearer <Firebase ID token>
  * Body: { key: string, docId: string }
- * Response: { ok: true } (202 from Netlify, async processing continues)
+ * Response: 202 (async — Netlify background function)
  */
 
 import {
@@ -18,7 +19,12 @@ import {
 } from '@aws-sdk/client-s3';
 import sharp from 'sharp';
 import { verifyMediaCaller } from './lib/auth.js';
-import { getR2Client, getBucketName, getPublicUrl } from './lib/r2.js';
+import {
+  getR2Client,
+  getBucketName,
+  getPublicUrl,
+  getKeyPrefix,
+} from './lib/r2.js';
 import { adminDb } from './lib/firebase-admin.js';
 import { PRESETS } from './lib/presets.js';
 
@@ -66,9 +72,6 @@ export const handler = async (event) => {
       };
     }
 
-    const { preset } = snap.data();
-    const { width, height, quality, fit } = PRESETS[preset] ?? PRESETS.gallery;
-
     const r2 = getR2Client();
     const bucket = getBucketName();
 
@@ -79,30 +82,33 @@ export const handler = async (event) => {
     for await (const chunk of Body) chunks.push(chunk);
     const inputBuffer = Buffer.concat(chunks);
 
-    const { data: outputBuffer, info } = await sharp(inputBuffer)
-      .resize(width, height, { fit, position: 'center' })
-      .webp({ quality })
-      .withMetadata(false)
-      .toBuffer({ resolveWithObject: true });
+    const urls = {};
+    for (const [sizeName, { width, height, quality, fit }] of Object.entries(
+      PRESETS,
+    )) {
+      const { data: outputBuffer } = await sharp(inputBuffer)
+        .resize(width, height, { fit, position: 'center' })
+        .webp({ quality })
+        .withMetadata(false)
+        .toBuffer({ resolveWithObject: true });
 
-    const processedKey = `media/${docId}.webp`;
-    await r2.send(
-      new PutObjectCommand({
-        Bucket: bucket,
-        Key: processedKey,
-        Body: outputBuffer,
-        ContentType: 'image/webp',
-      }),
-    );
+      const processedKey = `${getKeyPrefix()}media/${docId}/${sizeName}.webp`;
+      await r2.send(
+        new PutObjectCommand({
+          Bucket: bucket,
+          Key: processedKey,
+          Body: outputBuffer,
+          ContentType: 'image/webp',
+        }),
+      );
+      urls[sizeName] = `${getPublicUrl()}/${processedKey}`;
+    }
 
     await r2.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
 
     await docRef.update({
       status: 'ready',
-      imageUrl: `${getPublicUrl()}/${processedKey}`,
-      width: info.width,
-      height: info.height,
-      sizeBytes: info.size,
+      urls,
       processedAt: new Date().toISOString(),
     });
 

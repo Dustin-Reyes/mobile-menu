@@ -2,6 +2,7 @@
  * Netlify Function: delete-media
  *
  * Deletes a media asset from Cloudflare R2 and removes its Firestore document.
+ * Removes all three size variants (thumbnail/gallery/hero) plus the raw file.
  * R2 404 (NoSuchKey) is treated as success for idempotency.
  *
  * POST /.netlify/functions/delete-media
@@ -12,8 +13,18 @@
 
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { verifyMediaCaller } from './lib/auth.js';
-import { getR2Client, getBucketName } from './lib/r2.js';
+import { getR2Client, getBucketName, getKeyPrefix } from './lib/r2.js';
 import { adminDb } from './lib/firebase-admin.js';
+
+const SIZE_NAMES = ['thumbnail', 'gallery', 'hero'];
+
+async function tryDelete(r2, bucket, key) {
+  try {
+    await r2.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
+  } catch (e) {
+    if (e.name !== 'NoSuchKey') throw e;
+  }
+}
 
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -58,35 +69,28 @@ export const handler = async (event) => {
     };
   }
 
-  const { originalName } = snap.data();
-  const ext = originalName?.split('.').pop()?.toLowerCase();
+  const { rawExt, originalName } = snap.data();
+  // rawExt is set on new uploads; fall back to parsing originalName for old docs
+  const ext = rawExt ?? originalName?.split('.').pop()?.toLowerCase();
 
   const r2 = getR2Client();
   const bucket = getBucketName();
+  const prefix = getKeyPrefix();
 
-  // Delete processed file (may not exist for error-state docs — NoSuchKey is fine)
   try {
-    await r2.send(
-      new DeleteObjectCommand({ Bucket: bucket, Key: `media/${docId}.webp` }),
-    );
-  } catch (e) {
-    if (e.name !== 'NoSuchKey') {
-      return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    // Delete all three processed size variants
+    for (const sizeName of SIZE_NAMES) {
+      await tryDelete(r2, bucket, `${prefix}media/${docId}/${sizeName}.webp`);
     }
-  }
+    // Backwards compat: old uploads stored a single media/<docId>.webp
+    await tryDelete(r2, bucket, `${prefix}media/${docId}.webp`);
 
-  // Delete raw file if it exists (may exist for error/pending-state docs)
-  if (ext) {
-    try {
-      await r2.send(
-        new DeleteObjectCommand({ Bucket: bucket, Key: `raw/${docId}.${ext}` }),
-      );
-    } catch (e) {
-      if (e.name !== 'NoSuchKey') {
-        // Log but don't fail — processed file is already deleted
-        console.error('Failed to delete raw file:', e.message);
-      }
+    // Delete raw file (may already be gone if processing completed)
+    if (ext) {
+      await tryDelete(r2, bucket, `${prefix}raw/${docId}.${ext}`);
     }
+  } catch (e) {
+    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
 
   await docRef.delete();

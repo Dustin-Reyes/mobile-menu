@@ -57,11 +57,12 @@ export const pages = {
         subtitle: 'Learn more about our company and values',
         description:
           'We are dedicated to delivering excellence in everything we do.',
+        image: null,
       },
       gallery: {
         title: 'Our Work',
         subtitle: 'Explore our portfolio and see what we can create for you',
-        items: [],
+        images: [],
       },
       faq: {
         title: 'Frequently Asked Questions',

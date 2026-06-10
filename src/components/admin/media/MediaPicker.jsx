@@ -123,7 +123,7 @@ export default function MediaPicker({ open, onClose, onSelect }) {
                   title={item.originalName}
                 >
                   <img
-                    src={item.imageUrl}
+                    src={item.urls?.gallery ?? item.imageUrl}
                     alt={item.originalName}
                     loading="lazy"
                   />

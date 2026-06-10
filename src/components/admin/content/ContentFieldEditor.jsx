@@ -453,7 +453,185 @@ export function GalleryItemsEditor({ value, onChange, disabled, maxItems }) {
           onClose={() => setPickerIndex(null)}
           onSelect={(mediaItem) => {
             if (pickerIndex !== null)
-              updateItem(pickerIndex, 'imageUrl', mediaItem.imageUrl);
+              updateItem(
+                pickerIndex,
+                'imageUrl',
+                mediaItem.urls?.gallery ?? mediaItem.imageUrl,
+              );
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+// ─── Image Field Editor ───────────────────────────────────────────────────────
+
+const ImageSlot = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const ImageSlotMeta = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+`;
+
+const ImageSlotName = styled.span`
+  font-size: ${(p) => p.theme.typography.fontSizes.s2};
+  color: ${(p) => p.theme.colors.textSecondary};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const ImageSlotActions = styled.div`
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+`;
+
+/**
+ * Single image slot — shows thumbnail + name, with Pick/Change/Remove controls.
+ * Stores { id, url, name } in value.
+ * @param {Object} props
+ * @param {{ id: string, url: string, name: string } | null} props.value
+ * @param {function} props.onChange
+ * @param {boolean} [props.disabled]
+ */
+export function ImageFieldEditor({ value, onChange, disabled }) {
+  const [pickerOpen, setPickerOpen] = useState(false);
+
+  const handleSelect = (mediaItem) => {
+    onChange({
+      id: mediaItem.id,
+      url: mediaItem.urls?.gallery ?? mediaItem.imageUrl,
+      name: mediaItem.originalName,
+    });
+    setPickerOpen(false);
+  };
+
+  return (
+    <div>
+      <ImageSlot>
+        <GalleryImagePreview>
+          {value?.url && (
+            <img src={value.url} alt={value.name || 'Selected image'} />
+          )}
+        </GalleryImagePreview>
+        <ImageSlotMeta>
+          {value?.name && <ImageSlotName>{value.name}</ImageSlotName>}
+          <ImageSlotActions>
+            <ImagePickerBtn
+              type="button"
+              onClick={() => setPickerOpen(true)}
+              disabled={disabled}
+            >
+              {value ? 'Change' : 'Pick image'}
+            </ImagePickerBtn>
+            {value && (
+              <ImagePickerBtn
+                type="button"
+                onClick={() => onChange(null)}
+                disabled={disabled}
+              >
+                Remove
+              </ImagePickerBtn>
+            )}
+          </ImageSlotActions>
+        </ImageSlotMeta>
+      </ImageSlot>
+      {pickerOpen && (
+        <MediaPicker
+          open
+          onClose={() => setPickerOpen(false)}
+          onSelect={handleSelect}
+        />
+      )}
+    </div>
+  );
+}
+
+// ─── Image List Editor ────────────────────────────────────────────────────────
+
+/**
+ * Ordered list of image slots — no title/description overhead.
+ * Stores [{ id, url, name }, ...] in value.
+ * @param {Object} props
+ * @param {Array<{ id: string, url: string, name: string }>} props.value
+ * @param {function} props.onChange
+ * @param {boolean} [props.disabled]
+ * @param {number} [props.maxItems]
+ */
+export function ImageListEditor({ value, onChange, disabled, maxItems }) {
+  const items = Array.isArray(value) ? value : [];
+  const atLimit = maxItems != null && items.length >= maxItems;
+  const [pickerIndex, setPickerIndex] = useState(null);
+
+  const updateItem = (index, imageRef) => {
+    if (index === -1) {
+      onChange([...items, imageRef]);
+    } else {
+      onChange(items.map((item, i) => (i === index ? imageRef : item)));
+    }
+  };
+
+  const removeItem = (index) => {
+    onChange(items.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div>
+      {items.map((item, index) => (
+        <FaqItemCard key={index}>
+          <FaqItemRow>
+            <GalleryImagePreview style={{ flexShrink: 0 }}>
+              {item?.url && <img src={item.url} alt={item.name || ''} />}
+            </GalleryImagePreview>
+            <ImageSlotMeta>
+              {item?.name && <ImageSlotName>{item.name}</ImageSlotName>}
+              <div>
+                <ImagePickerBtn
+                  type="button"
+                  onClick={() => setPickerIndex(index)}
+                  disabled={disabled}
+                >
+                  Change
+                </ImagePickerBtn>
+              </div>
+            </ImageSlotMeta>
+            <RemoveItemBtn
+              onClick={() => removeItem(index)}
+              disabled={disabled}
+              title="Remove image"
+              aria-label="Remove image"
+            >
+              ×
+            </RemoveItemBtn>
+          </FaqItemRow>
+        </FaqItemCard>
+      ))}
+      <AddItemBtn
+        onClick={() => setPickerIndex(-1)}
+        disabled={disabled || atLimit}
+      >
+        {atLimit ? `Max ${maxItems} items reached` : '＋ Add Image'}
+      </AddItemBtn>
+      {pickerIndex !== null && (
+        <MediaPicker
+          open
+          onClose={() => setPickerIndex(null)}
+          onSelect={(mediaItem) => {
+            updateItem(pickerIndex, {
+              id: mediaItem.id,
+              url: mediaItem.urls?.gallery ?? mediaItem.imageUrl,
+              name: mediaItem.originalName,
+            });
+            setPickerIndex(null);
           }}
         />
       )}
@@ -708,6 +886,19 @@ function DesktopEditor({
                     disabled={isLoading}
                     maxItems={field.maxItems}
                   />
+                ) : field.type === 'image' ? (
+                  <ImageFieldEditor
+                    value={formValues[field.key] ?? null}
+                    onChange={(val) => onFieldChange(field.key, val)}
+                    disabled={isLoading}
+                  />
+                ) : field.type === 'image-list' ? (
+                  <ImageListEditor
+                    value={formValues[field.key] ?? []}
+                    onChange={(arr) => onFieldChange(field.key, arr)}
+                    disabled={isLoading}
+                    maxItems={field.maxItems}
+                  />
                 ) : field.type === 'textarea' ? (
                   <StyledTextarea
                     id={`field-${field.key}`}
@@ -908,7 +1099,12 @@ function MobileFieldList({
               field.type === 'service-items' ||
               field.type === 'gallery-items'
                 ? `${(values[field.key] ?? []).length} item${(values[field.key] ?? []).length !== 1 ? 's' : ''}`
-                : (values[field.key] ?? '—')}
+                : field.type === 'image-list'
+                  ? `${(values[field.key] ?? []).length} image${(values[field.key] ?? []).length !== 1 ? 's' : ''}`
+                  : field.type === 'image'
+                    ? (values[field.key]?.name ??
+                      (values[field.key] ? 'Image set' : 'No image'))
+                    : (values[field.key] ?? '—')}
             </FieldRowPreview>
           </FieldRowLeft>
           <MobileFieldChevron>›</MobileFieldChevron>
@@ -989,10 +1185,13 @@ function MobileFieldEdit({
   const isFaqItems = fieldDef?.type === 'faq-items';
   const isServiceItems = fieldDef?.type === 'service-items';
   const isGalleryItems = fieldDef?.type === 'gallery-items';
-  const isArrayField = isFaqItems || isServiceItems || isGalleryItems;
+  const isImageField = fieldDef?.type === 'image';
+  const isImageList = fieldDef?.type === 'image-list';
+  const isArrayField =
+    isFaqItems || isServiceItems || isGalleryItems || isImageList;
   const currentSaved =
     allLocaleContent[selectedLocale]?.[selectedField] ??
-    (isArrayField ? [] : '');
+    (isArrayField ? [] : isImageField ? null : '');
   const [inputValue, setInputValue] = useState(currentSaved);
 
   useEffect(() => {
@@ -1012,7 +1211,7 @@ function MobileFieldEdit({
       </MobileHeader>
 
       <FieldEditContent>
-        {!isArrayField && (
+        {!isArrayField && !isImageField && (
           <>
             <SectionTitle>Current saved value</SectionTitle>
             <SavedPreview>{currentSaved || '—'}</SavedPreview>
@@ -1041,6 +1240,14 @@ function MobileFieldEdit({
             disabled={false}
             maxItems={fieldDef.maxItems}
           />
+        ) : isImageList ? (
+          <ImageListEditor
+            value={inputValue}
+            onChange={setInputValue}
+            maxItems={fieldDef.maxItems}
+          />
+        ) : isImageField ? (
+          <ImageFieldEditor value={inputValue} onChange={setInputValue} />
         ) : fieldDef.type === 'textarea' ? (
           <StyledTextarea
             value={inputValue}
