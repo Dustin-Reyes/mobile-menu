@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.6](https://github.com/TranspiledCode/transpiled-web-template/compare/v0.2.5...v0.2.6) (2026-06-10)
+
+
+### Features
+
+* **cms:** add Services section CMS editing, i18n, and custom items editor ([6e93a5d](https://github.com/TranspiledCode/transpiled-web-template/commit/6e93a5d447e301d4f4654712a8d59a74a83d0fcb))
+* **media:** add delete-media function ([6c48f4f](https://github.com/TranspiledCode/transpiled-web-template/commit/6c48f4ffd588ff932c397a0155065bcf8b5abdde))
+* **media:** add galleryItems schema field and render real images in Gallery ([257b4e7](https://github.com/TranspiledCode/transpiled-web-template/commit/257b4e76af7d633a384dc0b4d45c73be9b066a4e))
+* **media:** add GalleryItemsEditor with MediaPicker integration ([05e6226](https://github.com/TranspiledCode/transpiled-web-template/commit/05e6226c3f87d5cefc44e1ae74035c7ddc837c07))
+* **media:** add get-upload-url function ([353563f](https://github.com/TranspiledCode/transpiled-web-template/commit/353563fb480108c33360aaee8376e5b181afbf27)), closes [#37](https://github.com/TranspiledCode/transpiled-web-template/issues/37)
+* **media:** add media service ([8228f53](https://github.com/TranspiledCode/transpiled-web-template/commit/8228f535a412fc02e549f2863f2c8d7846d7428a))
+* **media:** add MediaPicker component ([02e45d6](https://github.com/TranspiledCode/transpiled-web-template/commit/02e45d6c45aea0040cc517b6d5ddd2d0b1d27611))
+* **media:** add process-image-background function ([09a11c4](https://github.com/TranspiledCode/transpiled-web-template/commit/09a11c4ac5b3df571285f3689adf3dd4506915cf))
+* **media:** add shared function libs — presets, auth, r2, firebase-admin ([191eddc](https://github.com/TranspiledCode/transpiled-web-template/commit/191eddc5fe815b2c0880dd2715b325fd4d60ffe7))
+* **media:** add useMediaLibrary and useUpload hooks ([065b4ad](https://github.com/TranspiledCode/transpiled-web-template/commit/065b4ad07af88ab537d449c7daf68630bfec0719))
+* **media:** multi-size processing, gallery image assignment, and placeholder system ([c51843c](https://github.com/TranspiledCode/transpiled-web-template/commit/c51843c6168357eec45b426370dd1a75ff3befc4)), closes [#37](https://github.com/TranspiledCode/transpiled-web-template/issues/37)
+* **media:** rebuild MediaTab with upload zone and media library grid ([a880afd](https://github.com/TranspiledCode/transpiled-web-template/commit/a880afd4dbd847c30337d317fe70dd8ab63ef9dc))
+* **observability:** complete Sentry coverage audit ([87cd78c](https://github.com/TranspiledCode/transpiled-web-template/commit/87cd78c576650d16a595b51a1e7743be74896b80))
+* **observability:** Sentry audit and console cleanup ([9d152e8](https://github.com/TranspiledCode/transpiled-web-template/commit/9d152e8fad8d6028271c99028319fe3a6e6cfd3f)), closes [#43](https://github.com/TranspiledCode/transpiled-web-template/issues/43)
+* **rbac:** enforce role hierarchy for all user management actions ([e8edb04](https://github.com/TranspiledCode/transpiled-web-template/commit/e8edb04bcad1a058b3481aacaf2367178b6e3b83))
+* **theme:** update color palette to Transpiled Electric Indigo brand ([4cc564d](https://github.com/TranspiledCode/transpiled-web-template/commit/4cc564d9bcf36352b0a240fe8af672131befb971)), closes [#F5A623](https://github.com/TranspiledCode/transpiled-web-template/issues/F5A623) [#6366F1](https://github.com/TranspiledCode/transpiled-web-template/issues/6366F1) [#F7B733](https://github.com/TranspiledCode/transpiled-web-template/issues/F7B733) [#818CF8](https://github.com/TranspiledCode/transpiled-web-template/issues/818CF8) [#E8A000](https://github.com/TranspiledCode/transpiled-web-template/issues/E8A000) [#4F46E5](https://github.com/TranspiledCode/transpiled-web-template/issues/4F46E5) [#F5A623](https://github.com/TranspiledCode/transpiled-web-template/issues/F5A623) [#6366F1](https://github.com/TranspiledCode/transpiled-web-template/issues/6366F1) [#111111](https://github.com/TranspiledCode/transpiled-web-template/issues/111111) [#6366F1](https://github.com/TranspiledCode/transpiled-web-template/issues/6366F1) [#40](https://github.com/TranspiledCode/transpiled-web-template/issues/40)
+
+
+### Bug Fixes
+
+* **admin:** update dashboard Content card label and tab id from pages to content ([f141e85](https://github.com/TranspiledCode/transpiled-web-template/commit/f141e85406a102bdf34ae40db1d06fdd2ddac6a9))
+* **admin:** update Sidebar stale pages tab id references to content ([f680afc](https://github.com/TranspiledCode/transpiled-web-template/commit/f680afc61925893d516de2b1a13a6bcca07e82cb))
+* **cms:** fix content transform bug, add seed --force, misc improvements ([c7e93a0](https://github.com/TranspiledCode/transpiled-web-template/commit/c7e93a0b4550b020dfc02ea81e88029e65342a82))
+* **hero:** use secondaryBackground for subtler grid overlay ([a48f7a0](https://github.com/TranspiledCode/transpiled-web-template/commit/a48f7a07fa9b22826f556838444b93f3d4d84e14)), closes [#47](https://github.com/TranspiledCode/transpiled-web-template/issues/47)
+* **media:** add error guards to firebase-admin and r2 libs ([a330206](https://github.com/TranspiledCode/transpiled-web-template/commit/a330206844187043d98df2d5543ad6ee3fed7399))
+* **media:** add upload success toast and clipboard error handling in MediaTab ([9561cfe](https://github.com/TranspiledCode/transpiled-web-template/commit/9561cfe2aa36538d335143855486f7dbc9471a0e))
+* **media:** address final review findings — raw file cleanup, validation, lazy mount, E2E selectors ([1474ec0](https://github.com/TranspiledCode/transpiled-web-template/commit/1474ec0d2898f50b801fb292e1f2ad4c2dd59113))
+* **security:** address 4 of 5 audit vulnerabilities ([c21649c](https://github.com/TranspiledCode/transpiled-web-template/commit/c21649cf091cf893dc308ae161296b73ccec3ab0)), closes [#38](https://github.com/TranspiledCode/transpiled-web-template/issues/38)
+
 ### [0.2.5](https://github.com/TranspiledCode/transpiled-web-template/compare/v0.2.4...v0.2.5) (2026-06-08)
 
 
