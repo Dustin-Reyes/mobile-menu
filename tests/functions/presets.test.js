@@ -3,7 +3,11 @@ import { PRESETS } from '../../netlify/functions/lib/presets.js';
 
 describe('PRESETS', () => {
   it('defines gallery, thumbnail, hero', () => {
-    expect(Object.keys(PRESETS).sort()).toEqual(['gallery', 'hero', 'thumbnail']);
+    expect(Object.keys(PRESETS).sort()).toEqual([
+      'gallery',
+      'hero',
+      'thumbnail',
+    ]);
   });
 
   it('each preset has width, height, quality, fit', () => {

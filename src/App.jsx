@@ -5,7 +5,6 @@
  * handles post-navigation scroll restoration (including anchor-link scrolling),
  * and conditionally renders the Footer on non-admin routes.
  *
- * The Demo route is only registered in non-production builds.
  * The Dashboard route is lazy-loaded and protected by RequireAuth.
  *
  * @returns {JSX.Element}
@@ -22,20 +21,13 @@ import PageSEO from 'components/PageSEO';
 import { AuthProvider } from 'context/AuthContext';
 import RequireAuth from 'components/auth/RequireAuth';
 import Home from 'pages/Home';
-import Example from 'pages/Example';
 import NotFound from 'pages/NotFound';
-
-const Demo =
-  process.env.NODE_ENV !== 'production'
-    ? lazy(() => import('pages/Demo'))
-    : null;
 
 const Dashboard = lazy(() => import('components/admin/layout/Dashboard'));
 
 function App() {
   const location = useLocation();
 
-  const isProduction = process.env.NODE_ENV === 'production';
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   // After the exit animation (0.2s), scroll to top or to a specific section when
@@ -70,26 +62,6 @@ function App() {
                 </PageTransition>
               }
             />
-            <Route
-              path="/example"
-              element={
-                <PageTransition>
-                  <Example />
-                </PageTransition>
-              }
-            />
-            {!isProduction && Demo && (
-              <Route
-                path="/demo"
-                element={
-                  <Suspense fallback={null}>
-                    <PageTransition>
-                      <Demo />
-                    </PageTransition>
-                  </Suspense>
-                }
-              />
-            )}
             <Route
               path="/admin"
               element={
