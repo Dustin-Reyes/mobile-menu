@@ -1,0 +1,311 @@
+{
+  "categories": [
+    {
+      "id": "drinks",
+      "name": "Drinks",
+      "description": "Refreshing beverages to quench your thirst",
+      "order": 1
+    },
+    {
+      "id": "appetizers",
+      "name": "Appetizers",
+      "description": "Start your meal with these delicious bites",
+      "order": 2
+    },
+    {
+      "id": "entrees",
+      "name": "Entrees",
+      "description": "Our signature main courses",
+      "order": 3
+    },
+    {
+      "id": "sides",
+      "name": "Sides",
+      "description": "Perfect accompaniments to your meal",
+      "order": 4
+    },
+    {
+      "id": "desserts",
+      "name": "Desserts",
+      "description": "Sweet treats to finish your meal",
+      "order": 5
+    }
+  ],
+  "items": [
+    {
+      "id": "drink-1",
+      "name": "Fresh Lemonade",
+      "description": "Freshly squeezed lemon juice with a hint of mint",
+      "price": 4.99,
+      "category": "drinks",
+      "image": "/images/menu/lemonade.jpg",
+      "tags": ["popular", "vegan"],
+      "available": true,
+      "allergens": []
+    },
+    {
+      "id": "drink-2",
+      "name": "Iced Coffee",
+      "description": "Cold brew coffee served over ice",
+      "price": 5.49,
+      "category": "drinks",
+      "image": "/images/menu/iced-coffee.jpg",
+      "tags": ["popular"],
+      "available": true,
+      "allergens": []
+    },
+    {
+      "id": "drink-3",
+      "name": "Mango Smoothie",
+      "description": "Tropical mango blended with yogurt and honey",
+      "price": 6.99,
+      "category": "drinks",
+      "image": "/images/menu/mango-smoothie.jpg",
+      "tags": ["vegetarian"],
+      "available": true,
+      "allergens": ["dairy"]
+    },
+    {
+      "id": "drink-4",
+      "name": "Green Tea",
+      "description": "Premium Japanese green tea, hot or iced",
+      "price": 3.99,
+      "category": "drinks",
+      "image": "/images/menu/green-tea.jpg",
+      "tags": ["vegan", "healthy"],
+      "available": true,
+      "allergens": []
+    },
+    {
+      "id": "drink-5",
+      "name": "Craft Beer",
+      "description": "Local craft beer on tap, ask server for selection",
+      "price": 7.99,
+      "category": "drinks",
+      "image": "/images/menu/craft-beer.jpg",
+      "tags": [],
+      "available": true,
+      "allergens": ["gluten"]
+    },
+    {
+      "id": "app-1",
+      "name": "Buffalo Wings",
+      "description": "Crispy chicken wings tossed in spicy buffalo sauce",
+      "price": 11.99,
+      "category": "appetizers",
+      "image": "/images/menu/buffalo-wings.jpg",
+      "tags": ["popular", "spicy"],
+      "available": true,
+      "allergens": ["dairy"]
+    },
+    {
+      "id": "app-2",
+      "name": "Mozzarella Sticks",
+      "description": "Golden fried mozzarella with marinara sauce",
+      "price": 8.99,
+      "category": "appetizers",
+      "image": "/images/menu/mozzarella-sticks.jpg",
+      "tags": ["vegetarian"],
+      "available": true,
+      "allergens": ["dairy", "gluten"]
+    },
+    {
+      "id": "app-3",
+      "name": "Guacamole & Chips",
+      "description": "Fresh avocado dip with crispy tortilla chips",
+      "price": 9.49,
+      "category": "appetizers",
+      "image": "/images/menu/guacamole.jpg",
+      "tags": ["vegan", "popular"],
+      "available": true,
+      "allergens": []
+    },
+    {
+      "id": "app-4",
+      "name": "Calamari",
+      "description": "Lightly breaded and fried squid rings with aioli",
+      "price": 12.99,
+      "category": "appetizers",
+      "image": "/images/menu/calamari.jpg",
+      "tags": [],
+      "available": true,
+      "allergens": ["seafood", "gluten"]
+    },
+    {
+      "id": "app-5",
+      "name": "Spring Rolls",
+      "description": "Vegetable spring rolls with sweet chili sauce",
+      "price": 7.99,
+      "category": "appetizers",
+      "image": "/images/menu/spring-rolls.jpg",
+      "tags": ["vegan"],
+      "available": true,
+      "allergens": ["soy"]
+    },
+    {
+      "id": "entree-1",
+      "name": "Classic Burger",
+      "description": "Juicy beef patty with lettuce, tomato, and special sauce",
+      "price": 14.99,
+      "category": "entrees",
+      "image": "/images/menu/classic-burger.jpg",
+      "tags": ["popular"],
+      "available": true,
+      "allergens": ["gluten", "dairy"]
+    },
+    {
+      "id": "entree-2",
+      "name": "Grilled Salmon",
+      "description": "Atlantic salmon with lemon butter and seasonal vegetables",
+      "price": 22.99,
+      "category": "entrees",
+      "image": "/images/menu/grilled-salmon.jpg",
+      "tags": ["healthy", "popular"],
+      "available": true,
+      "allergens": ["seafood", "dairy"]
+    },
+    {
+      "id": "entree-3",
+      "name": "Chicken Alfredo",
+      "description": "Fettuccine pasta with grilled chicken in creamy alfredo sauce",
+      "price": 16.99,
+      "category": "entrees",
+      "image": "/images/menu/chicken-alfredo.jpg",
+      "tags": [],
+      "available": true,
+      "allergens": ["gluten", "dairy"]
+    },
+    {
+      "id": "entree-4",
+      "name": "Veggie Stir Fry",
+      "description": "Seasonal vegetables wok-tossed with ginger soy sauce",
+      "price": 13.99,
+      "category": "entrees",
+      "image": "/images/menu/veggie-stir-fry.jpg",
+      "tags": ["vegan", "healthy"],
+      "available": true,
+      "allergens": ["soy"]
+    },
+    {
+      "id": "entree-5",
+      "name": "BBQ Ribs",
+      "description": "Slow-cooked pork ribs with house BBQ sauce",
+      "price": 19.99,
+      "category": "entrees",
+      "image": "/images/menu/bbq-ribs.jpg",
+      "tags": ["popular"],
+      "available": true,
+      "allergens": []
+    },
+    {
+      "id": "side-1",
+      "name": "French Fries",
+      "description": "Crispy golden fries with sea salt",
+      "price": 4.99,
+      "category": "sides",
+      "image": "/images/menu/french-fries.jpg",
+      "tags": ["popular", "vegan"],
+      "available": true,
+      "allergens": []
+    },
+    {
+      "id": "side-2",
+      "name": "Caesar Salad",
+      "description": "Romaine lettuce with parmesan and croutons",
+      "price": 6.99,
+      "category": "sides",
+      "image": "/images/menu/caesar-salad.jpg",
+      "tags": ["vegetarian"],
+      "available": true,
+      "allergens": ["dairy", "gluten"]
+    },
+    {
+      "id": "side-3",
+      "name": "Onion Rings",
+      "description": "Beer-battered onion rings with ranch dip",
+      "price": 5.99,
+      "category": "sides",
+      "image": "/images/menu/onion-rings.jpg",
+      "tags": ["vegetarian"],
+      "available": true,
+      "allergens": ["gluten", "dairy"]
+    },
+    {
+      "id": "side-4",
+      "name": "Coleslaw",
+      "description": "Creamy cabbage slaw with a tangy dressing",
+      "price": 3.99,
+      "category": "sides",
+      "image": "/images/menu/coleslaw.jpg",
+      "tags": ["vegetarian"],
+      "available": true,
+      "allergens": ["dairy"]
+    },
+    {
+      "id": "side-5",
+      "name": "Garlic Bread",
+      "description": "Toasted bread with garlic butter and herbs",
+      "price": 4.49,
+      "category": "sides",
+      "image": "/images/menu/garlic-bread.jpg",
+      "tags": ["vegetarian"],
+      "available": true,
+      "allergens": ["gluten", "dairy"]
+    },
+    {
+      "id": "dessert-1",
+      "name": "Chocolate Lava Cake",
+      "description": "Warm chocolate cake with molten center and vanilla ice cream",
+      "price": 8.99,
+      "category": "desserts",
+      "image": "/images/menu/lava-cake.jpg",
+      "tags": ["popular"],
+      "available": true,
+      "allergens": ["gluten", "dairy", "eggs"]
+    },
+    {
+      "id": "dessert-2",
+      "name": "New York Cheesecake",
+      "description": "Classic creamy cheesecake with berry compote",
+      "price": 7.99,
+      "category": "desserts",
+      "image": "/images/menu/cheesecake.jpg",
+      "tags": ["popular"],
+      "available": true,
+      "allergens": ["gluten", "dairy", "eggs"]
+    },
+    {
+      "id": "dessert-3",
+      "name": "Tiramisu",
+      "description": "Italian coffee-flavored dessert with mascarpone",
+      "price": 8.49,
+      "category": "desserts",
+      "image": "/images/menu/tiramisu.jpg",
+      "tags": [],
+      "available": true,
+      "allergens": ["gluten", "dairy", "eggs"]
+    },
+    {
+      "id": "dessert-4",
+      "name": "Ice Cream Sundae",
+      "description": "Three scoops with chocolate sauce, whipped cream, and cherry",
+      "price": 6.99,
+      "category": "desserts",
+      "image": "/images/menu/ice-cream-sundae.jpg",
+      "tags": ["vegetarian"],
+      "available": true,
+      "allergens": ["dairy"]
+    },
+    {
+      "id": "dessert-5",
+      "name": "Apple Pie",
+      "description": "Homemade apple pie with cinnamon and vanilla ice cream",
+      "price": 7.49,
+      "category": "desserts",
+      "image": "/images/menu/apple-pie.jpg",
+      "tags": ["vegetarian"],
+      "available": true,
+      "allergens": ["gluten", "dairy"]
+    }
+  ]
+}
