@@ -44,16 +44,12 @@ const ViewAllLink = styled.button`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  gap: ${({ theme }) => theme.spacing.s4};
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(2, 1fr);
+  gap: ${({ theme }) => theme.spacing.s3};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: repeat(3, 1fr);
-    gap: ${({ theme }) => theme.spacing.s6};
+    gap: ${({ theme }) => theme.spacing.s4};
   }
 `;
 

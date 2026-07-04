@@ -70,7 +70,7 @@ const Image = styled.img`
 `;
 
 const Content = styled.div`
-  padding: ${({ theme }) => theme.spacing.s4};
+  padding: ${({ theme }) => theme.spacing.s3};
 `;
 
 const Header = styled.div`
