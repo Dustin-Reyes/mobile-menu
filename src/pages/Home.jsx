@@ -7,6 +7,7 @@
  * @returns {JSX.Element}
  */
 import { useState, useMemo } from 'react';
+import styled from '@emotion/styled';
 import MainLayout from '../components/MainLayout';
 import UserGreeting from '../components/UserGreeting';
 import SearchBar from '../components/SearchBar';
@@ -14,6 +15,36 @@ import CategoryPills from '../components/CategoryPills';
 import MenuSection from '../components/MenuSection';
 import BottomNav from '../components/BottomNav';
 import menuData from '../data/menu.json';
+
+const SectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${({ theme }) => theme.spacing.s4};
+`;
+
+const SectionTitle = styled.h2`
+  font-size: ${({ theme }) => theme.typography.fontSizes.s5};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0;
+`;
+
+const SeeMenuLink = styled.button`
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.semibold};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.s1};
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(
@@ -63,6 +94,13 @@ export default function Home() {
         onChange={(e) => setSearchQuery(e.target.value)}
         onFilterClick={() => console.log('Filter clicked')}
       />
+
+      <SectionHeader>
+        <SectionTitle>Food Category</SectionTitle>
+        <SeeMenuLink onClick={() => console.log('See menu clicked')}>
+          See Menu →
+        </SeeMenuLink>
+      </SectionHeader>
 
       <CategoryPills
         activeCategory={activeCategory}
