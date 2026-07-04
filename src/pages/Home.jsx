@@ -11,6 +11,7 @@ import MainLayout from '../components/MainLayout';
 import UserGreeting from '../components/UserGreeting';
 import CategoryPills from '../components/CategoryPills';
 import MenuSection from '../components/MenuSection';
+import BottomNav from '../components/BottomNav';
 import menuData from '../data/menu.json';
 
 export default function Home() {
@@ -77,6 +78,11 @@ export default function Home() {
           onItemClick={handleItemClick}
         />
       )}
+
+      <BottomNav
+        activeItem="menu"
+        onItemClick={(itemId) => console.log('Nav item clicked:', itemId)}
+      />
     </MainLayout>
   );
 }
