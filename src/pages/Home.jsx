@@ -1,46 +1,82 @@
 /**
  * Home page — Main menu display page.
  *
- * This will be rebuilt in Sprint 3 with the new menu layout components.
+ * Displays the complete menu with sidebar navigation, category filtering,
+ * and menu item cards in a responsive grid layout.
  *
  * @returns {JSX.Element}
  */
-import styled from '@emotion/styled';
-
-const Container = styled.div`
-  min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: ${({ theme }) => theme.spacing.s6};
-`;
-
-const Message = styled.div`
-  text-align: center;
-  max-width: 600px;
-
-  h1 {
-    font-size: ${({ theme }) => theme.typography.fontSizes.s7};
-    color: ${({ theme }) => theme.colors.text};
-    margin-bottom: ${({ theme }) => theme.spacing.s4};
-  }
-
-  p {
-    font-size: ${({ theme }) => theme.typography.fontSizes.s4};
-    color: ${({ theme }) => theme.colors.textSecondary};
-  }
-`;
+import { useState, useMemo } from 'react';
+import MainLayout from '../components/MainLayout';
+import UserGreeting from '../components/UserGreeting';
+import CategoryPills from '../components/CategoryPills';
+import MenuSection from '../components/MenuSection';
+import menuData from '../data/menu.json';
 
 export default function Home() {
+  const [activeCategory, setActiveCategory] = useState(
+    menuData.categories[0]?.id,
+  );
+
+  // Filter items by active category
+  const filteredItems = useMemo(() => {
+    if (!activeCategory) return menuData.items;
+    return menuData.items.filter((item) => item.category === activeCategory);
+  }, [activeCategory]);
+
+  // Get active category data
+  const activeCategoryData = useMemo(() => {
+    return menuData.categories.find((cat) => cat.id === activeCategory);
+  }, [activeCategory]);
+
+  // Get popular items (first 6 items from current category)
+  const popularItems = useMemo(() => {
+    return filteredItems.filter((item) => item.available).slice(0, 6);
+  }, [filteredItems]);
+
+  // Get all available items from current category
+  const allItems = useMemo(() => {
+    return filteredItems.filter((item) => item.available);
+  }, [filteredItems]);
+
+  const handleCategoryChange = (categoryId) => {
+    setActiveCategory(categoryId);
+  };
+
+  const handleItemClick = (item) => {
+    console.log('Item clicked:', item);
+    // TODO: Add item detail modal or navigation
+  };
+
   return (
-    <Container>
-      <Message>
-        <h1>Menu Template</h1>
-        <p>
-          Home page placeholder. The new menu layout will be built here in
-          Sprint 3.
-        </p>
-      </Message>
-    </Container>
+    <MainLayout
+      activeCategory={activeCategory}
+      onCategoryChange={handleCategoryChange}
+    >
+      <UserGreeting name="Guest" />
+
+      <CategoryPills
+        activeCategory={activeCategory}
+        onCategoryClick={handleCategoryChange}
+      />
+
+      {popularItems.length > 0 && (
+        <MenuSection
+          title="Popular Food"
+          items={popularItems}
+          showViewAll={allItems.length > popularItems.length}
+          onViewAll={() => console.log('View all popular items')}
+          onItemClick={handleItemClick}
+        />
+      )}
+
+      {allItems.length > 0 && (
+        <MenuSection
+          title={activeCategoryData?.name || 'Menu Items'}
+          items={allItems}
+          onItemClick={handleItemClick}
+        />
+      )}
+    </MainLayout>
   );
 }
