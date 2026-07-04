@@ -9,6 +9,7 @@
 import { useState, useMemo } from 'react';
 import MainLayout from '../components/MainLayout';
 import UserGreeting from '../components/UserGreeting';
+import SearchBar from '../components/SearchBar';
 import CategoryPills from '../components/CategoryPills';
 import MenuSection from '../components/MenuSection';
 import BottomNav from '../components/BottomNav';
@@ -18,6 +19,7 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState(
     menuData.categories[0]?.id,
   );
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Filter items by active category
   const filteredItems = useMemo(() => {
@@ -55,6 +57,12 @@ export default function Home() {
       onCategoryChange={handleCategoryChange}
     >
       <UserGreeting name="Guest" />
+
+      <SearchBar
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onFilterClick={() => console.log('Filter clicked')}
+      />
 
       <CategoryPills
         activeCategory={activeCategory}
