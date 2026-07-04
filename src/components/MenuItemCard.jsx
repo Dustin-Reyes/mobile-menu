@@ -22,7 +22,7 @@ const Card = styled.div`
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;
-  padding-top: 75%; /* 4:3 aspect ratio */
+  padding-top: 60%; /* Shorter aspect ratio for mobile */
   background: ${({ theme }) => theme.colors.secondaryBackground};
   overflow: hidden;
 `;
@@ -70,7 +70,7 @@ const Image = styled.img`
 `;
 
 const Content = styled.div`
-  padding: ${({ theme }) => theme.spacing.s3};
+  padding: ${({ theme }) => theme.spacing.s2};
 `;
 
 const Header = styled.div`
@@ -82,7 +82,7 @@ const Header = styled.div`
 `;
 
 const Name = styled.h3`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s4};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
   font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
   color: ${({ theme }) => theme.colors.text};
   margin: 0;
@@ -90,10 +90,10 @@ const Name = styled.h3`
 `;
 
 const Description = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
   color: ${({ theme }) => theme.colors.textSecondary};
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -105,7 +105,7 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: ${({ theme }) => theme.spacing.s3};
+  margin-top: ${({ theme }) => theme.spacing.s2};
   gap: ${({ theme }) => theme.spacing.s2};
 `;
 
@@ -149,7 +149,7 @@ const Actions = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.s2};
-  margin-top: ${({ theme }) => theme.spacing.s3};
+  margin-top: ${({ theme }) => theme.spacing.s2};
 `;
 
 const AddToCartButton = styled.button`
@@ -157,17 +157,17 @@ const AddToCartButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${({ theme }) => theme.spacing.s2};
-  padding: ${({ theme }) => theme.spacing.s2} ${({ theme }) => theme.spacing.s4};
+  gap: ${({ theme }) => theme.spacing.s1};
+  padding: ${({ theme }) => theme.spacing.s2} ${({ theme }) => theme.spacing.s3};
   background: #dc2626;
   color: white;
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius.s2};
-  font-size: ${({ theme }) => theme.typography.fontSizes.s3};
+  font-size: ${({ theme }) => theme.typography.fontSizes.s2};
   font-weight: ${({ theme }) => theme.typography.fontWeights.semibold};
   cursor: pointer;
   transition: all ${({ theme }) => theme.transitions.fast};
-  min-height: 40px;
+  min-height: 36px;
 
   &:hover {
     background: #b91c1c;
@@ -188,8 +188,8 @@ const HeartButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   background: transparent;
   border: 2px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.s2};
