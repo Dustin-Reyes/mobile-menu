@@ -23,7 +23,8 @@ const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  z-index: ${({ theme }) => theme.zIndex.sticky};
+  z-index: ${({ theme }) =>
+    theme.zIndex.modal}; /* Higher than sticky to stay on top */
   box-shadow: 0 -2px 8px ${({ theme }) => theme.colors.shadow};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
