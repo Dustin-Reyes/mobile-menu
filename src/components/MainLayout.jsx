@@ -67,11 +67,13 @@ const ContentArea = styled.main`
   flex: 1;
   margin-left: 0;
   padding: ${({ theme }) => theme.spacing.s6} ${({ theme }) => theme.spacing.s4};
+  padding-bottom: 80px; /* Extra space for fixed BottomNav on mobile */
   background: ${({ theme }) => theme.colors.background};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     margin-left: 250px;
     padding: ${({ theme }) => theme.spacing.s6};
+    padding-bottom: ${({ theme }) => theme.spacing.s6}; /* Reset on desktop */
   }
 `;
 
