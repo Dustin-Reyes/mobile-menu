@@ -2,14 +2,11 @@
  * Root application component.
  *
  * Declares all client-side routes, wraps them in page transition animations,
- * handles post-navigation scroll restoration (including anchor-link scrolling),
- * and conditionally renders the Footer on non-admin routes.
- *
- * The Dashboard route is lazy-loaded and protected by RequireAuth.
+ * and handles post-navigation scroll restoration.
  *
  * @returns {JSX.Element}
  */
-import { Suspense, lazy, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -18,17 +15,11 @@ import Footer from 'components/Footer';
 import PageTransition from 'components/PageTransition';
 import { ToastProvider } from 'components/ToastProvider';
 import PageSEO from 'components/PageSEO';
-import { AuthProvider } from 'context/AuthContext';
-import RequireAuth from 'components/auth/RequireAuth';
 import Home from 'pages/Home';
 import NotFound from 'pages/NotFound';
 
-const Dashboard = lazy(() => import('components/admin/layout/Dashboard'));
-
 function App() {
   const location = useLocation();
-
-  const isAdminRoute = location.pathname.startsWith('/admin');
 
   // After the exit animation (0.2s), scroll to top or to a specific section when
   // navigating from another page via an anchor link (state.scrollTo is the section id).
@@ -50,40 +41,28 @@ function App() {
   return (
     <ErrorBoundary>
       <PageSEO />
-      <AuthProvider>
-        <Header />
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route
-              path="/"
-              element={
-                <PageTransition>
-                  <Home />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <RequireAuth>
-                  <Suspense fallback={<div>Loading admin...</div>}>
-                    <Dashboard />
-                  </Suspense>
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="*"
-              element={
-                <PageTransition>
-                  <NotFound />
-                </PageTransition>
-              }
-            />
-          </Routes>
-        </AnimatePresence>
-        {!isAdminRoute && <Footer />}
-      </AuthProvider>
+      <Header />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route
+            path="/"
+            element={
+              <PageTransition>
+                <Home />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <PageTransition>
+                <NotFound />
+              </PageTransition>
+            }
+          />
+        </Routes>
+      </AnimatePresence>
+      <Footer />
       <ToastProvider position="bottom-right" />
     </ErrorBoundary>
   );
